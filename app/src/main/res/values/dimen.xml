@@ -4,14 +4,22 @@
     <dimen name="margin_15_dp">15dp</dimen>
     <dimen name="temperature_value_text_size">40sp</dimen>
     <dimen name="feels_like_text_size">30sp</dimen>
-    <dimen name="text_card_size">15sp</dimen>
-    <dimen name="padding_card">10dp</dimen>
+    <dimen name="description_text_size">18sp</dimen>
+    <dimen name="text_card_size">12sp</dimen>
+    <dimen name="padding_card">0dp</dimen>
     <dimen name="bottom_bar_height">75dp</dimen>
     <dimen name="message">40sp</dimen>
     <dimen name="title_main_fragment">35sp</dimen>
     <dimen name="recycler_height">250dp</dimen>
-    <dimen name="image_width">120dp</dimen>
-    <dimen name="image_height">170dp</dimen>
+    <dimen name="image_width">100dp</dimen>
+    <dimen name="image_height">150dp</dimen>
     <dimen name="title_width">120dp</dimen>
     <dimen name="title_height">40sp</dimen>
+    <dimen name="fragment_padding">10dp</dimen>
+    <dimen name="title_size_details">40sp</dimen>
+    <dimen name="margin_top">20sp</dimen>
+    <dimen name="original_title">30sp</dimen>
+    <dimen name="heart_width">50sp</dimen>
+    <dimen name="heart_margin">20sp</dimen>
+    <dimen name="heart_size">20dp</dimen>
 </resources>

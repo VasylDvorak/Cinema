@@ -5,7 +5,13 @@ class RepositoryImpl : Repository {
         return AboutMovie()
     }
 
-    override fun getAboutMovieLocalStorage(): AboutMovie {
-        return AboutMovie()
+    override fun getAboutMovieLocalStorageNowPlaying(): List<AboutMovie> {
+        return nowPlaying()
     }
+
+    override fun getAboutMovieLocalStorageUpcoming(): List<AboutMovie> {
+        return upcoming()
+    }
+
+
 }
