@@ -19,8 +19,7 @@ import com.example.cinema.viewmodel.AppState
 import com.example.cinema.viewmodel.MainViewModel
 import com.google.android.material.snackbar.Snackbar
 
-class MainFragment : Fragment(), CustomRecyclerAdapterNowPlaying.OnItemClickListenerNow,
-    CustomRecyclerAdapterUpcoming.OnItemClickListenerUpcoming {
+class MainFragment : Fragment(){
 
     private var _binding: FragmentMainBinding? = null
     private val binding
@@ -30,8 +29,10 @@ class MainFragment : Fragment(), CustomRecyclerAdapterNowPlaying.OnItemClickList
         fun newInstance() = MainFragment()
     }
 
-    private lateinit var viewModel: MainViewModel
+    private lateinit var adapter : MainFragmentAdapter
 
+
+    private lateinit var viewModel: MainViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -42,6 +43,7 @@ class MainFragment : Fragment(), CustomRecyclerAdapterNowPlaying.OnItemClickList
         setHasOptionsMenu(true)
         return binding.root
     }
+
 
     override fun onDestroyView() {
         super.onDestroyView()
@@ -67,10 +69,29 @@ class MainFragment : Fragment(), CustomRecyclerAdapterNowPlaying.OnItemClickList
                 val AboutMovieData = appState.AboutMovieData
 
                 binding.loadingLayout.visibility = View.GONE
+                adapter = initAdapter();
+                adapter.setAboutMovie(AboutMovieData, false)
 
-                Snackbar.make(binding.mainView, "Success", Snackbar.LENGTH_LONG).show()
+                val recyclerViewNowPlaying: RecyclerView = binding.recyclerViewLinesNowPlaying
+                recyclerViewNowPlaying.layoutManager = LinearLayoutManager(
+                    context,
+                    LinearLayoutManager.HORIZONTAL, false
+                )
+                recyclerViewNowPlaying.adapter =adapter
 
-                setData(AboutMovieData)
+
+                val recyclerViewUpcoming: RecyclerView = binding.recyclerViewLinesUpcoming
+                recyclerViewUpcoming.layoutManager = LinearLayoutManager(
+                    context,
+                    LinearLayoutManager.HORIZONTAL, false
+                )
+                adapter = initAdapter();
+                adapter.setAboutMovie(viewModel.getUpcomingMovie(), true)
+
+                recyclerViewUpcoming.adapter=adapter
+
+                binding.upcoming.text = getString(R.string.upcoming)
+                binding.nowPlaying.text = getString(R.string.now_playing)
             }
 
             is AppState.Loading -> {
@@ -87,47 +108,6 @@ class MainFragment : Fragment(), CustomRecyclerAdapterNowPlaying.OnItemClickList
                     .show()
             }
         }
-    }
-
-    private fun setData(AboutMovieData: AboutMovie) {
-        val recyclerViewNowPlaying: RecyclerView = binding.recyclerViewLinesNowPlaying
-        recyclerViewNowPlaying.layoutManager = LinearLayoutManager(
-            context,
-            LinearLayoutManager.HORIZONTAL, false
-        )
-        recyclerViewNowPlaying.adapter =
-            CustomRecyclerAdapterNowPlaying(
-                fillList(AboutMovieData.movie.movie_title),
-                fillList(AboutMovieData.release_date), fillList(AboutMovieData.rating),
-                fillListPicture(AboutMovieData.movie.picture), this
-            )
-
-        val recyclerViewUpcoming: RecyclerView = binding.recyclerViewLinesUpcoming
-        recyclerViewUpcoming.layoutManager = LinearLayoutManager(
-            context,
-            LinearLayoutManager.HORIZONTAL, false
-        )
-        recyclerViewUpcoming.adapter =
-            CustomRecyclerAdapterUpcoming(
-                fillList(AboutMovieData.movie.movie_title),
-                fillList(AboutMovieData.release_date),
-                fillListPicture(AboutMovieData.movie.picture), this
-            )
-        recyclerViewUpcoming.adapter
-        binding.upcoming.text = getString(R.string.upcoming)
-        binding.nowPlaying.text = getString(R.string.now_playing)
-    }
-
-    private fun fillList(str: String): List<String> {
-        val data = mutableListOf<String>()
-        (0..30).forEach { i -> data.add(str) }
-        return data
-    }
-
-    private fun fillListPicture(pic: Int): List<Int> {
-        val data = mutableListOf<Int>()
-        (0..30).forEach { i -> data.add(pic) }
-        return data
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -180,20 +160,20 @@ class MainFragment : Fragment(), CustomRecyclerAdapterNowPlaying.OnItemClickList
         }
         return super.onOptionsItemSelected(item)
     }
+    private fun initAdapter() : MainFragmentAdapter{
+        return MainFragmentAdapter(object : MainFragmentAdapter.OnItemViewClickListener{
+            override fun onItemClick(aboutMovie: AboutMovie) {
+                val fragmentManager = activity?.supportFragmentManager
+                if (fragmentManager != null) {
+                    val bundle = Bundle()
+                    bundle.putParcelable(DetailsFragment.BUNDLE_EXTRA, aboutMovie)
+                    fragmentManager.beginTransaction()
+                        .replace(R.id.flFragment, DetailsFragment.newInstance(bundle))
+                        .addToBackStack("")
+                        .commitAllowingStateLoss()
+                }
+            }
 
-    override fun onItemClickNowPlaying(position: Int) {
-        activity?.supportFragmentManager!!.beginTransaction().apply {
-            replace(R.id.flFragment, ThirdFragment())
-            commit()
-        }
+        })
     }
-
-    override fun onItemClickUpcoming(position: Int) {
-        activity?.supportFragmentManager!!.beginTransaction().apply {
-            replace(R.id.flFragment, ThirdFragment())
-            commit()
-        }
     }
-
-
-}
