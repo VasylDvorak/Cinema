@@ -23,20 +23,18 @@ class MainFragmentAdapter(private var onItemViewClickListener: OnItemViewClickLi
         aboutMovie = data
         notifyDataSetChanged()
         this.upcoming = upcoming
-
     }
 
     inner class MainViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        fun bind(aboutMovie: AboutMovie) {
-
+        fun bind(aboutMovieItem: AboutMovie) {
             itemView.apply {
                 findViewById<TextView>(R.id.now_playing_title_movie).text =
-                    aboutMovie.movie.movie_title
+                    aboutMovieItem.movie.movie_title
                 findViewById<TextView>(R.id.now_playing_year_movie).text =
-                    aboutMovie.release_date
-                findViewById<TextView>(R.id.now_playing_rating_movie).text = aboutMovie.rating
+                    aboutMovieItem.release_date
+                findViewById<TextView>(R.id.now_playing_rating_movie).text = aboutMovieItem.rating
                 findViewById<ImageView>(R.id.now_playing_banner)
-                    .setImageResource(aboutMovie.movie.picture)
+                    .setImageResource(aboutMovieItem.movie.picture)
 
                 if (upcoming) {
                     findViewById<TextView>(R.id.now_playing_rating_movie).visibility =
@@ -47,7 +45,7 @@ class MainFragmentAdapter(private var onItemViewClickListener: OnItemViewClickLi
                 var heart: ImageView = findViewById(R.id.is_like_movie)
 
                 heart.apply {
-                    if (!aboutMovie.isLike) {
+                    if (!aboutMovieItem.isLike) {
                         setImageResource(R.drawable.ic_baseline_favorite_border_24_empty)
                     } else {
                         setImageResource(R.drawable.ic_baseline_favorite_24_yellow)
@@ -55,27 +53,27 @@ class MainFragmentAdapter(private var onItemViewClickListener: OnItemViewClickLi
 
                     setOnClickListener {
 
-                        if (aboutMovie.isLike) {
+                        if (aboutMovieItem.isLike) {
                             setImageResource(R.drawable.ic_baseline_favorite_border_24_empty)
-                            aboutMovie.isLike = false
+                            aboutMovieItem.isLike = false
                         } else {
                             setImageResource(R.drawable.ic_baseline_favorite_24_yellow)
-                            aboutMovie.isLike = true
+                            aboutMovieItem.isLike = true
                         }
 
                     }
 
                 }
                 setOnClickListener {
-                    onItemViewClickListener?.onItemClick(aboutMovie)
+                    onItemViewClickListener?.onItemClick(aboutMovieItem)
                 }
 
             }
-
         }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MainViewHolder {
+
         return MainViewHolder(
             LayoutInflater.from(parent.context).inflate(
                 R.layout.now_playing_item,
@@ -92,6 +90,5 @@ class MainFragmentAdapter(private var onItemViewClickListener: OnItemViewClickLi
     override fun getItemCount(): Int {
         return aboutMovie.size
     }
-
 
 }

@@ -19,6 +19,7 @@ import kotlinx.android.synthetic.main.fragment_main.*
 
 class MainFragment : Fragment() {
 
+
     private var _binding: FragmentMainBinding? = null
     private val binding
         get() = _binding!!
@@ -67,14 +68,16 @@ class MainFragment : Fragment() {
     private fun renderData(appState: AppState) {
         when (appState) {
             is AppState.Success -> {
-                val AboutMovieData = appState.AboutMovieData
+                var AboutMovieData = appState.AboutMovieData
 
                 with(binding) {
                     loadingLayout.visibility = View.GONE
                     adapter = initAdapter()
+
                     adapter.setAboutMovie(AboutMovieData, false)
 
                     val recyclerViewNowPlaying: RecyclerView = recyclerViewLinesNowPlaying
+                    Extensions.divider(recyclerViewNowPlaying)
 
                     recyclerViewNowPlaying.layoutManager = LinearLayoutManager(
                         context,
@@ -83,6 +86,7 @@ class MainFragment : Fragment() {
                     recyclerViewNowPlaying.adapter = adapter
 
                     val recyclerViewUpcoming: RecyclerView = recyclerViewLinesUpcoming
+                    Extensions.divider(recyclerViewUpcoming)
 
                     recyclerViewUpcoming.layoutManager = LinearLayoutManager(
                         context,

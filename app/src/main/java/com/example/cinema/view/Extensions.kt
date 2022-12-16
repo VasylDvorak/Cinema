@@ -5,6 +5,8 @@ import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.RecyclerView
 import com.example.cinema.R
 import com.google.android.material.snackbar.Snackbar
 
@@ -31,7 +33,7 @@ class Extensions {
 
             Toast.makeText(
                 view.context,
-                view.resources.getString(R.string.looking_for) +" "+ text, length
+                view.resources.getString(R.string.looking_for) + " " + text, length
             ).show()
 
         }
@@ -57,6 +59,16 @@ class Extensions {
             }
 
         }
+
+        fun divider(
+            recyclerView: RecyclerView
+        ) {
+            val dividerItemDecoration =
+                DividerItemDecoration(recyclerView.context, RecyclerView.HORIZONTAL)
+            dividerItemDecoration.setDrawable(recyclerView.resources.getDrawable(R.drawable.divider_drawable))
+            recyclerView.addItemDecoration(dividerItemDecoration)
+        }
+
 
     }
 }
