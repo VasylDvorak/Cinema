@@ -10,26 +10,26 @@ class MainViewModel(
     private val liveDataToObserve: MutableLiveData<AppState> = MutableLiveData(),
     private val repositoryImpl: Repository = RepositoryImpl()
 ) : ViewModel() {
+
     fun getLiveData() = liveDataToObserve
     fun getAboutMovie() = getDataFromLocalSource(true)
     fun getUpcomingMovie() = repositoryImpl.getAboutMovieLocalStorageUpcoming()
+
     private fun getDataFromLocalSource(isNowPlaying: Boolean) {
         liveDataToObserve.value = AppState.Loading
 
         Thread {
             sleep(1000)
-
             liveDataToObserve.postValue(
                 AppState.Success(
                     if (isNowPlaying) {
-
                         repositoryImpl.getAboutMovieLocalStorageNowPlaying()
                     } else {
                         repositoryImpl.getAboutMovieLocalStorageUpcoming()
                     }
-
                 )
             )
         }.start()
     }
+
 }
