@@ -65,7 +65,8 @@ class Extensions {
         ) {
             val dividerItemDecoration =
                 DividerItemDecoration(recyclerView.context, RecyclerView.HORIZONTAL)
-            dividerItemDecoration.setDrawable(recyclerView.resources.getDrawable(R.drawable.divider_drawable))
+            dividerItemDecoration.setDrawable(recyclerView.resources
+                .getDrawable(R.drawable.divider_drawable))
             recyclerView.addItemDecoration(dividerItemDecoration)
         }
 

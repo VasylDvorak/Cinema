@@ -28,9 +28,11 @@ data class AboutMovie(
             "он направляет на защиту слабых. Так Питер становится настоящим супергероем по " +
             "имени Человек-паук, который помогает людям и борется с преступностью. Но там, " +
             "где есть супергерой, рано или поздно всегда объявляется и суперзлодей..."
+
 ) : Parcelable
 
-fun getDefaultMovie() = Movie("Человек паук", "Spider-Man", R.drawable.spiderman)
+fun getDefaultMovie() = Movie("Человек паук", "Spider-Man",
+                                                        R.drawable.spiderman)
 
 fun nowPlaying(): List<AboutMovie> = listOf(
     AboutMovie(
