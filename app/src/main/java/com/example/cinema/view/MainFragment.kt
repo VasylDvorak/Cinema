@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.cinema.R
 import com.example.cinema.databinding.FragmentMainBinding
 import com.example.cinema.model.AboutMovie
+import com.example.cinema.view.details.DetailsFragment
 import com.example.cinema.viewmodel.AppState
 import com.example.cinema.viewmodel.MainViewModel
 import kotlinx.android.synthetic.main.fragment_main.*
