@@ -8,20 +8,39 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
+import com.example.cinema.BuildConfig
 import com.example.cinema.R
 import com.example.cinema.databinding.FragmentDetailsBinding
 import com.example.cinema.model.AboutMovie
-import com.example.cinema.model.MovieDTO
+import com.example.cinema.model.gson_decoder.MovieDTO
+import com.example.cinema.view.Extensions
+import com.example.cinema.view.PlayMovieFragment
+import com.example.cinema.viewmodel.MainViewModel
+import com.squareup.picasso.Picasso
+
 
 class DetailsFragment : Fragment() {
     private var _binding: FragmentDetailsBinding? = null
     private val binding get() = _binding!!
+
+    private val model: MainViewModel by lazy {
+        ViewModelProvider(this).get(MainViewModel::class.java)
+
+    }
+
     companion object {
         const val BUNDLE_EXTRA = "AboutMovie"
         fun newInstance(bundle: Bundle): DetailsFragment {
             val fragment = DetailsFragment()
             fragment.arguments = bundle
             return fragment
+        }
+    }
+
+    private fun updateCurrentCard() = with(binding) {
+        model.liveDataCurrent.observe(viewLifecycleOwner) { item ->
+            displayMovie(item)
         }
     }
 
@@ -45,12 +64,27 @@ class DetailsFragment : Fragment() {
     private val onLoadListener: MovieLoader.MovieLoaderListener =
         object : MovieLoader.MovieLoaderListener {
 
-            override fun onLoaded(movieDTO: MovieDTO) {
-                displayMovie(movieDTO)
+
+            override fun onLoaded() {
+                try {
+                    updateCurrentCard()
+                } catch (e: NullPointerException) {
+                    fragmentManager?.beginTransaction()?.apply {
+                        replace(R.id.flFragment, DetailsFragment())
+                        addToBackStack("")
+                        commit()
+                    }
+                }
             }
 
+
             override fun onFailed(throwable: Throwable) {
-                //Обработка ошибки
+                Extensions.showSnackbar(
+                    binding.mainView,
+                    context!!.resources.getString(R.string.error),
+                    context!!.resources.getString(R.string.OK),
+                    { context!!.resources.getString(R.string.OK) }
+                )
             }
         }
 
@@ -60,60 +94,88 @@ class DetailsFragment : Fragment() {
         aboutMovieBundle = arguments?.getParcelable(BUNDLE_EXTRA) ?: AboutMovie()
 
         binding.mainView.visibility = View.GONE
-        binding.loadingLayout!!.visibility = View.VISIBLE
+        binding.loadingLayout.visibility = View.VISIBLE
 
-      //  aboutMovieBundle.movie.movie_title
-        val loader = MovieLoader(onLoadListener, aboutMovieBundle.movie.movie_title)
+        val url = "https://api.kinopoisk.dev/movie?field" +
+                "=name&search=${aboutMovieBundle.movie.movie_title}&isStrict=false&" +
+                "token=${BuildConfig.KINOPOISK_API_KEY}"
+
+        val loader = MovieLoader(onLoadListener, url, context, this, binding.mainView)
         loader.loadMovie()
     }
 
     private fun displayMovie(movieDTO: MovieDTO) {
-
-
-        with(binding) {
-            mainView.visibility = View.VISIBLE
-            loadingLayout!!.visibility = View.GONE
-            detailsTitleMovie.text = movieDTO.name
-            detailsOriginalTitleMovie.text = movieDTO.name
-          //  detailsBannerMovie.setImageResource(it.picture)
-            detailsYearMovie.text = resources.getText(R.string.release_date)
-                 as String + " " + movieDTO.year.toString()
-            detailsRatingMovie.text =movieDTO.year.toString()
-            detailsGenreMovie.text = movieDTO.name
-            detailsDurationMovie.text = movieDTO.year.toString()
-            detailsBudgetMovie.text = resources.getText(R.string.budget)
-                    as String + " " + movieDTO.year.toString()
-            detailsRevenueMovie.text = resources.getText(R.string.revenue)
-                    as String + " " + movieDTO.year.toString()
-            detailsDescriptionMovie.text = movieDTO.description
-
-            var heart: ImageView = binding.detailsIsLikeMovie
-
-            heart.apply {
-
-      /*
-                if (!aboutMovie.isLike) {
-                    setImageResource(R.drawable.ic_baseline_favorite_border_24_empty)
-                } else {
-                    setImageResource(R.drawable.ic_baseline_favorite_24_yellow)
+        try {
+            with(binding) {
+                mainView.visibility = View.VISIBLE
+                loadingLayout.visibility = View.GONE
+                detailsTitleMovie.text = movieDTO.docs[0].name
+                detailsOriginalTitleMovie.text = movieDTO.docs[0].name
+                var strr: String = movieDTO.docs[0].poster.url
+                Picasso.get().load(strr).into(detailsBannerMovie)
+                detailsBannerMovie.setOnClickListener {
+                    callPlayMovie(movieDTO)
                 }
+                //  detailsBannerMovie.setImageResource(it.picture)
+                detailsYearMovie.text = resources.getText(R.string.release_date)
+                        as String + " " + movieDTO.docs[0].year.toString()
+                detailsRatingMovie.text = movieDTO.docs[0].year.toString()
+                detailsGenreMovie.text = movieDTO.docs[0].name
+                detailsDurationMovie.text = movieDTO.docs[0].year.toString()
+                detailsBudgetMovie.text = resources.getText(R.string.budget)
+                        as String + " " + movieDTO.docs[0].year.toString()
+                detailsRevenueMovie.text = resources.getText(R.string.revenue)
+                        as String + " " + movieDTO.docs[0].year.toString()
+                detailsDescriptionMovie.text = movieDTO.docs[0].description
 
-                setOnClickListener {
+                var heart: ImageView = binding.detailsIsLikeMovie
 
-                    if (aboutMovie.isLike) {
+                heart.apply {
+
+                    if (!aboutMovieBundle.isLike) {
                         setImageResource(R.drawable.ic_baseline_favorite_border_24_empty)
-                        aboutMovie.isLike = false
                     } else {
                         setImageResource(R.drawable.ic_baseline_favorite_24_yellow)
-                        aboutMovie.isLike = true
                     }
-                    */
 
+                    setOnClickListener {
+
+                        if (aboutMovieBundle.isLike) {
+                            setImageResource(R.drawable.ic_baseline_favorite_border_24_empty)
+                            aboutMovieBundle.isLike = false
+                        } else {
+                            setImageResource(R.drawable.ic_baseline_favorite_24_yellow)
+                            aboutMovieBundle.isLike = true
+                        }
+                    }
                 }
 
+
             }
+
+        } catch (e: IndexOutOfBoundsException) {
+            Extensions.showSnackbar(
+                binding.mainView,
+                requireContext().resources.getString(R.string.Movie_could_not_find),
+                requireContext().resources.getString(R.string.OK),
+                { requireContext().resources.getString(R.string.OK) }
+            )
+            fragmentManager?.popBackStack()
         }
     }
+
+    private fun callPlayMovie(movieDTO: MovieDTO) {
+        activity?.supportFragmentManager?.apply {
+            beginTransaction()
+                .replace(R.id.flFragment, PlayMovieFragment.newInstance(Bundle().apply {
+                    putParcelable(PlayMovieFragment.BUNDLE_MOVIE, movieDTO)
+                }))
+                .addToBackStack("")
+                .commitAllowingStateLoss()
+        }
+
+    }
+}
 
 
 

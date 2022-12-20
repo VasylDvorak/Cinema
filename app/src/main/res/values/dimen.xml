@@ -11,8 +11,8 @@
     <dimen name="message">40sp</dimen>
     <dimen name="title_main_fragment">35sp</dimen>
     <dimen name="recycler_height">250dp</dimen>
-    <dimen name="image_width">100dp</dimen>
-    <dimen name="image_height">150dp</dimen>
+    <dimen name="image_width">120dp</dimen>
+    <dimen name="image_height">170dp</dimen>
     <dimen name="title_width">120dp</dimen>
     <dimen name="title_height">40sp</dimen>
     <dimen name="fragment_padding">10dp</dimen>

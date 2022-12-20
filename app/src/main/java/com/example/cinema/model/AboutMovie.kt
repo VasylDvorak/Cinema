@@ -30,13 +30,15 @@ data class AboutMovie(
             "где есть супергерой, рано или поздно всегда объявляется и суперзлодей..."
 
 ) : Parcelable
+// "Новый Человек-паук: Высокое напряжение"
+// "Человек-паук"
 
-fun getDefaultMovie() = Movie("Человек паук", "Spider-Man",
+fun getDefaultMovie() = Movie("Новый Человек-паук: Высокое напряжение", "Spider-Man",
                                                         R.drawable.spiderman)
 
 fun nowPlaying(): List<AboutMovie> = listOf(
     AboutMovie(
-        Movie("Человек паук 2", "Spider-Man 2", R.drawable.spiderman),
+        getDefaultMovie(),
         "27.11.2005",
         "4.1",
         " romantic comedy film, musical",
@@ -47,7 +49,7 @@ fun nowPlaying(): List<AboutMovie> = listOf(
     ),
 
     AboutMovie(
-        Movie("Человек паук 3", "Spider-Man 3", R.drawable.spiderman),
+        getDefaultMovie(),
         "27.11.2005",
         "4.1",
         " romantic comedy film, musical",
@@ -58,7 +60,7 @@ fun nowPlaying(): List<AboutMovie> = listOf(
     ),
 
     AboutMovie(
-        Movie("Человек паук 4", "Spider-Man 4", R.drawable.spiderman),
+        getDefaultMovie(),
         "27.11.2005",
         "4.1",
         " romantic comedy film, musical",
@@ -69,7 +71,7 @@ fun nowPlaying(): List<AboutMovie> = listOf(
     ),
 
     AboutMovie(
-        Movie("Человек паук 5", "Spider-Man 5", R.drawable.spiderman),
+        getDefaultMovie(),
         "27.11.2005",
         "4.1",
         " romantic comedy film, musical",
@@ -83,7 +85,7 @@ fun nowPlaying(): List<AboutMovie> = listOf(
 
 fun upcoming(): List<AboutMovie> = listOf(
     AboutMovie(
-        Movie("Человек паук 6", "Spider-Man 6", R.drawable.spiderman),
+        getDefaultMovie(),
         "27.11.2005",
         "4.1",
         " romantic comedy film, musical",
@@ -94,7 +96,7 @@ fun upcoming(): List<AboutMovie> = listOf(
     ),
 
     AboutMovie(
-        Movie("Человек паук 7", "Spider-Man 7", R.drawable.spiderman),
+        getDefaultMovie(),
         "27.11.2005",
         "4.1",
         " romantic comedy film, musical",
@@ -105,7 +107,7 @@ fun upcoming(): List<AboutMovie> = listOf(
     ),
 
     AboutMovie(
-        Movie("Человек паук 8", "Spider-Man 8", R.drawable.spiderman),
+        getDefaultMovie(),
         "27.11.2005",
         "4.1",
         " romantic comedy film, musical",
@@ -116,7 +118,7 @@ fun upcoming(): List<AboutMovie> = listOf(
     ),
 
     AboutMovie(
-        Movie("Человек паук 9", "Spider-Man 9", R.drawable.spiderman),
+        getDefaultMovie(),
         "27.11.2005",
         "4.1",
         " romantic comedy film, musical",
