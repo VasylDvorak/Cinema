@@ -27,5 +27,10 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/idTVHeading"
         android:layout_centerInParent="true" />
+    <!-- Контейнер для загружаемой страницы -->
+    <WebView
+        android:id="@+id/webview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
 
 </RelativeLayout>

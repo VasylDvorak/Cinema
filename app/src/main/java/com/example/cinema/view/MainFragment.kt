@@ -1,19 +1,26 @@
 package com.example.cinema.view
 
+import android.annotation.SuppressLint
 import android.app.SearchManager
 import android.content.Context
+import android.os.Build
 import android.os.Bundle
 import android.view.*
+import androidx.annotation.RequiresApi
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.ViewModelStoreOwner
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.cinema.BuildConfig
 import com.example.cinema.R
 import com.example.cinema.databinding.FragmentMainBinding
-import com.example.cinema.model.AboutMovie
+import com.example.cinema.model.gson_decoder.Docs
+import com.example.cinema.model.gson_decoder.MovieDTO
 import com.example.cinema.view.details.DetailsFragment
+import com.example.cinema.view.details.MovieLoader
 import com.example.cinema.viewmodel.AppState
 import com.example.cinema.viewmodel.MainViewModel
 import kotlinx.android.synthetic.main.fragment_main.*
@@ -25,8 +32,70 @@ class MainFragment : Fragment() {
     private val binding
         get() = _binding!!
 
-    companion object {
-        fun newInstance() = MainFragment()
+
+    private lateinit var vms: ViewModelStoreOwner
+
+
+    private val model: MainViewModel by lazy {
+        ViewModelProvider(this).get(MainViewModel::class.java)
+    }
+
+    private fun updateCurrentCard() = with(binding) {
+        model.liveDataCurrent.observe(viewLifecycleOwner) { item ->
+            val observer = Observer<AppState> {
+                renderData(item, it)
+            }
+
+            with(viewModel) {
+                getLiveData().observe(viewLifecycleOwner, observer)
+                getAboutMovie()
+            }
+
+        }
+    }
+
+
+    private val onLoadListener: MovieLoader.MovieLoaderListener =
+        object : MovieLoader.MovieLoaderListener {
+
+
+            override fun onLoaded() {
+                try {
+                    updateCurrentCard()
+                } catch (e: NullPointerException) {
+                    fragmentManager?.beginTransaction()?.apply {
+                        replace(R.id.flFragment, DetailsFragment())
+                        addToBackStack("")
+                        commit()
+                    }
+                }
+            }
+
+
+            override fun onFailed(throwable: Throwable) {
+                Extensions.showSnackbar(
+                    binding.mainView,
+                    context!!.resources.getString(R.string.error),
+                    context!!.resources.getString(R.string.OK),
+                    { context!!.resources.getString(R.string.OK) }
+                )
+            }
+        }
+
+
+    @RequiresApi(Build.VERSION_CODES.N)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        vms = this
+        recreateMainFragment()
+    }
+
+    private fun recreateMainFragment() {
+        model.liveDataCurrent.observe(viewLifecycleOwner) { item ->
+            if (item != null) {
+                showData(item)
+            }
+        }
     }
 
     private val viewModel: MainViewModel by lazy {
@@ -43,63 +112,28 @@ class MainFragment : Fragment() {
     ): View {
         _binding = FragmentMainBinding.inflate(inflater, container, false)
         setHasOptionsMenu(true)
+
         return binding.root
     }
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        retainInstance = true
+
+    }
 
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
 
-        val observer = Observer<AppState> {
-            renderData(it)
-        }
-
-        with(viewModel) {
-            getLiveData().observe(viewLifecycleOwner, observer)
-            getAboutMovie()
-        }
-
-    }
-
-    private fun renderData(appState: AppState) {
+    @SuppressLint("SuspiciousIndentation")
+    private fun renderData(movieDTO: MovieDTO, appState: AppState) {
         when (appState) {
             is AppState.Success -> {
-                var AboutMovieData = appState.AboutMovieData
+                showData(movieDTO)
 
-                with(binding) {
-                    loadingLayout.visibility = View.GONE
-                    adapter = initAdapter()
-
-                    adapter.setAboutMovie(AboutMovieData, false)
-
-                    val recyclerViewNowPlaying: RecyclerView = recyclerViewLinesNowPlaying
-                    Extensions.divider(recyclerViewNowPlaying)
-
-                    recyclerViewNowPlaying.layoutManager = LinearLayoutManager(
-                        context,
-                        LinearLayoutManager.HORIZONTAL, false
-                    )
-                    recyclerViewNowPlaying.adapter = adapter
-
-                    val recyclerViewUpcoming: RecyclerView = recyclerViewLinesUpcoming
-                    Extensions.divider(recyclerViewUpcoming)
-
-                    recyclerViewUpcoming.layoutManager = LinearLayoutManager(
-                        context,
-                        LinearLayoutManager.HORIZONTAL, false
-                    )
-                    adapter = initAdapter()
-                    adapter.setAboutMovie(viewModel.getUpcomingMovie(), true)
-                    recyclerViewUpcoming.adapter = adapter
-
-                    upcoming.text = getString(R.string.upcoming)
-                    nowPlaying.text = getString(R.string.now_playing)
-                }
 
             }
             is AppState.Loading -> {
@@ -117,6 +151,41 @@ class MainFragment : Fragment() {
                     )
                 }
             }
+        }
+    }
+
+    private fun showData(movieDTO: MovieDTO) {
+        var AboutMovieData = movieDTO
+        with(binding) {
+            loadingLayout.visibility = View.GONE
+
+            adapter = initAdapter()
+
+            adapter.setAboutMovie(AboutMovieData.docs, false)
+
+            val recyclerViewNowPlaying: RecyclerView = recyclerViewLinesNowPlaying
+
+            recyclerViewNowPlaying.layoutManager = LinearLayoutManager(
+                context,
+                LinearLayoutManager.HORIZONTAL, false
+            )
+            recyclerViewNowPlaying.recycledViewPool.clear()
+            recyclerViewNowPlaying.adapter = adapter
+
+            val recyclerViewUpcoming: RecyclerView = recyclerViewLinesUpcoming
+
+            recyclerViewUpcoming.layoutManager = LinearLayoutManager(
+                context,
+                LinearLayoutManager.HORIZONTAL, false
+            )
+            adapter = initAdapter()
+
+
+            adapter.setAboutMovie(AboutMovieData.docs, true)
+            recyclerViewUpcoming.adapter = adapter
+
+            upcoming.text = getString(R.string.upcoming)
+            nowPlaying.text = getString(R.string.now_playing)
         }
     }
 
@@ -144,8 +213,19 @@ class MainFragment : Fragment() {
                         return true
                     }
 
+                    @RequiresApi(Build.VERSION_CODES.N)
                     override fun onQueryTextChange(newText: String?): Boolean {
-                        Extensions.showToast(mainView, newText)
+                        val url = "https://api.kinopoisk.dev/movie?field" +
+                                "=name&search=${newText}&isStrict=false&" +
+                                "token=${BuildConfig.KINOPOISK_API_KEY}"
+                        try {
+                            val loader = MovieLoader(
+                                onLoadListener, url, context,
+                                vms, binding.mainView
+                            )
+                            loader.loadMovie()
+                        } catch (e: NullPointerException) {
+                        }
                         return false
                     }
                 })
@@ -175,7 +255,7 @@ class MainFragment : Fragment() {
 
         return MainFragmentAdapter(object : MainFragmentAdapter.OnItemViewClickListener {
 
-            override fun onItemClick(aboutMovie: AboutMovie) {
+            override fun onItemClick(aboutMovie: Docs) {
 
                 activity?.supportFragmentManager?.apply {
                     beginTransaction()
@@ -190,5 +270,6 @@ class MainFragment : Fragment() {
 
         })
     }
+
 
 }

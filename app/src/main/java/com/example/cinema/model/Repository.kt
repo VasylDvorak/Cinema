@@ -1,7 +1,9 @@
 package com.example.cinema.model
 
+import com.example.cinema.model.gson_decoder.MovieDTO
+
 interface Repository {
-    fun getAboutMovieFromServer(): AboutMovie
-    fun getAboutMovieLocalStorageNowPlaying(): List<AboutMovie>
-    fun getAboutMovieLocalStorageUpcoming(): List<AboutMovie>
+    fun getAboutMovieFromServer(): MovieDTO
+    fun getAboutMovieLocalStorageNowPlaying(): MovieDTO
+    fun getAboutMovieLocalStorageUpcoming(): MovieDTO
 }

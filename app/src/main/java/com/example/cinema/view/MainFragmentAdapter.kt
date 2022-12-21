@@ -7,67 +7,77 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.cinema.R
-import com.example.cinema.model.AboutMovie
+import com.example.cinema.model.gson_decoder.Docs
+import com.squareup.picasso.Picasso
 
 class MainFragmentAdapter(private var onItemViewClickListener: OnItemViewClickListener?) :
     RecyclerView.Adapter<MainFragmentAdapter.MainViewHolder>() {
 
-    private var aboutMovie: List<AboutMovie> = listOf()
+    private var aboutMovie: List<Docs> = listOf()
     private var upcoming: Boolean = false
 
     interface OnItemViewClickListener {
-        fun onItemClick(aboutMovie: AboutMovie)
+        fun onItemClick(aboutMovie: Docs)
     }
 
-    fun setAboutMovie(data: List<AboutMovie>, upcoming: Boolean) {
+    fun setAboutMovie(data: List<Docs>, upcoming: Boolean) {
         aboutMovie = data
         notifyDataSetChanged()
         this.upcoming = upcoming
     }
 
     inner class MainViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        fun bind(aboutMovieItem: AboutMovie) {
+        fun bind(aboutMovieItem: Docs) {
             itemView.apply {
-                findViewById<TextView>(R.id.now_playing_title_movie).text =
-                    aboutMovieItem.movie.movie_title
-                findViewById<TextView>(R.id.now_playing_year_movie).text =
-                    aboutMovieItem.release_date
-                findViewById<TextView>(R.id.now_playing_rating_movie).text = aboutMovieItem.rating
-                findViewById<ImageView>(R.id.now_playing_banner)
-                    .setImageResource(aboutMovieItem.movie.picture)
 
-                if (upcoming) {
-                    findViewById<TextView>(R.id.now_playing_rating_movie).visibility =
-                        View.GONE
-                    findViewById<ImageView>(R.id.star).visibility = View.GONE
-                }
+                if (aboutMovieItem != null) {
+                    findViewById<TextView>(R.id.now_playing_title_movie).text =
+                        aboutMovieItem.name
+                    findViewById<TextView>(R.id.now_playing_year_movie).text =
+                        aboutMovieItem.year.toString()
+                    findViewById<TextView>(R.id.now_playing_rating_movie).text =
+                        aboutMovieItem.year.toString()
 
-                var heart: ImageView = findViewById(R.id.is_like_movie)
 
-                heart.apply {
-                    if (!aboutMovieItem.isLike) {
-                        setImageResource(R.drawable.ic_baseline_favorite_border_24_empty)
-                    } else {
-                        setImageResource(R.drawable.ic_baseline_favorite_24_yellow)
+                    var strr = ""
+                    if (aboutMovieItem.poster != null) {
+                        strr = aboutMovieItem.poster.url
+                    }
+                    Picasso.get().load(strr).into(findViewById<ImageView>(R.id.now_playing_banner))
+
+                    if (upcoming) {
+                        findViewById<TextView>(R.id.now_playing_rating_movie).visibility =
+                            View.GONE
+                        findViewById<ImageView>(R.id.star).visibility = View.GONE
                     }
 
-                    setOnClickListener {
+                    var heart: ImageView = findViewById(R.id.is_like_movie)
 
-                        if (aboutMovieItem.isLike) {
+                    heart.apply {
+                        if (!aboutMovieItem.isLike) {
                             setImageResource(R.drawable.ic_baseline_favorite_border_24_empty)
-                            aboutMovieItem.isLike = false
                         } else {
                             setImageResource(R.drawable.ic_baseline_favorite_24_yellow)
-                            aboutMovieItem.isLike = true
+                        }
+
+                        setOnClickListener {
+
+                            if (aboutMovieItem.isLike) {
+                                setImageResource(R.drawable.ic_baseline_favorite_border_24_empty)
+                                aboutMovieItem.isLike = false
+                            } else {
+                                setImageResource(R.drawable.ic_baseline_favorite_24_yellow)
+                                aboutMovieItem.isLike = true
+                            }
+
                         }
 
                     }
+                    setOnClickListener {
+                        onItemViewClickListener?.onItemClick(aboutMovieItem)
+                    }
 
                 }
-                setOnClickListener {
-                    onItemViewClickListener?.onItemClick(aboutMovieItem)
-                }
-
             }
         }
     }

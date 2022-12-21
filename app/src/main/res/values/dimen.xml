@@ -22,4 +22,7 @@
     <dimen name="heart_width">50sp</dimen>
     <dimen name="heart_margin">20sp</dimen>
     <dimen name="heart_size">20dp</dimen>
+    <dimen name="width_genre">200dp</dimen>
+    <dimen name="card_radius">10dp</dimen>
+    <dimen name="card_margin">10dp</dimen>
 </resources>

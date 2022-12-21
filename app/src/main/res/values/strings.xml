@@ -26,4 +26,7 @@
     <string name="search">Search</string>
     <string name="about">About</string>
     <string name="looking_for">Looking for:</string>
+    <string name="genere">Genere:</string>
+    <string name="min">min</string>
+    <string name="rating">Rating:</string>
 </resources>
