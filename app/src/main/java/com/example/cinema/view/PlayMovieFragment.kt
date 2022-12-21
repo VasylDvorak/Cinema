@@ -53,7 +53,8 @@ class PlayMovieFragment : Fragment() {
                 idTVHeading.text = movieDTO.docs[0].name
 
                 var videoUrl =
-                    "https://media.geeksforgeeks.org/wp-content/uploads/20201217192146/Screenrecorder-2020-12-17-19-17-36-828.mp4?_=1"
+                    "https://media.geeksforgeeks.org/wp-content/uploads/20201217192146/" +
+                            "Screenrecorder-2020-12-17-19-17-36-828.mp4?_=1"
                 val uri: Uri = Uri.parse(videoUrl)
                 videoView.setVideoURI(uri)
                 val mediaController = MediaController(requireContext())

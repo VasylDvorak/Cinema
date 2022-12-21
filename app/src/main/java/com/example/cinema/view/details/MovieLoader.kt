@@ -2,6 +2,7 @@ package com.example.cinema.view.details
 
 import android.content.Context
 import android.os.Build
+import android.os.Handler
 import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.constraintlayout.widget.ConstraintLayout
@@ -18,6 +19,7 @@ import com.example.cinema.view.Extensions
 import com.example.cinema.viewmodel.MainViewModel
 import kotlinx.android.synthetic.main.fragment_main.*
 import org.json.JSONObject
+import java.net.MalformedURLException
 import java.util.*
 
 @RequiresApi(Build.VERSION_CODES.N)
@@ -35,7 +37,23 @@ class MovieLoader(
     }
 
     fun loadMovie() {
-        requestMovieData(url)
+        try {
+            val handler = Handler()
+            Thread(Runnable {
+                try {
+                    requestMovieData(url)
+                    handler.post { listener.onLoaded() }
+                } catch (e: Exception) {
+                    Log.e("", "Fail connection", e)
+                    e.printStackTrace()
+                    listener.onFailed(e)
+                }
+            }).start()
+        } catch (e: MalformedURLException) {
+            Log.e("", "Fail URI", e)
+            e.printStackTrace()
+            listener.onFailed(e)
+        }
     }
 
 
