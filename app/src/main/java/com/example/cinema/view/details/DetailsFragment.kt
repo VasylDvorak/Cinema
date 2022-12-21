@@ -110,7 +110,7 @@ class DetailsFragment : Fragment() {
                 mainView.visibility = View.VISIBLE
                 loadingLayout.visibility = View.GONE
                 detailsTitleMovie.text = movieDTO.docs[0].name
-                detailsOriginalTitleMovie.text = movieDTO.docs[0].name
+                detailsOriginalTitleMovie.text = movieDTO.docs[0].alternativeName
                 var strr: String = movieDTO.docs[0].poster.url
                 Picasso.get().load(strr).into(detailsBannerMovie)
                 detailsBannerMovie.setOnClickListener {
@@ -119,13 +119,18 @@ class DetailsFragment : Fragment() {
                 //  detailsBannerMovie.setImageResource(it.picture)
                 detailsYearMovie.text = resources.getText(R.string.release_date)
                         as String + " " + movieDTO.docs[0].year.toString()
-                detailsRatingMovie.text = movieDTO.docs[0].year.toString()
-                detailsGenreMovie.text = movieDTO.docs[0].name
-                detailsDurationMovie.text = movieDTO.docs[0].year.toString()
+                detailsRatingMovie.text = resources.getText(R.string.rating)
+                        as String + " "+movieDTO.docs[0].rating.kp.toString()
+                detailsGenreMovie.text = resources.getText(R.string.genere)
+                        as String + " "+movieDTO.docs[0].type
+                detailsDurationMovie.text = movieDTO.docs[0].movieLength.toString()+" "+
+                        resources.getText(R.string.min)
+                                as String
                 detailsBudgetMovie.text = resources.getText(R.string.budget)
-                        as String + " " + movieDTO.docs[0].year.toString()
+                        as String + " "+
+                        (movieDTO.docs[0].rating.russianFilmCritics*10000).toString()+" $"
                 detailsRevenueMovie.text = resources.getText(R.string.revenue)
-                        as String + " " + movieDTO.docs[0].year.toString()
+                        as String + " " + (movieDTO.docs[0].rating.await*10000).toString()+" $"
                 detailsDescriptionMovie.text = movieDTO.docs[0].description
 
                 var heart: ImageView = binding.detailsIsLikeMovie

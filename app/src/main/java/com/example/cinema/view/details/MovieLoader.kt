@@ -15,6 +15,7 @@ import com.example.cinema.R
 import com.example.cinema.model.gson_decoder.Docs
 import com.example.cinema.model.gson_decoder.MovieDTO
 import com.example.cinema.model.gson_decoder.Poster
+import com.example.cinema.model.gson_decoder.Rating
 import com.example.cinema.view.Extensions
 import com.example.cinema.viewmodel.MainViewModel
 import kotlinx.android.synthetic.main.fragment_main.*
@@ -106,10 +107,12 @@ class MovieLoader(
 
                 val docs = docsArray[i] as JSONObject
                 val posterObject = parsePoster(docs.getJSONObject("poster"))
+                val ratingObject = ratingPoster(docs.getJSONObject("rating"))
                 val item_docs = Docs(
                     null, null,
-                    posterObject, null, null, null,
-                    docs.getInt("id"), null,
+                    posterObject, ratingObject,
+                    null, null,
+                    docs.getInt("id"), docs.getString("alternativeName"),
                     docs.getString("description"),
                     null, docs.getInt("movieLength"),
                     docs.getString("name"), null, null,
@@ -125,6 +128,18 @@ class MovieLoader(
 
         }
         return list
+    }
+
+    private fun ratingPoster(ratingObject: JSONObject): Rating {
+        return Rating(
+            ratingObject.getString("_id"),
+            ratingObject.getInt("kp"),
+            ratingObject.getInt("imdb"),
+            ratingObject.getInt("filmCritics"),
+            ratingObject.getInt("russianFilmCritics"),
+            ratingObject.getInt("await")
+        )
+
     }
 
     private fun parsePoster(posterObject: JSONObject): Poster {

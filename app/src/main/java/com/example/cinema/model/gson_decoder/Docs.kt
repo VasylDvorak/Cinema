@@ -10,7 +10,7 @@ data class Docs(
 	@SerializedName("externalId") val externalId: ExternalId?,
 	@SerializedName("logo") val logo: Logo?,
 	@SerializedName("poster") val poster: Poster,
-	@SerializedName("rating") val rating: Rating?,
+	@SerializedName("rating") val rating: Rating,
 	@SerializedName("votes") val votes: Votes?,
 	@SerializedName("watchability") val watchability: Watchability?,
 	@SerializedName("id") val id: Int,
