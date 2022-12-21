@@ -1,5 +1,6 @@
 package com.example.cinema.view
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -28,41 +29,57 @@ class DetailsFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+
         _binding = FragmentDetailsBinding.inflate(inflater, container, false)
         return binding.root
+
     }
 
+    @SuppressLint("SuspiciousIndentation")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val aboutMovie = arguments?.getParcelable<AboutMovie>(BUNDLE_EXTRA)
-        if (aboutMovie != null) {
-            binding.detailsTitleMovie.text = aboutMovie.movie.movie_title
-            binding.detailsOriginalTitleMovie.text = aboutMovie.movie.original_title
-            binding.detailsYearMovie.text = resources.getText(R.string.release_date)
-                    as String + " " + aboutMovie.release_date
-            binding.detailsRatingMovie.text = aboutMovie.rating
-            binding.detailsBannerMovie.setImageResource(aboutMovie.movie.picture)
-            binding.detailsGenreMovie.text = aboutMovie.genre
-            binding.detailsDurationMovie.text = aboutMovie.duration
-            binding.detailsBudgetMovie.text = resources.getText(R.string.budget)
-                    as String + " " + aboutMovie.budget
-            binding.detailsRevenueMovie.text = resources.getText(R.string.revenue)
-                    as String + " " + aboutMovie.revenue
-            binding.detailsDescriptionMovie.text = aboutMovie.description
-            var heart: ImageView = binding.detailsIsLikeMovie
-            if (!aboutMovie.isLike) {
-                heart.setImageResource(R.drawable.ic_baseline_favorite_border_24_empty)
-            } else {
-                heart.setImageResource(R.drawable.ic_baseline_favorite_24_yellow)
-            }
-            heart.setOnClickListener {
-                if (aboutMovie.isLike) {
-                    heart.setImageResource(R.drawable.ic_baseline_favorite_border_24_empty)
-                    aboutMovie.isLike = false
-                } else {
-                    heart.setImageResource(R.drawable.ic_baseline_favorite_24_yellow)
-                    aboutMovie.isLike = true
+        arguments?.getParcelable<AboutMovie>(BUNDLE_EXTRA)?.let { aboutMovie ->
+
+            aboutMovie.movie.also {
+                with(binding) {
+                    detailsTitleMovie.text = it.movie_title
+                    detailsOriginalTitleMovie.text = it.original_title
+                    detailsBannerMovie.setImageResource(it.picture)
+                    detailsYearMovie.text = resources.getText(R.string.release_date)
+                            as String + " " + aboutMovie.release_date
+                    detailsRatingMovie.text = aboutMovie.rating
+                    detailsGenreMovie.text = aboutMovie.genre
+                    detailsDurationMovie.text = aboutMovie.duration
+                    detailsBudgetMovie.text = resources.getText(R.string.budget)
+                            as String + " " + aboutMovie.budget
+                    detailsRevenueMovie.text = resources.getText(R.string.revenue)
+                            as String + " " + aboutMovie.revenue
+                    detailsDescriptionMovie.text = aboutMovie.description
+
+                    var heart: ImageView = binding.detailsIsLikeMovie
+
+                    heart.apply {
+
+                        if (!aboutMovie.isLike) {
+                            setImageResource(R.drawable.ic_baseline_favorite_border_24_empty)
+                        } else {
+                            setImageResource(R.drawable.ic_baseline_favorite_24_yellow)
+                        }
+
+                        setOnClickListener {
+
+                            if (aboutMovie.isLike) {
+                                setImageResource(R.drawable.ic_baseline_favorite_border_24_empty)
+                                aboutMovie.isLike = false
+                            } else {
+                                setImageResource(R.drawable.ic_baseline_favorite_24_yellow)
+                                aboutMovie.isLike = true
+                            }
+
+                        }
+
+                    }
                 }
             }
 

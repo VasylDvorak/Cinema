@@ -22,16 +22,20 @@ class MainActivity : AppCompatActivity() {
         setCurrentFragment(mainFragment)
 
         binding.bottomNavigationView.setOnNavigationItemSelectedListener {
+
             when (it.itemId) {
                 R.id.home -> setCurrentFragment(mainFragment)
                 R.id.favorites -> setCurrentFragment(firstFragment)
                 R.id.ratings -> setCurrentFragment(secondFragment)
             }
+
             true
         }
+
     }
 
     private fun setCurrentFragment(fragment: Fragment) =
+
         supportFragmentManager.beginTransaction().apply {
             replace(R.id.flFragment, fragment)
             addToBackStack("")
