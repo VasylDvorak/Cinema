@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.cinema.R
 import com.example.cinema.databinding.FragmentMainBinding
-import com.example.cinema.model.AboutMovie
+import com.example.cinema.model.gson_decoder.MovieDTO
 import com.example.cinema.view.details.DetailsFragment
 import com.example.cinema.viewmodel.AppState
 import com.example.cinema.viewmodel.MainViewModel
@@ -75,27 +75,27 @@ class MainFragment : Fragment() {
                     loadingLayout.visibility = View.GONE
                     adapter = initAdapter()
 
-                    adapter.setAboutMovie(AboutMovieData, false)
+                        adapter.setAboutMovie(AboutMovieData, false)
 
-                    val recyclerViewNowPlaying: RecyclerView = recyclerViewLinesNowPlaying
-                    Extensions.divider(recyclerViewNowPlaying)
+                        val recyclerViewNowPlaying: RecyclerView = recyclerViewLinesNowPlaying
+                        Extensions.divider(recyclerViewNowPlaying)
 
-                    recyclerViewNowPlaying.layoutManager = LinearLayoutManager(
-                        context,
-                        LinearLayoutManager.HORIZONTAL, false
-                    )
-                    recyclerViewNowPlaying.adapter = adapter
+                        recyclerViewNowPlaying.layoutManager = LinearLayoutManager(
+                            context,
+                            LinearLayoutManager.HORIZONTAL, false
+                        )
+                        recyclerViewNowPlaying.adapter = adapter
 
-                    val recyclerViewUpcoming: RecyclerView = recyclerViewLinesUpcoming
-                    Extensions.divider(recyclerViewUpcoming)
+                        val recyclerViewUpcoming: RecyclerView = recyclerViewLinesUpcoming
+                        Extensions.divider(recyclerViewUpcoming)
 
-                    recyclerViewUpcoming.layoutManager = LinearLayoutManager(
-                        context,
-                        LinearLayoutManager.HORIZONTAL, false
-                    )
-                    adapter = initAdapter()
-                    adapter.setAboutMovie(viewModel.getUpcomingMovie(), true)
-                    recyclerViewUpcoming.adapter = adapter
+                        recyclerViewUpcoming.layoutManager = LinearLayoutManager(
+                            context,
+                            LinearLayoutManager.HORIZONTAL, false
+                        )
+                        adapter = initAdapter()
+                        adapter.setAboutMovie(viewModel.getUpcomingMovie(), true)
+                        recyclerViewUpcoming.adapter = adapter
 
                     upcoming.text = getString(R.string.upcoming)
                     nowPlaying.text = getString(R.string.now_playing)
@@ -175,7 +175,7 @@ class MainFragment : Fragment() {
 
         return MainFragmentAdapter(object : MainFragmentAdapter.OnItemViewClickListener {
 
-            override fun onItemClick(aboutMovie: AboutMovie) {
+            override fun onItemClick(aboutMovie: MovieDTO) {
 
                 activity?.supportFragmentManager?.apply {
                     beginTransaction()

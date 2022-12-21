@@ -12,7 +12,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.example.cinema.BuildConfig
 import com.example.cinema.R
 import com.example.cinema.databinding.FragmentDetailsBinding
-import com.example.cinema.model.AboutMovie
+
 import com.example.cinema.model.gson_decoder.MovieDTO
 import com.example.cinema.view.Extensions
 import com.example.cinema.view.PlayMovieFragment
@@ -60,7 +60,7 @@ class DetailsFragment : Fragment() {
     }
 
 
-    private lateinit var aboutMovieBundle: AboutMovie
+    private lateinit var aboutMovieBundle: MovieDTO
     private val onLoadListener: MovieLoader.MovieLoaderListener =
         object : MovieLoader.MovieLoaderListener {
 
@@ -91,13 +91,13 @@ class DetailsFragment : Fragment() {
     @RequiresApi(Build.VERSION_CODES.N)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        aboutMovieBundle = arguments?.getParcelable(BUNDLE_EXTRA) ?: AboutMovie()
+        aboutMovieBundle = arguments?.getParcelable(BUNDLE_EXTRA) ?: MovieDTO()
 
         binding.mainView.visibility = View.GONE
         binding.loadingLayout.visibility = View.VISIBLE
 
         val url = "https://api.kinopoisk.dev/movie?field" +
-                "=name&search=${aboutMovieBundle.movie.movie_title}&isStrict=false&" +
+                "=name&search=${aboutMovieBundle.docs[0].name}&isStrict=false&" +
                 "token=${BuildConfig.KINOPOISK_API_KEY}"
 
         val loader = MovieLoader(onLoadListener, url, context, this, binding.mainView)
@@ -110,7 +110,7 @@ class DetailsFragment : Fragment() {
                 mainView.visibility = View.VISIBLE
                 loadingLayout.visibility = View.GONE
                 detailsTitleMovie.text = movieDTO.docs[0].name
-                detailsOriginalTitleMovie.text = movieDTO.docs[0].name
+                detailsOriginalTitleMovie.text = movieDTO.docs[0].alternativeName
                 var strr: String = movieDTO.docs[0].poster.url
                 Picasso.get().load(strr).into(detailsBannerMovie)
                 detailsBannerMovie.setOnClickListener {
@@ -119,20 +119,25 @@ class DetailsFragment : Fragment() {
                 //  detailsBannerMovie.setImageResource(it.picture)
                 detailsYearMovie.text = resources.getText(R.string.release_date)
                         as String + " " + movieDTO.docs[0].year.toString()
-                detailsRatingMovie.text = movieDTO.docs[0].year.toString()
-                detailsGenreMovie.text = movieDTO.docs[0].name
-                detailsDurationMovie.text = movieDTO.docs[0].year.toString()
+                detailsRatingMovie.text = resources.getText(R.string.rating)
+                        as String + " "+movieDTO.docs[0].rating.kp.toString()
+                detailsGenreMovie.text = resources.getText(R.string.genere)
+                        as String + " "+movieDTO.docs[0].type
+                detailsDurationMovie.text = movieDTO.docs[0].movieLength.toString()+" "+
+                        resources.getText(R.string.min)
+                                as String
                 detailsBudgetMovie.text = resources.getText(R.string.budget)
-                        as String + " " + movieDTO.docs[0].year.toString()
+                        as String + " "+
+                        (movieDTO.docs[0].rating.russianFilmCritics*10000).toString()+" $"
                 detailsRevenueMovie.text = resources.getText(R.string.revenue)
-                        as String + " " + movieDTO.docs[0].year.toString()
+                        as String + " " + (movieDTO.docs[0].rating.await*10000).toString()+" $"
                 detailsDescriptionMovie.text = movieDTO.docs[0].description
 
                 var heart: ImageView = binding.detailsIsLikeMovie
 
                 heart.apply {
 
-                    if (!aboutMovieBundle.isLike) {
+                    if (!aboutMovieBundle.docs[0].isLike) {
                         setImageResource(R.drawable.ic_baseline_favorite_border_24_empty)
                     } else {
                         setImageResource(R.drawable.ic_baseline_favorite_24_yellow)
@@ -140,12 +145,12 @@ class DetailsFragment : Fragment() {
 
                     setOnClickListener {
 
-                        if (aboutMovieBundle.isLike) {
+                        if (aboutMovieBundle.docs[0].isLike) {
                             setImageResource(R.drawable.ic_baseline_favorite_border_24_empty)
-                            aboutMovieBundle.isLike = false
+                            aboutMovieBundle.docs[0].isLike = false
                         } else {
                             setImageResource(R.drawable.ic_baseline_favorite_24_yellow)
-                            aboutMovieBundle.isLike = true
+                            aboutMovieBundle.docs[0].isLike = true
                         }
                     }
                 }

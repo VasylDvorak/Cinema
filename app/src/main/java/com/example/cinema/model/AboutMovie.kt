@@ -36,7 +36,7 @@ data class AboutMovie(
 fun getDefaultMovie() = Movie("Новый Человек-паук: Высокое напряжение", "Spider-Man",
                                                         R.drawable.spiderman)
 
-fun nowPlaying(): List<AboutMovie> = listOf(
+fun nowPlaying1(): List<AboutMovie> = listOf(
     AboutMovie(
         getDefaultMovie(),
         "27.11.2005",
@@ -83,7 +83,7 @@ fun nowPlaying(): List<AboutMovie> = listOf(
 )
 
 
-fun upcoming(): List<AboutMovie> = listOf(
+fun upcoming1(): List<AboutMovie> = listOf(
     AboutMovie(
         getDefaultMovie(),
         "27.11.2005",

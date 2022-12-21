@@ -2,6 +2,7 @@ package com.example.cinema.view.details
 
 import android.content.Context
 import android.os.Build
+import android.os.Handler
 import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.constraintlayout.widget.ConstraintLayout
@@ -14,10 +15,12 @@ import com.example.cinema.R
 import com.example.cinema.model.gson_decoder.Docs
 import com.example.cinema.model.gson_decoder.MovieDTO
 import com.example.cinema.model.gson_decoder.Poster
+import com.example.cinema.model.gson_decoder.Rating
 import com.example.cinema.view.Extensions
 import com.example.cinema.viewmodel.MainViewModel
 import kotlinx.android.synthetic.main.fragment_main.*
 import org.json.JSONObject
+import java.net.MalformedURLException
 import java.util.*
 
 @RequiresApi(Build.VERSION_CODES.N)
@@ -35,7 +38,23 @@ class MovieLoader(
     }
 
     fun loadMovie() {
-        requestMovieData(url)
+        try {
+            val handler = Handler()
+            Thread(Runnable {
+                try {
+                    requestMovieData(url)
+                    handler.post { listener.onLoaded() }
+                } catch (e: Exception) {
+                    Log.e("", "Fail connection", e)
+                    e.printStackTrace()
+                    listener.onFailed(e)
+                }
+            }).start()
+        } catch (e: MalformedURLException) {
+            Log.e("", "Fail URI", e)
+            e.printStackTrace()
+            listener.onFailed(e)
+        }
     }
 
 
@@ -88,10 +107,12 @@ class MovieLoader(
 
                 val docs = docsArray[i] as JSONObject
                 val posterObject = parsePoster(docs.getJSONObject("poster"))
+                val ratingObject = ratingPoster(docs.getJSONObject("rating"))
                 val item_docs = Docs(
                     null, null,
-                    posterObject, null, null, null,
-                    docs.getInt("id"), null,
+                    posterObject, ratingObject,
+                    null, null,
+                    docs.getInt("id"), docs.getString("alternativeName"),
                     docs.getString("description"),
                     null, docs.getInt("movieLength"),
                     docs.getString("name"), null, null,
@@ -107,6 +128,18 @@ class MovieLoader(
 
         }
         return list
+    }
+
+    private fun ratingPoster(ratingObject: JSONObject): Rating {
+        return Rating(
+            ratingObject.getString("_id"),
+            ratingObject.getInt("kp"),
+            ratingObject.getInt("imdb"),
+            ratingObject.getInt("filmCritics"),
+            ratingObject.getInt("russianFilmCritics"),
+            ratingObject.getInt("await")
+        )
+
     }
 
     private fun parsePoster(posterObject: JSONObject): Poster {
@@ -135,7 +168,6 @@ class MovieLoader(
 
         )
         model.liveDataCurrent.value = item
-        listener.onLoaded()
         Log.d("item", "item: ${item}")
         Log.d("MyLog", "docs: ${item.docs}")
         Log.d("MyLog", "total: ${item.total}")

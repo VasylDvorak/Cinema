@@ -7,34 +7,38 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.cinema.R
-import com.example.cinema.model.AboutMovie
+import com.example.cinema.model.gson_decoder.MovieDTO
+import com.squareup.picasso.Picasso
 
 class MainFragmentAdapter(private var onItemViewClickListener: OnItemViewClickListener?) :
     RecyclerView.Adapter<MainFragmentAdapter.MainViewHolder>() {
 
-    private var aboutMovie: List<AboutMovie> = listOf()
+    private var aboutMovie: List<MovieDTO> = listOf()
     private var upcoming: Boolean = false
 
     interface OnItemViewClickListener {
-        fun onItemClick(aboutMovie: AboutMovie)
+        fun onItemClick(aboutMovie: MovieDTO)
     }
 
-    fun setAboutMovie(data: List<AboutMovie>, upcoming: Boolean) {
+    fun setAboutMovie(data: List<MovieDTO>, upcoming: Boolean) {
         aboutMovie = data
         notifyDataSetChanged()
         this.upcoming = upcoming
     }
 
     inner class MainViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        fun bind(aboutMovieItem: AboutMovie) {
+        fun bind(aboutMovieItem: MovieDTO) {
             itemView.apply {
+                if (aboutMovieItem.docs.size != 0) {
                 findViewById<TextView>(R.id.now_playing_title_movie).text =
-                    aboutMovieItem.movie.movie_title
+                    aboutMovieItem.docs[0].name
                 findViewById<TextView>(R.id.now_playing_year_movie).text =
-                    aboutMovieItem.release_date
-                findViewById<TextView>(R.id.now_playing_rating_movie).text = aboutMovieItem.rating
-                findViewById<ImageView>(R.id.now_playing_banner)
-                    .setImageResource(aboutMovieItem.movie.picture)
+                    aboutMovieItem.docs[0].year.toString()
+                findViewById<TextView>(R.id.now_playing_rating_movie).text =
+                    aboutMovieItem.docs[0].year.toString()
+
+                var strr: String = aboutMovieItem.docs[0].poster.url
+                Picasso.get().load(strr).into(findViewById<ImageView>(R.id.now_playing_banner))
 
                 if (upcoming) {
                     findViewById<TextView>(R.id.now_playing_rating_movie).visibility =
@@ -45,7 +49,7 @@ class MainFragmentAdapter(private var onItemViewClickListener: OnItemViewClickLi
                 var heart: ImageView = findViewById(R.id.is_like_movie)
 
                 heart.apply {
-                    if (!aboutMovieItem.isLike) {
+                    if (!aboutMovieItem.docs[0].isLike) {
                         setImageResource(R.drawable.ic_baseline_favorite_border_24_empty)
                     } else {
                         setImageResource(R.drawable.ic_baseline_favorite_24_yellow)
@@ -53,12 +57,12 @@ class MainFragmentAdapter(private var onItemViewClickListener: OnItemViewClickLi
 
                     setOnClickListener {
 
-                        if (aboutMovieItem.isLike) {
+                        if (aboutMovieItem.docs[0].isLike) {
                             setImageResource(R.drawable.ic_baseline_favorite_border_24_empty)
-                            aboutMovieItem.isLike = false
+                            aboutMovieItem.docs[0].isLike = false
                         } else {
                             setImageResource(R.drawable.ic_baseline_favorite_24_yellow)
-                            aboutMovieItem.isLike = true
+                            aboutMovieItem.docs[0].isLike = true
                         }
 
                     }
@@ -68,7 +72,7 @@ class MainFragmentAdapter(private var onItemViewClickListener: OnItemViewClickLi
                     onItemViewClickListener?.onItemClick(aboutMovieItem)
                 }
 
-            }
+            }}
         }
     }
 
