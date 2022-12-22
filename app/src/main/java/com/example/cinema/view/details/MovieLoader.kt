@@ -35,6 +35,7 @@ class MovieLoader(
 ) {
     private var url_trailer = "https://www.youtube.com/embed/DlM2CWNTQ84"
     private val list_trailers = ArrayList<String>()
+    private var is_like_list: ArrayList<Boolean> = ArrayList()
     private lateinit var item_finish: MovieDTO
     private val model: MainViewModel by lazy {
         ViewModelProvider(vms).get(MainViewModel::class.java)
@@ -227,21 +228,21 @@ class MovieLoader(
     @SuppressLint("SuspiciousIndentation")
     private fun parseTrailerMovieData(result: String?) {
 
-
         try {
             var videos = JSONObject(result).getJSONObject("videos")
-
-
             var trailer = videos.getJSONArray("trailers")
             var trailer0 = trailer[0] as JSONObject
             var str = trailer0.getString("url")
+            is_like_list.add(true)
             list_trailers.add(str)
         } catch (e: Exception) {
             list_trailers.add(url_trailer)
+            is_like_list.add(false)
         }
 
         for (i in 0 until list_trailers.size) {
             try {
+                item_finish.docs[i].isLike = is_like_list[i]
                 item_finish.docs[i].url_trailer = list_trailers[i]
                 println(item_finish.docs[i].url_trailer)
             } catch (e: IndexOutOfBoundsException) {
