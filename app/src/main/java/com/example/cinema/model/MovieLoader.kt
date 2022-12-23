@@ -32,7 +32,7 @@ class MovieLoader(
 
 
     fun loadMovie() {
-                val url = "https://api.kinopoisk.dev/movie?field" +
+        val url = "https://api.kinopoisk.dev/movie?field" +
                 "=name&search=${find_request}&isStrict=false&" +
                 "token=${BuildConfig.KINOPOISK_API_KEY}"
         println(find_request)
@@ -41,7 +41,7 @@ class MovieLoader(
             Thread(Runnable {
                 try {
                     requestMovieData(url.toString())
-                    handler.post {  }
+                    handler.post { }
                 } catch (e: Exception) {
                     Log.e("", "Fail connection", e)
                     e.printStackTrace()
@@ -65,7 +65,7 @@ class MovieLoader(
     private fun requestMovieData(url: String) {
 
         val queue = Volley.newRequestQueue(context)
-          val request = StringRequest(
+        val request = StringRequest(
             Request.Method.GET,
             url,
             { result ->
@@ -111,17 +111,19 @@ class MovieLoader(
 
                 trailerMovie(docs.getInt("id"))
 
-                val item_docs = Docs(
-                    null, null,
-                    posterObject, ratingObject,
-                    null, null,
-                    docs.getInt("id"), docs.getString("alternativeName"),
-                    docs.getString("description"),
-                    null, docs.getInt("movieLength"),
-                    docs.getString("name"), null, null,
-                    docs.getString("type"), docs.getInt("year"),
-                    null, url_trailer = ""
-                )
+                val item_docs = with(docs) {
+                    Docs(
+                        null, null,
+                        posterObject, ratingObject,
+                        null, null,
+                        getInt("id"), getString("alternativeName"),
+                        getString("description"),
+                        null, docs.getInt("movieLength"),
+                        getString("name"), null, null,
+                        getString("type"), getInt("year"),
+                        null, url_trailer = ""
+                    )
+                }
 
                 list.add(item_docs)
             } catch (e: Exception) {
@@ -135,23 +137,27 @@ class MovieLoader(
     }
 
     private fun ratingPoster(ratingObject: JSONObject): Rating {
-        return Rating(
-            ratingObject.getString("_id"),
-            ratingObject.getInt("kp"),
-            ratingObject.getInt("imdb"),
-            ratingObject.getInt("filmCritics"),
-            ratingObject.getInt("russianFilmCritics"),
-            ratingObject.getInt("await")
-        )
+        return with(ratingObject) {
+            Rating(
+                getString("_id"),
+                getInt("kp"),
+                getInt("imdb"),
+                getInt("filmCritics"),
+                getInt("russianFilmCritics"),
+                getInt("await")
+            )
+        }
 
     }
 
     private fun parsePoster(posterObject: JSONObject): Poster {
-        var poster = Poster(
-            posterObject.getString("_id"),
-            posterObject.getString("url"),
-            posterObject.getString("previewUrl")
-        )
+        var poster = with(posterObject) {
+            Poster(
+                getString("_id"),
+                getString("url"),
+                getString("previewUrl")
+            )
+        }
 
         return poster
     }
@@ -161,14 +167,16 @@ class MovieLoader(
         mainObject: JSONObject,
         movieItem: List<Docs>
     ): MovieDTO {
-        val item = MovieDTO(
-            movieItem,
-            mainObject.getInt("total"),
-            mainObject.getInt("limit"),
-            mainObject.getInt("page"),
-            mainObject.getInt("pages")
+        val item = with(mainObject) {
+            MovieDTO(
+                movieItem,
+                getInt("total"),
+                getInt("limit"),
+                getInt("page"),
+                getInt("pages")
 
-        )
+            )
+        }
         item_finish = item
         return item
     }
