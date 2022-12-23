@@ -10,7 +10,7 @@ import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import com.example.cinema.R
 import com.example.cinema.databinding.FragmentDetailsBinding
-import com.example.cinema.model.gson_decoder.Docs
+import com.example.cinema.model.gson_kinopoisk_API.Docs
 import com.example.cinema.view.Extensions
 import com.example.cinema.view.PlayMovieFragment
 import com.squareup.picasso.Picasso
@@ -132,6 +132,7 @@ class DetailsFragment : Fragment() {
     }
 
     private fun callPlayMovie(docs_data: Docs) {
+
         activity?.supportFragmentManager?.apply {
             beginTransaction()
                 .replace(R.id.flFragment, PlayMovieFragment.newInstance(Bundle().apply {

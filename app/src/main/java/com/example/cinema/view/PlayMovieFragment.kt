@@ -3,27 +3,28 @@ package com.example.cinema.view
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
-import android.os.Handler
 import android.support.annotation.RequiresApi
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.MediaController
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import com.example.cinema.R
 import com.example.cinema.databinding.FragmentPlayMovieBinding
-import com.example.cinema.model.gson_decoder.Docs
-import java.io.BufferedReader
-import java.io.InputStreamReader
-import java.net.MalformedURLException
-import java.net.URL
-import java.util.stream.Collectors
-import javax.net.ssl.HttpsURLConnection
+import com.example.cinema.model.gson_kinopoisk_API.Docs
+import com.example.cinema.viewmodel.PlayViewModel
 
 class PlayMovieFragment : Fragment() {
     private var _binding: FragmentPlayMovieBinding? = null
     private val binding get() = _binding!!
+
+
+    private val viewModelPlay: PlayViewModel by lazy {
+        ViewModelProvider(this).get(PlayViewModel::class.java)
+    }
+
 
     companion object {
         const val BUNDLE_MOVIE = "BundleMovie"
@@ -35,9 +36,7 @@ class PlayMovieFragment : Fragment() {
     }
 
     override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
 
         _binding = FragmentPlayMovieBinding.inflate(inflater, container, false)
@@ -59,7 +58,6 @@ class PlayMovieFragment : Fragment() {
         binding.videoView.visibility = View.GONE
         binding.idTVHeading.visibility = View.GONE
 
-
         val movie_point =
             (aboutMovieBundle.url_trailer[aboutMovieBundle.url_trailer.length - 4]).toString()
 
@@ -73,49 +71,17 @@ class PlayMovieFragment : Fragment() {
     }
 
     @RequiresApi(Build.VERSION_CODES.N)
-    private fun displayWebPage(docs: Docs) {
+    private fun displayWebPage(docs_data: Docs) {
         binding.webview.visibility = View.VISIBLE
+        viewModelPlay.fromDetailFragment(docs_data)
 
-        try {
-
-            val uri = URL(docs.url_trailer)
-            val handler = Handler() //Запоминаем основной поток
-            Thread {
-                var urlConnection: HttpsURLConnection? = null
-                try {
-                    urlConnection = uri.openConnection() as HttpsURLConnection
-                    urlConnection.requestMethod = "GET" //установка метода получения данных — GET
-                    urlConnection.readTimeout = 10000 //установка таймаута — 10 000 миллисекунд
-                    val reader =
-                        BufferedReader(InputStreamReader(urlConnection.inputStream)) //читаем данные в поток
-                    val result = getLines(reader) // Возвращаемся к основному потоку
-                    handler.post {
-                        binding.webview.loadDataWithBaseURL(
-                            null, result, "text/html; charset=utf-8",
-                            "utf-8", null
-                        )
-                    }
-                } catch (e: Exception) {
-
-                    Log.e("", "Fail connection", e)
-                    e.printStackTrace()
-                } finally {
-                    urlConnection?.disconnect()
-
-                }
-            }.start()
-
-
-        } catch (e: MalformedURLException) {
-            Log.e("", "Fail URI", e)
-            e.printStackTrace()
+        val observer = Observer<String> {
+            binding.webview.loadDataWithBaseURL(
+                null, it, "text/html; charset=utf-8", "utf-8", null
+            )
         }
+        viewModelPlay.getPlayData().observe(viewLifecycleOwner, observer)
 
-    }
-
-    @RequiresApi(Build.VERSION_CODES.N)
-    private fun getLines(reader: BufferedReader): String {
-        return reader.lines().collect(Collectors.joining("\n"))
     }
 
 
@@ -126,8 +92,6 @@ class PlayMovieFragment : Fragment() {
         try {
             with(binding) {
                 idTVHeading.text = docs_data.name
-
-
                 val videoUrl = docs_data.url_trailer
                 val uri: Uri = Uri.parse(videoUrl)
                 videoView.setVideoURI(uri)
@@ -139,12 +103,10 @@ class PlayMovieFragment : Fragment() {
 
             }
         } catch (e: IndexOutOfBoundsException) {
-            Extensions.showSnackbar(
-                binding.videoView,
+            Extensions.showSnackbar(binding.videoView,
                 requireContext().resources.getString(R.string.Movie_could_not_find),
                 requireContext().resources.getString(R.string.OK),
-                { requireContext().resources.getString(R.string.OK) }
-            )
+                { requireContext().resources.getString(R.string.OK) })
             fragmentManager?.popBackStack()
         }
 

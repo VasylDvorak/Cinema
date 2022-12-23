@@ -11,13 +11,12 @@ import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.ViewModelStoreOwner
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.cinema.R
 import com.example.cinema.databinding.FragmentMainBinding
-import com.example.cinema.model.gson_decoder.Docs
-import com.example.cinema.model.gson_decoder.MovieDTO
+import com.example.cinema.model.gson_kinopoisk_API.Docs
+import com.example.cinema.model.gson_kinopoisk_API.MovieDTO
 import com.example.cinema.view.details.DetailsFragment
 import com.example.cinema.viewmodel.AppState
 import com.example.cinema.viewmodel.MainViewModel
@@ -29,9 +28,6 @@ class MainFragment : Fragment() {
     private var _binding: FragmentMainBinding? = null
     private val binding
         get() = _binding!!
-
-
-    private lateinit var vms: ViewModelStoreOwner
 
 
     private val viewModel: MainViewModel by lazy {
@@ -52,19 +48,7 @@ class MainFragment : Fragment() {
     @RequiresApi(Build.VERSION_CODES.N)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        vms = this
-        val observer = Observer<AppState> { renderData(it) }
 
-        viewModel.getData().observe(viewLifecycleOwner, observer)
-
-    }
-
-    private fun recreateMainFragment() {
-        viewModel.liveDataCurrent.observe(viewLifecycleOwner) { item ->
-            if (item != null) {
-                showData(item)
-            }
-        }
     }
 
 

@@ -6,13 +6,13 @@ import androidx.lifecycle.ViewModel
 import com.example.cinema.model.MovieLoader
 import com.example.cinema.model.Repository
 import com.example.cinema.model.RepositoryImpl
-import com.example.cinema.model.gson_decoder.MovieDTO
+import com.example.cinema.model.gson_kinopoisk_API.MovieDTO
 
 class MainViewModel(
-    private val liveDataToObserve: MutableLiveData<AppState> = MutableLiveData(),
+    val liveDataToObserve: MutableLiveData<AppState> = MutableLiveData(),
     private val repositoryImpl: Repository = RepositoryImpl(),
 ) : ViewModel() {
-    val liveDataCurrent = MutableLiveData<MovieDTO>()
+    var liveDataCurrent = MutableLiveData<AppState>()
     fun getAboutMovie() = getDataFromLocalSource(true)
     fun getUpcomingMovie() = repositoryImpl.getAboutMovieLocalStorageUpcoming()
 
@@ -60,4 +60,6 @@ class MainViewModel(
             override fun onFailed(throwable: Throwable) {
             }
         }
+
+
 }

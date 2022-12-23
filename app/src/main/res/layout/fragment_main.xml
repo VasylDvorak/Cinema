@@ -5,59 +5,64 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/mainView"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+    <ScrollView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
 
-        <TextView
-            android:id="@+id/now_playing"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/margin_15_dp"
-            android:layout_marginLeft="@dimen/margin_15_dp"
-            android:textColor="@color/black"
-            android:textSize="@dimen/title_main_fragment"
-            android:textStyle="bold"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:text="@string/now_playing" />
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recycler_view_lines_now_playing"
-            app.layaoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/mainView"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:scrollbars="horizontal"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/now_playing"
-            tools:listitem="@layout/now_playing_item" />
+            android:layout_height="match_parent">
 
-        <TextView
-            android:id="@+id/upcoming"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/margin_15_dp"
-            android:layout_marginLeft="@dimen/margin_15_dp"
-            android:textColor="@color/black"
-            android:textSize="@dimen/title_main_fragment"
-            android:textStyle="bold"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/recycler_view_lines_now_playing"
-            tools:text="@string/upcoming" />
+            <TextView
+                android:id="@+id/now_playing"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/margin_15_dp"
+                android:layout_marginLeft="@dimen/margin_15_dp"
+                android:textColor="@color/black"
+                android:textSize="@dimen/title_main_fragment"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="@string/now_playing" />
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recycler_view_lines_upcoming"
-            app.layaoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:scrollbars="horizontal"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/upcoming" />
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recycler_view_lines_now_playing"
+                app.layaoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:scrollbars="horizontal"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/now_playing"
+                tools:listitem="@layout/now_playing_item" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            <TextView
+                android:id="@+id/upcoming"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/margin_15_dp"
+                android:layout_marginLeft="@dimen/margin_15_dp"
+                android:textColor="@color/black"
+                android:textSize="@dimen/title_main_fragment"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/recycler_view_lines_now_playing"
+                tools:text="@string/upcoming" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recycler_view_lines_upcoming"
+                app.layaoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:scrollbars="horizontal"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/upcoming" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
 
     <FrameLayout
         android:id="@+id/loadingLayout"
@@ -74,4 +79,5 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center" />
     </FrameLayout>
+
 </FrameLayout>
