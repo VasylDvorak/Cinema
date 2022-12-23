@@ -6,7 +6,9 @@ import androidx.lifecycle.ViewModel
 import com.example.cinema.model.MovieLoader
 import com.example.cinema.model.Repository
 import com.example.cinema.model.RepositoryImpl
-import com.example.cinema.model.gson_decoder.MovieDTO
+import com.example.cinema.model.gson_kinopoisk_API.Docs
+import com.example.cinema.model.gson_kinopoisk_API.MovieDTO
+import com.example.cinema.view.details.DetailsFragment
 
 class MainViewModel(
     private val liveDataToObserve: MutableLiveData<AppState> = MutableLiveData(),

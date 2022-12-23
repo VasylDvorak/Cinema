@@ -1,7 +1,7 @@
 package com.example.cinema.model
 
-import com.example.cinema.model.gson_decoder.MovieDTO
-import com.example.cinema.model.gson_decoder.nowPlaying
+import com.example.cinema.model.gson_kinopoisk_API.MovieDTO
+import com.example.cinema.model.gson_kinopoisk_API.nowPlaying
 
 class RepositoryImpl : Repository {
     private var newest_movie_DTO: MovieDTO = nowPlaying()

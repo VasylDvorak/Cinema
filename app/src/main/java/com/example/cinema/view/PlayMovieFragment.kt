@@ -13,7 +13,7 @@ import android.widget.MediaController
 import androidx.fragment.app.Fragment
 import com.example.cinema.R
 import com.example.cinema.databinding.FragmentPlayMovieBinding
-import com.example.cinema.model.gson_decoder.Docs
+import com.example.cinema.model.gson_kinopoisk_API.Docs
 import java.io.BufferedReader
 import java.io.InputStreamReader
 import java.net.MalformedURLException

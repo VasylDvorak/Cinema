@@ -7,7 +7,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.cinema.R
-import com.example.cinema.model.gson_decoder.Docs
+import com.example.cinema.model.gson_kinopoisk_API.Docs
 import com.squareup.picasso.Picasso
 
 class MainFragmentAdapter(private var onItemViewClickListener: OnItemViewClickListener?) :

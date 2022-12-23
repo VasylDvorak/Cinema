@@ -10,10 +10,10 @@ import com.android.volley.Request
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 import com.example.cinema.BuildConfig
-import com.example.cinema.model.gson_decoder.Docs
-import com.example.cinema.model.gson_decoder.MovieDTO
-import com.example.cinema.model.gson_decoder.Poster
-import com.example.cinema.model.gson_decoder.Rating
+import com.example.cinema.model.gson_kinopoisk_API.Docs
+import com.example.cinema.model.gson_kinopoisk_API.MovieDTO
+import com.example.cinema.model.gson_kinopoisk_API.Poster
+import com.example.cinema.model.gson_kinopoisk_API.Rating
 import kotlinx.android.synthetic.main.fragment_main.*
 import org.json.JSONObject
 import java.net.MalformedURLException

@@ -16,8 +16,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.cinema.R
 import com.example.cinema.databinding.FragmentMainBinding
-import com.example.cinema.model.gson_decoder.Docs
-import com.example.cinema.model.gson_decoder.MovieDTO
+import com.example.cinema.model.gson_kinopoisk_API.Docs
+import com.example.cinema.model.gson_kinopoisk_API.MovieDTO
 import com.example.cinema.view.details.DetailsFragment
 import com.example.cinema.viewmodel.AppState
 import com.example.cinema.viewmodel.MainViewModel
