@@ -2,10 +2,13 @@ package com.example.cinema.model
 
 import com.example.cinema.model.gson_decoder.MovieDTO
 import com.example.cinema.model.gson_decoder.nowPlaying
-import com.example.cinema.model.gson_decoder.upcoming
 
 class RepositoryImpl : Repository {
-    override fun getAboutMovieFromServer(): MovieDTO = MovieDTO()
-    override fun getAboutMovieLocalStorageNowPlaying(): MovieDTO = nowPlaying()
-    override fun getAboutMovieLocalStorageUpcoming(): MovieDTO = upcoming()
+    private var newest_movie_DTO: MovieDTO = nowPlaying()
+    override fun getAboutMovieFromServer(new_movie_DTO: MovieDTO) {
+        newest_movie_DTO = new_movie_DTO
+    }
+
+    override fun getAboutMovieLocalStorageNowPlaying(): MovieDTO = newest_movie_DTO
+    override fun getAboutMovieLocalStorageUpcoming(): MovieDTO = newest_movie_DTO
 }

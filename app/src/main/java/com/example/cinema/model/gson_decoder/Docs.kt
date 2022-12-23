@@ -7,13 +7,13 @@ import kotlinx.android.parcel.Parcelize
 @Parcelize
 data class Docs(
 
-    @SerializedName("externalId") val externalId: ExternalId? = null,
-    @SerializedName("logo") val logo: Logo? = null,
-    @SerializedName("poster") val poster: Poster? = null,
-    @SerializedName("rating") val rating: Rating? = null,
-    @SerializedName("votes") val votes: Votes? = null,
-    @SerializedName("watchability") val watchability: Watchability? = null,
-    @SerializedName("id") val id: Int = 0,
+    val externalId: ExternalId? = null,
+    val logo: Logo? = null,
+    val poster: Poster? = null,
+    val rating: Rating? = null,
+    val votes: Votes? = null,
+    val watchability: Watchability? = null,
+    val id: Int = 0,
     @SerializedName("alternativeName") val alternativeName: String? = "",
     @SerializedName("description") val description: String = "",
     @SerializedName("enName") val enName: String? = "",

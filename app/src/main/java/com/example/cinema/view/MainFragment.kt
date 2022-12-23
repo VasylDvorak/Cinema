@@ -14,13 +14,11 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelStoreOwner
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.cinema.BuildConfig
 import com.example.cinema.R
 import com.example.cinema.databinding.FragmentMainBinding
 import com.example.cinema.model.gson_decoder.Docs
 import com.example.cinema.model.gson_decoder.MovieDTO
 import com.example.cinema.view.details.DetailsFragment
-import com.example.cinema.view.details.MovieLoader
 import com.example.cinema.viewmodel.AppState
 import com.example.cinema.viewmodel.MainViewModel
 import kotlinx.android.synthetic.main.fragment_main.*
@@ -36,72 +34,39 @@ class MainFragment : Fragment() {
     private lateinit var vms: ViewModelStoreOwner
 
 
-    private val model: MainViewModel by lazy {
+    private val viewModel: MainViewModel by lazy {
         ViewModelProvider(this).get(MainViewModel::class.java)
+
     }
 
-    private fun updateCurrentCard() = with(binding) {
-        model.liveDataCurrent.observe(viewLifecycleOwner) { item ->
-            val observer = Observer<AppState> {
-                renderData(item, it)
-            }
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
 
-            with(viewModel) {
-                getLiveData().observe(viewLifecycleOwner, observer)
-                getAboutMovie()
-            }
-
+        val observer = Observer<AppState> {
+            renderData(it)
         }
+        viewModel.getData().observe(viewLifecycleOwner, observer)
     }
-
-
-    private val onLoadListener: MovieLoader.MovieLoaderListener =
-        object : MovieLoader.MovieLoaderListener {
-
-
-            override fun onLoaded() {
-                try {
-                    updateCurrentCard()
-                } catch (e: NullPointerException) {
-                    fragmentManager?.beginTransaction()?.apply {
-                        replace(R.id.flFragment, DetailsFragment())
-                        addToBackStack("")
-                        commit()
-                    }
-                }
-            }
-
-
-            override fun onFailed(throwable: Throwable) {
-                Extensions.showSnackbar(
-                    binding.mainView,
-                    context!!.resources.getString(R.string.error),
-                    context!!.resources.getString(R.string.OK),
-                    { context!!.resources.getString(R.string.OK) }
-                )
-            }
-        }
 
 
     @RequiresApi(Build.VERSION_CODES.N)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         vms = this
-        recreateMainFragment()
+        val observer = Observer<AppState> { renderData(it) }
+
+        viewModel.getData().observe(viewLifecycleOwner, observer)
+
     }
 
     private fun recreateMainFragment() {
-        model.liveDataCurrent.observe(viewLifecycleOwner) { item ->
+        viewModel.liveDataCurrent.observe(viewLifecycleOwner) { item ->
             if (item != null) {
                 showData(item)
             }
         }
     }
 
-    private val viewModel: MainViewModel by lazy {
-        ViewModelProvider(this).get(MainViewModel::class.java)
-
-    }
 
     private lateinit var adapter: MainFragmentAdapter
 
@@ -129,9 +94,12 @@ class MainFragment : Fragment() {
 
 
     @SuppressLint("SuspiciousIndentation")
-    private fun renderData(movieDTO: MovieDTO, appState: AppState) {
+    private fun renderData(appState: AppState) {
+
         when (appState) {
             is AppState.Success -> {
+                val movieDTO = appState.AboutMovieData
+
                 showData(movieDTO)
 
 
@@ -206,6 +174,7 @@ class MainFragment : Fragment() {
                 it.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
 
                     override fun onQueryTextSubmit(query: String?): Boolean {
+                        viewModel.getDataFromRemoteSource(query, context)
                         it.clearFocus()
                         it.setQuery("", false)
                         collapseActionView()
@@ -215,21 +184,11 @@ class MainFragment : Fragment() {
 
                     @RequiresApi(Build.VERSION_CODES.N)
                     override fun onQueryTextChange(newText: String?): Boolean {
-                        val url = "https://api.kinopoisk.dev/movie?field" +
-                                "=name&search=${newText}&isStrict=false&" +
-                                "token=${BuildConfig.KINOPOISK_API_KEY}"
-                        try {
-                            val loader = MovieLoader(
-                                onLoadListener, url, context,
-                                vms, binding.mainView
-                            )
-                            loader.loadMovie()
-                        } catch (e: NullPointerException) {
-                        }
+
+
                         return false
                     }
                 })
-
             }
 
         }
@@ -265,9 +224,7 @@ class MainFragment : Fragment() {
                         .addToBackStack("")
                         .commitAllowingStateLoss()
                 }
-
             }
-
         })
     }
 
