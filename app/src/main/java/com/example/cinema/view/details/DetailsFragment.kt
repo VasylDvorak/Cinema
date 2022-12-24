@@ -66,7 +66,7 @@ class DetailsFragment : Fragment() {
                 detailsOriginalTitleMovie.text = docs_data.alternativeName
 
                 var strr = ""
-                docs_data.poster ?.let{
+                docs_data.poster?.let {
                     strr = docs_data.poster.url
                 }
 
@@ -78,47 +78,49 @@ class DetailsFragment : Fragment() {
                 detailsYearMovie.text = resources.getText(R.string.release_date)
                         as String + " " + docs_data.year.toString()
 
-                docs_data.rating ?.let{
-                    detailsRatingMovie.text = resources.getText(R.string.rating)
-                            as String + " " + docs_data.rating.kp.toString()
-                    detailsBudgetMovie.text = resources.getText(R.string.budget)
-                            as String + " " +
-                            (docs_data.rating.russianFilmCritics * 10000).toString() + " $"
-                    detailsRevenueMovie.text = resources.getText(R.string.revenue)
-                            as String + " " + (docs_data.rating.await * 10000).toString() + " $"
-                }
-
-                detailsGenreMovie.text = resources.getText(R.string.genere)
-                        as String + " " + docs_data.type
-                detailsDurationMovie.text = docs_data.movieLength.toString() + " " +
-                        resources.getText(R.string.min)
-                                as String
-
-                detailsDescriptionMovie.text = docs_data.description
-
-                var heart: ImageView = binding.detailsIsLikeMovie
-
-                heart.apply {
-
-                    if (!docs_data.isLike) {
-                        setImageResource(R.drawable.ic_baseline_favorite_border_24_empty)
-                    } else {
-                        setImageResource(R.drawable.ic_baseline_favorite_24_yellow)
+                docs_data.rating?.let {
+                    with(docs_data.rating) {
+                        detailsRatingMovie.text = resources.getText(R.string.rating)
+                                as String + " " + kp.toString()
+                        detailsBudgetMovie.text = resources.getText(R.string.budget)
+                                as String + " " +
+                                (russianFilmCritics * 10000) + " $"
+                        detailsRevenueMovie.text = resources.getText(R.string.revenue)
+                                as String + " " + (await * 10000) + " $"
                     }
+                }
+                docs_data.apply {
+                    detailsGenreMovie.text = resources.getText(R.string.genere)
+                            as String + " " + type
+                    detailsDurationMovie.text = movieLength.toString() + " " +
+                            resources.getText(R.string.min)
+                                    as String
 
-                    setOnClickListener {
+                    detailsDescriptionMovie.text = description
 
-                        if (docs_data.isLike) {
+                    var heart: ImageView = binding.detailsIsLikeMovie
+
+                    heart.apply {
+
+                        if (!isLike) {
                             setImageResource(R.drawable.ic_baseline_favorite_border_24_empty)
-                            docs_data.isLike = false
                         } else {
                             setImageResource(R.drawable.ic_baseline_favorite_24_yellow)
-                            docs_data.isLike = true
+                        }
+
+                        setOnClickListener {
+
+                            if (isLike) {
+                                setImageResource(R.drawable.ic_baseline_favorite_border_24_empty)
+                                isLike = false
+                            } else {
+                                setImageResource(R.drawable.ic_baseline_favorite_24_yellow)
+                                isLike = true
+                            }
                         }
                     }
+
                 }
-
-
             }
 
         } catch (e: IndexOutOfBoundsException) {

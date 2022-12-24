@@ -29,7 +29,7 @@ class MainFragmentAdapter(private var onItemViewClickListener: OnItemViewClickLi
     inner class MainViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         fun bind(aboutMovieItem: Docs) {
             itemView.apply {
-
+                with(aboutMovieItem) {
                 aboutMovieItem ?.let{
                     findViewById<TextView>(R.id.now_playing_title_movie).text =
                         aboutMovieItem.name
@@ -37,12 +37,12 @@ class MainFragmentAdapter(private var onItemViewClickListener: OnItemViewClickLi
                         aboutMovieItem.year.toString()
                     aboutMovieItem.rating ?.let{
                         findViewById<TextView>(R.id.now_playing_rating_movie).text  =
-                            aboutMovieItem.rating.kp.toString()
+                            rating?.kp.toString()
                     }
 
                     var strr = ""
                     aboutMovieItem.poster ?.let {
-                        strr = aboutMovieItem.poster.url
+                        strr = poster!!.url
                     }
                     Picasso.get().load(strr).into(findViewById<ImageView>(R.id.now_playing_banner))
 
@@ -55,7 +55,7 @@ class MainFragmentAdapter(private var onItemViewClickListener: OnItemViewClickLi
                     var heart: ImageView = findViewById(R.id.is_like_movie)
 
                     heart.apply {
-                        if (!aboutMovieItem.isLike) {
+                        if (!isLike) {
                             setImageResource(R.drawable.ic_baseline_favorite_border_24_empty)
                         } else {
                             setImageResource(R.drawable.ic_baseline_favorite_24_yellow)
@@ -63,12 +63,12 @@ class MainFragmentAdapter(private var onItemViewClickListener: OnItemViewClickLi
 
                         setOnClickListener {
 
-                            if (aboutMovieItem.isLike) {
+                            if (isLike) {
                                 setImageResource(R.drawable.ic_baseline_favorite_border_24_empty)
-                                aboutMovieItem.isLike = false
+                                isLike = false
                             } else {
                                 setImageResource(R.drawable.ic_baseline_favorite_24_yellow)
-                                aboutMovieItem.isLike = true
+                                isLike = true
                             }
 
                         }
@@ -79,7 +79,7 @@ class MainFragmentAdapter(private var onItemViewClickListener: OnItemViewClickLi
                     }
 
                 }
-            }
+            }}
         }
     }
 
