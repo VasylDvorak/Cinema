@@ -35,7 +35,7 @@ class MovieLoader(
         val url = "https://api.kinopoisk.dev/movie?field" +
                 "=name&search=${find_request}&isStrict=false&" +
                 "token=${BuildConfig.KINOPOISK_API_KEY}"
-        println(find_request)
+        println(url)
         try {
             val handler = Handler()
             Thread(Runnable {
@@ -116,11 +116,12 @@ class MovieLoader(
                         null, null,
                         posterObject, ratingObject,
                         null, null,
-                        getInt("id"), getString("alternativeName"),
-                        getString("description"),
+                        getInt("id"),
+                        getString("alternativeName")?:let{" "},
+                        getString("description")?:let{" "},
                         null, docs.getInt("movieLength"),
-                        getString("name"), null, null,
-                        getString("type"), getInt("year"),
+                        getString("name")?:let{" "}, null, null,
+                        getString("type")?:let{" "}, getInt("year"),
                         null, url_trailer = ""
                     )
                 }
@@ -139,7 +140,7 @@ class MovieLoader(
     private fun ratingPoster(ratingObject: JSONObject): Rating {
         return with(ratingObject) {
             Rating(
-                getString("_id"),
+                getString("_id")?:let{" "},
                 getInt("kp"),
                 getInt("imdb"),
                 getInt("filmCritics"),
@@ -153,9 +154,9 @@ class MovieLoader(
     private fun parsePoster(posterObject: JSONObject): Poster {
         var poster = with(posterObject) {
             Poster(
-                getString("_id"),
-                getString("url"),
-                getString("previewUrl")
+                getString("_id")?:let{" "},
+                getString("url")?:let{" "},
+                getString("previewUrl")?:let{" "}
             )
         }
 

@@ -38,10 +38,10 @@ class MainFragment : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-        val observer = Observer<AppState> {
-            renderData(it)
-        }
+        val observer = Observer<AppState> { renderData(it) }
         viewModel.getData().observe(viewLifecycleOwner, observer)
+
+
     }
 
 
@@ -62,12 +62,16 @@ class MainFragment : Fragment() {
         _binding = FragmentMainBinding.inflate(inflater, container, false)
         setHasOptionsMenu(true)
 
+
+
         return binding.root
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        retainInstance = true
+
+        savedInstanceState?:let{
+            viewModel.getDataFromRemoteSource(getString(R.string.first_request), context)}
 
     }
 
@@ -150,11 +154,18 @@ class MainFragment : Fragment() {
         val searchItem = menu.findItem(R.id.search)
         val searchView = searchItem?.actionView as SearchView
 
+
+
+
         searchItem.apply {
 
             searchView.also {
 
                 it.setSearchableInfo(manager.getSearchableInfo(requireActivity().componentName))
+
+
+
+
                 it.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
 
                     override fun onQueryTextSubmit(query: String?): Boolean {
