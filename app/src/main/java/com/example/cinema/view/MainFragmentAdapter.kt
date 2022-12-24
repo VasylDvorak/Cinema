@@ -30,17 +30,18 @@ class MainFragmentAdapter(private var onItemViewClickListener: OnItemViewClickLi
         fun bind(aboutMovieItem: Docs) {
             itemView.apply {
 
-                if (aboutMovieItem != null) {
+                aboutMovieItem ?.let{
                     findViewById<TextView>(R.id.now_playing_title_movie).text =
                         aboutMovieItem.name
                     findViewById<TextView>(R.id.now_playing_year_movie).text =
                         aboutMovieItem.year.toString()
-                    findViewById<TextView>(R.id.now_playing_rating_movie).text =
-                        aboutMovieItem.year.toString()
-
+                    aboutMovieItem.rating ?.let{
+                        findViewById<TextView>(R.id.now_playing_rating_movie).text  =
+                            aboutMovieItem.rating.kp.toString()
+                    }
 
                     var strr = ""
-                    if (aboutMovieItem.poster != null) {
+                    aboutMovieItem.poster ?.let {
                         strr = aboutMovieItem.poster.url
                     }
                     Picasso.get().load(strr).into(findViewById<ImageView>(R.id.now_playing_banner))

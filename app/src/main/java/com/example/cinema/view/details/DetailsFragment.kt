@@ -66,9 +66,10 @@ class DetailsFragment : Fragment() {
                 detailsOriginalTitleMovie.text = docs_data.alternativeName
 
                 var strr = ""
-                if (docs_data.poster != null) {
+                docs_data.poster ?.let{
                     strr = docs_data.poster.url
                 }
+
                 Picasso.get().load(strr).into(detailsBannerMovie)
                 detailsBannerMovie.setOnClickListener {
                     callPlayMovie(docs_data)
@@ -77,7 +78,7 @@ class DetailsFragment : Fragment() {
                 detailsYearMovie.text = resources.getText(R.string.release_date)
                         as String + " " + docs_data.year.toString()
 
-                if (docs_data.rating != null) {
+                docs_data.rating ?.let{
                     detailsRatingMovie.text = resources.getText(R.string.rating)
                             as String + " " + docs_data.rating.kp.toString()
                     detailsBudgetMovie.text = resources.getText(R.string.budget)
