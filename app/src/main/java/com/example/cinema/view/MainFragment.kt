@@ -44,6 +44,20 @@ class MainFragment : Fragment() {
 
     }
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        if (savedInstanceState == null) {
+            var start_string = getString(R.string.first_request)
+
+            if (!(start_cinema.equals("", true))) {
+                start_string = start_cinema
+                start_cinema = ""
+            }
+            viewModel.getDataFromRemoteSource(start_string, context)
+        }
+        retainInstance = true
+    }
 
     @RequiresApi(Build.VERSION_CODES.N)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -62,15 +76,7 @@ class MainFragment : Fragment() {
         _binding = FragmentMainBinding.inflate(inflater, container, false)
         setHasOptionsMenu(true)
 
-        savedInstanceState ?: let {
-            var start_string = getString(R.string.first_request)
 
-            if (!(start_cinema.equals("", true))) {
-                start_string = start_cinema
-                start_cinema = ""
-            }
-            viewModel.getDataFromRemoteSource(start_string, context)
-        }
 
         return binding.root
     }
