@@ -1,0 +1,42 @@
+package com.example.cinema.model.services
+
+import android.app.IntentService
+import android.content.Intent
+import android.util.Log
+import com.example.cinema.R
+import com.example.cinema.view.Extensions
+import com.example.cinema.view.MainActivity
+import com.example.cinema.view.MainFragment
+
+private const val TAG = "MainServiceTAG"
+const val MAIN_SERVICE_STRING_EXTRA = "MainServiceExtra"
+
+class MainService(name: String = "MainService") : IntentService(name) {
+    override fun onHandleIntent(intent: Intent?) {
+        createLogMessage("onHandleIntent${intent?.getStringExtra(MAIN_SERVICE_STRING_EXTRA)}")
+        Extensions.showToast(applicationContext,
+            applicationContext.resources.getString(R.string.change_connection))
+    }
+
+    override fun onCreate() {
+        createLogMessage("onCreate")
+        super.onCreate()
+    }
+
+    override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
+        createLogMessage("onStartCommand")
+        return super.onStartCommand(intent, flags, startId)
+    }
+
+    override fun onDestroy() {
+        createLogMessage("onDestroy")
+        super.onDestroy()
+    }
+
+    //Выводим уведомление в строке состояния
+    private fun createLogMessage(message: String) {
+        Log.d(TAG, message)
+    }
+
+
+}
