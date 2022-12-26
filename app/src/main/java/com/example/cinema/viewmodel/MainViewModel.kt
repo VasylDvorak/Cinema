@@ -95,29 +95,17 @@ class MainViewModel(
 
             when (strExtra) {
                 DETAILS_INTENT_EMPTY_EXTRA -> Extensions.showToast(
-                    mainView_VM,
-                    context_VM.resources.getString(R.string.error_reading)
-                )
+                    context, context.resources.getString(R.string.error_reading))
                 DETAILS_DATA_EMPTY_EXTRA -> Extensions.showToast(
-                    mainView_VM,
-                    context_VM.resources.getString(R.string.error_reading)
-                )
+                    context, context.resources.getString(R.string.error_reading))
                 DETAILS_RESPONSE_EMPTY_EXTRA -> Extensions.showToast(
-                    mainView_VM,
-                    context_VM.resources.getString(R.string.error_reading)
-                )
+                    context, context.resources.getString(R.string.error_reading))
                 DETAILS_REQUEST_ERROR_EXTRA -> Extensions.showToast(
-                    mainView_VM,
-                    context_VM.resources.getString(R.string.error_reading)
-                )
+                    context, context.resources.getString(R.string.error_reading))
                 DETAILS_REQUEST_ERROR_MESSAGE_EXTRA -> Extensions.showToast(
-                    mainView_VM,
-                    context_VM.resources.getString(R.string.error_reading)
-                )
+                    context, context.resources.getString(R.string.error_reading))
                 DETAILS_URL_MALFORMED_EXTRA -> Extensions.showToast(
-                    mainView_VM,
-                    context_VM.resources.getString(R.string.error_reading)
-                )
+                    context, context.resources.getString(R.string.error_reading))
 
                 DETAILS_RESPONSE_SUCCESS_EXTRA -> {
                     var movieDTO_from_broadcast =

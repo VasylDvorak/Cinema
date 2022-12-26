@@ -1,6 +1,7 @@
 package com.example.cinema.view
 
 
+import android.content.Context
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
@@ -26,13 +27,13 @@ class Extensions {
         }
 
         fun showToast(
-            view: View,
+            context: Context,
             text: String?,
             length: Int = Toast.LENGTH_LONG
         ) {
 
             Toast.makeText(
-                view.context,
+                context,
                 text, length
             ).show()
 

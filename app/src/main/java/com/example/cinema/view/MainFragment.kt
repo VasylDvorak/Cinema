@@ -174,7 +174,7 @@ class MainFragment : Fragment() {
                         it.setQuery("", false)
                         collapseActionView()
                         Extensions.showToast(
-                            binding.mainView,
+                            context!!,
                             resources.getString(R.string.looking_for) + " " + query
                         )
                         return true
