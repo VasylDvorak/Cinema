@@ -68,9 +68,10 @@ class DetailsFragment : Fragment() {
                 var strr = ""
                 docs_data.poster?.let {
                     strr = docs_data.poster.url
+                    Picasso.get().load(strr).into(detailsBannerMovie)
                 }
 
-                Picasso.get().load(strr).into(detailsBannerMovie)
+
                 detailsBannerMovie.setOnClickListener {
                     callPlayMovie(docs_data)
                 }

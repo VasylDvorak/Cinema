@@ -30,56 +30,59 @@ class MainFragmentAdapter(private var onItemViewClickListener: OnItemViewClickLi
         fun bind(aboutMovieItem: Docs) {
             itemView.apply {
                 with(aboutMovieItem) {
-                aboutMovieItem ?.let{
-                    findViewById<TextView>(R.id.now_playing_title_movie).text =
-                        aboutMovieItem.name
-                    findViewById<TextView>(R.id.now_playing_year_movie).text =
-                        aboutMovieItem.year.toString()
-                    aboutMovieItem.rating ?.let{
-                        findViewById<TextView>(R.id.now_playing_rating_movie).text  =
-                            rating?.kp.toString()
-                    }
-
-                    var strr = ""
-                    aboutMovieItem.poster ?.let {
-                        strr = poster!!.url
-                    }
-                    Picasso.get().load(strr).into(findViewById<ImageView>(R.id.now_playing_banner))
-
-                    if (upcoming) {
-                        findViewById<TextView>(R.id.now_playing_rating_movie).visibility =
-                            View.GONE
-                        findViewById<ImageView>(R.id.star).visibility = View.GONE
-                    }
-
-                    var heart: ImageView = findViewById(R.id.is_like_movie)
-
-                    heart.apply {
-                        if (!isLike) {
-                            setImageResource(R.drawable.ic_baseline_favorite_border_24_empty)
-                        } else {
-                            setImageResource(R.drawable.ic_baseline_favorite_24_yellow)
+                    aboutMovieItem.let {
+                        findViewById<TextView>(R.id.now_playing_title_movie).text =
+                            aboutMovieItem.name
+                        findViewById<TextView>(R.id.now_playing_year_movie).text =
+                            aboutMovieItem.year.toString()
+                        aboutMovieItem.rating?.let {
+                            findViewById<TextView>(R.id.now_playing_rating_movie).text =
+                                rating?.kp.toString()
                         }
 
-                        setOnClickListener {
+                        var strr = ""
+                        aboutMovieItem.poster?.let {
+                            strr = poster!!.url
+                            Picasso.get().load(strr)
+                                .into(findViewById<ImageView>(R.id.now_playing_banner))
+                        }
 
-                            if (isLike) {
+
+                        if (upcoming) {
+                            findViewById<TextView>(R.id.now_playing_rating_movie).visibility =
+                                View.GONE
+                            findViewById<ImageView>(R.id.star).visibility = View.GONE
+                        }
+
+                        var heart: ImageView = findViewById(R.id.is_like_movie)
+
+                        heart.apply {
+                            if (!isLike) {
                                 setImageResource(R.drawable.ic_baseline_favorite_border_24_empty)
-                                isLike = false
                             } else {
                                 setImageResource(R.drawable.ic_baseline_favorite_24_yellow)
-                                isLike = true
+                            }
+
+                            setOnClickListener {
+
+                                if (isLike) {
+                                    setImageResource(R.drawable.ic_baseline_favorite_border_24_empty)
+                                    isLike = false
+                                } else {
+                                    setImageResource(R.drawable.ic_baseline_favorite_24_yellow)
+                                    isLike = true
+                                }
+
                             }
 
                         }
+                        setOnClickListener {
+                            onItemViewClickListener?.onItemClick(aboutMovieItem)
+                        }
 
                     }
-                    setOnClickListener {
-                        onItemViewClickListener?.onItemClick(aboutMovieItem)
-                    }
-
                 }
-            }}
+            }
         }
     }
 

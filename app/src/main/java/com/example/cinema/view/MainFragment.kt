@@ -17,6 +17,7 @@ import com.example.cinema.R
 import com.example.cinema.databinding.FragmentMainBinding
 import com.example.cinema.model.gson_kinopoisk_API.Docs
 import com.example.cinema.model.gson_kinopoisk_API.MovieDTO
+import com.example.cinema.view.MainActivity.Companion.start_cinema
 import com.example.cinema.view.details.DetailsFragment
 import com.example.cinema.viewmodel.AppState
 import com.example.cinema.viewmodel.MainViewModel
@@ -28,7 +29,6 @@ class MainFragment : Fragment() {
     private var _binding: FragmentMainBinding? = null
     private val binding
         get() = _binding!!
-
 
     private val viewModel: MainViewModel by lazy {
         ViewModelProvider(this).get(MainViewModel::class.java)
@@ -62,17 +62,17 @@ class MainFragment : Fragment() {
         _binding = FragmentMainBinding.inflate(inflater, container, false)
         setHasOptionsMenu(true)
 
+        savedInstanceState ?: let {
+            var start_string = getString(R.string.first_request)
 
+            if (!(start_cinema.equals("", true))) {
+                start_string = start_cinema
+                start_cinema = ""
+            }
+            viewModel.getDataFromRemoteSource(start_string, context, binding.mainView)
+        }
 
         return binding.root
-    }
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-        savedInstanceState?:let{
-            viewModel.getDataFromRemoteSource(getString(R.string.first_request), context)}
-
     }
 
     override fun onDestroyView() {
@@ -169,11 +169,14 @@ class MainFragment : Fragment() {
                 it.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
 
                     override fun onQueryTextSubmit(query: String?): Boolean {
-                        viewModel.getDataFromRemoteSource(query, context)
+                        viewModel.getDataFromRemoteSource(query, context, binding.mainView)
                         it.clearFocus()
                         it.setQuery("", false)
                         collapseActionView()
-                        Extensions.showToast(mainView, query)
+                        Extensions.showToast(
+                            binding.mainView,
+                            resources.getString(R.string.looking_for) + " " + query
+                        )
                         return true
                     }
 

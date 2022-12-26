@@ -33,7 +33,7 @@ class Extensions {
 
             Toast.makeText(
                 view.context,
-                view.resources.getString(R.string.looking_for) + " " + text, length
+                text, length
             ).show()
 
         }
@@ -65,8 +65,10 @@ class Extensions {
         ) {
             val dividerItemDecoration =
                 DividerItemDecoration(recyclerView.context, RecyclerView.HORIZONTAL)
-            dividerItemDecoration.setDrawable(recyclerView.resources
-                .getDrawable(R.drawable.divider_drawable))
+            dividerItemDecoration.setDrawable(
+                recyclerView.resources
+                    .getDrawable(R.drawable.divider_drawable)
+            )
             recyclerView.addItemDecoration(dividerItemDecoration)
         }
 
