@@ -1,0 +1,5 @@
+<resources>
+    <string name= "app_name" >Broadcast Sender</string>
+    <string name= "send" >Send</string>
+    <string name="hint">Введите название фильма для поиска</string>
+</resources>
