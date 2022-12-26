@@ -24,6 +24,8 @@ class MainService(name: String = "MainService") : IntentService(name) {
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         createLogMessage("onStartCommand")
+        Extensions.showToast(applicationContext,
+            applicationContext.resources.getString(R.string.change_connection))
         return super.onStartCommand(intent, flags, startId)
     }
 
