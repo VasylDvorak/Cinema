@@ -14,8 +14,7 @@ const val MAIN_SERVICE_STRING_EXTRA = "MainServiceExtra"
 class MainService(name: String = "MainService") : IntentService(name) {
     override fun onHandleIntent(intent: Intent?) {
         createLogMessage("onHandleIntent${intent?.getStringExtra(MAIN_SERVICE_STRING_EXTRA)}")
-        Extensions.showToast(applicationContext,
-            applicationContext.resources.getString(R.string.change_connection))
+
     }
 
     override fun onCreate() {

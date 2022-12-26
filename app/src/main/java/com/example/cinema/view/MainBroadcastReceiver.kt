@@ -4,18 +4,15 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.widget.Toast
+import com.example.cinema.R
 
 class MainBroadcastReceiver : BroadcastReceiver() {
 
 
     override fun onReceive(context: Context, intent: Intent) {
 
-        if (intent.action.equals("android.intent.action.CONNECTIVITY_ACTION", true)) {
-            var message = "СООБЩЕНИЕ ОТ СИСТЕМЫ " + intent.action
-            Toast.makeText(
-                context, message,
-                Toast.LENGTH_LONG
-            ).show()
+            Extensions.showToast(context,
+                context.resources.getString(R.string.change_connection))
         }
     }
-}
+

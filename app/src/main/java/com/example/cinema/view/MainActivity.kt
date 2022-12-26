@@ -20,13 +20,8 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         initNotificationChannel()
-
-
-        if (intent.hasExtra(NAME_MSG)) {
-            start_cinema = intent.getStringExtra(NAME_MSG)!!
-
-        }
 
         binding = ActivityMainBinding.inflate(layoutInflater)
         val view = binding.root
@@ -69,6 +64,9 @@ class MainActivity : AppCompatActivity() {
                 importance
             )
             notificationManager.createNotificationChannel(channel)
+        }
+        if (intent.hasExtra(NAME_MSG)) {
+            start_cinema = intent.getStringExtra(NAME_MSG)!!
         }
     }
 
