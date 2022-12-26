@@ -2,6 +2,8 @@ package com.example.cinema.view
 
 import android.app.NotificationChannel
 import android.app.NotificationManager
+import android.content.IntentFilter
+import android.net.ConnectivityManager
 import android.os.Build
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
@@ -9,10 +11,12 @@ import androidx.fragment.app.Fragment
 import com.example.cinema.R
 import com.example.cinema.databinding.ActivityMainBinding
 
+
 const val NAME_MSG: String = "MSG"
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
+    private val mainBroadcastReceiver = MainBroadcastReceiver()
 
     companion object {
         var start_cinema = ""
@@ -22,6 +26,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         initNotificationChannel()
+        broadcastIntent()
 
         binding = ActivityMainBinding.inflate(layoutInflater)
         val view = binding.root
@@ -70,5 +75,17 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    fun broadcastIntent() {
+
+        registerReceiver(
+            mainBroadcastReceiver,
+            IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION)
+        )
+    }
+
+    override fun onPause() {
+        super.onPause()
+        unregisterReceiver(mainBroadcastReceiver)
+    }
 
 }
