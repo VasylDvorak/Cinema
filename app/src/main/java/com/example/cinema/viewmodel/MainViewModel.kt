@@ -38,7 +38,7 @@ class MainViewModel(
 ) : ViewModel() {
 
     private lateinit var context_VM: Context
-    private lateinit var mainView_VM: View
+
 
     var liveDataCurrent = MutableLiveData<AppState>()
     fun getAboutMovie() = getDataFromLocalSource(true)
@@ -67,10 +67,9 @@ class MainViewModel(
 
     fun getDataFromRemoteSource(
         find_request: String?,
-        context: Context?,
-        mainView: ConstraintLayout
+        context: Context?
     ) {
-        mainView_VM = mainView
+
         context_VM = context!!
 
         LocalBroadcastManager.getInstance(context)

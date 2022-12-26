@@ -69,7 +69,7 @@ class MainFragment : Fragment() {
                 start_string = start_cinema
                 start_cinema = ""
             }
-            viewModel.getDataFromRemoteSource(start_string, context, binding.mainView)
+            viewModel.getDataFromRemoteSource(start_string, context)
         }
 
         return binding.root
@@ -169,7 +169,7 @@ class MainFragment : Fragment() {
                 it.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
 
                     override fun onQueryTextSubmit(query: String?): Boolean {
-                        viewModel.getDataFromRemoteSource(query, context, binding.mainView)
+                        viewModel.getDataFromRemoteSource(query, context)
                         it.clearFocus()
                         it.setQuery("", false)
                         collapseActionView()
