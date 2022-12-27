@@ -152,6 +152,7 @@ class DetailsService(name: String = "DetailService") : IntentService(name) {
         )
 
         queue.add(request)
+
     }
 
 
@@ -230,6 +231,7 @@ class DetailsService(name: String = "DetailService") : IntentService(name) {
                 getInt("russianFilmCritics"),
                 getInt("await")
             )
+
         }
 
     }

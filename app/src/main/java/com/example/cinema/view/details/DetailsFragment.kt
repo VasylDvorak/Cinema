@@ -90,6 +90,8 @@ class DetailsFragment : Fragment() {
                                 as String + " " + (await * 10000) + " $"
                     }
                 }
+
+
                 docs_data.apply {
                     detailsGenreMovie.text = resources.getText(R.string.genere)
                             as String + " " + type
