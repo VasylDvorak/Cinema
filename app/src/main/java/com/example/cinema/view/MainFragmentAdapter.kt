@@ -6,9 +6,12 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.GenericTransitionOptions
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions.bitmapTransform
 import com.example.cinema.R
 import com.example.cinema.model.gson_kinopoisk_API.Docs
-import com.squareup.picasso.Picasso
+import jp.wasabeef.glide.transformations.RoundedCornersTransformation
 
 class MainFragmentAdapter(private var onItemViewClickListener: OnItemViewClickListener?) :
     RecyclerView.Adapter<MainFragmentAdapter.MainViewHolder>() {
@@ -43,8 +46,15 @@ class MainFragmentAdapter(private var onItemViewClickListener: OnItemViewClickLi
                         var strr = ""
                         aboutMovieItem.poster?.let {
                             strr = poster!!.url
-                            Picasso.get().load(strr)
-                                .into(findViewById<ImageView>(R.id.now_playing_banner))
+
+                            Glide.with( context ).load( strr )
+                                .apply(bitmapTransform(
+                                    RoundedCornersTransformation(120, 0,
+                                    RoundedCornersTransformation.CornerType.DIAGONAL_FROM_TOP_RIGHT)
+                                ))
+                                .transition(GenericTransitionOptions.with(R.anim.zoom_in))
+                                .into(findViewById(R.id.now_playing_banner))
+
                         }
 
 

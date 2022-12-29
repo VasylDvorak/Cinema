@@ -58,7 +58,7 @@
                 <ImageView
                     android:layout_width="@dimen/image_width"
                     android:layout_height="@dimen/image_height"
-                    android:src="@drawable/ic_baseline_play_circle_outline_24" />
+                    android:src="@drawable/ic_baseline_play_arrow_24" />
 
             </FrameLayout>
 

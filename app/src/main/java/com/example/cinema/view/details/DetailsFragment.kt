@@ -8,12 +8,13 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
+import coil.api.load
+import coil.transform.CircleCropTransformation
 import com.example.cinema.R
 import com.example.cinema.databinding.FragmentDetailsBinding
 import com.example.cinema.model.gson_kinopoisk_API.Docs
 import com.example.cinema.view.Extensions
 import com.example.cinema.view.PlayMovieFragment
-import com.squareup.picasso.Picasso
 
 
 class DetailsFragment : Fragment() {
@@ -68,7 +69,12 @@ class DetailsFragment : Fragment() {
                 var strr = ""
                 docs_data.poster?.let {
                     strr = docs_data.poster.url
-                    Picasso.get().load(strr).into(detailsBannerMovie)
+
+                    detailsBannerMovie.load(strr) {
+                        crossfade(true)
+                        transformations(CircleCropTransformation())
+                    }
+
                 }
 
 
