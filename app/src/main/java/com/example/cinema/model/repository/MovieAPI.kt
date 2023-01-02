@@ -1,7 +1,7 @@
 package com.example.cinema.model.repository
 
 
-import com.example.cinema.model.gson_kinopoisk_API.MovieDTO
+import com.example.cinema.model.model_stuio.MovieDTO
 import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Query

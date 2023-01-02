@@ -2,7 +2,7 @@ package com.example.cinema.model.repository
 
 
 import com.example.cinema.BuildConfig
-import com.example.cinema.model.gson_kinopoisk_API.MovieDTO
+import com.example.cinema.model.model_stuio.MovieDTO
 import com.google.gson.GsonBuilder
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient

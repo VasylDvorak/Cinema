@@ -1,7 +1,7 @@
 package com.example.cinema.model
 
 
-import com.example.cinema.model.gson_kinopoisk_API.MovieDTO
+import com.example.cinema.model.model_stuio.MovieDTO
 
 interface Repository {
     fun getAboutMovieFromServer(new_movie_DTO: MovieDTO)

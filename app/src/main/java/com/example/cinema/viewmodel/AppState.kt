@@ -1,6 +1,6 @@
 package com.example.cinema.viewmodel
 
-import com.example.cinema.model.gson_kinopoisk_API.MovieDTO
+import com.example.cinema.model.model_stuio.MovieDTO
 
 
 sealed class AppState {

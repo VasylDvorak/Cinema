@@ -3,7 +3,7 @@ package com.example.cinema.viewmodel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 
-import com.example.cinema.model.gson_kinopoisk_API.MovieDTO
+import com.example.cinema.model.model_stuio.MovieDTO
 import com.example.cinema.model.repository.DetailsRepository
 import com.example.cinema.model.repository.DetailsRepositoryImpl
 import com.example.cinema.model.repository.RemoteDataSource

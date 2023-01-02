@@ -13,7 +13,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.example.cinema.R
 import com.example.cinema.databinding.FragmentPlayMovieBinding
-import com.example.cinema.model.gson_kinopoisk_API.Docs
+import com.example.cinema.model.model_stuio.Doc
 import com.example.cinema.viewmodel.PlayViewModel
 
 class PlayMovieFragment : Fragment() {
@@ -48,32 +48,39 @@ class PlayMovieFragment : Fragment() {
         _binding = null
     }
 
-    private lateinit var aboutMovieBundle: Docs
+    private lateinit var aboutMovieBundle: Doc
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        aboutMovieBundle = arguments?.getParcelable(BUNDLE_MOVIE) ?: Docs()
 
         binding.webview.visibility = View.GONE
         binding.videoView.visibility = View.GONE
         binding.idTVHeading.visibility = View.GONE
 
-        val movie_point =
-            (aboutMovieBundle.url_trailer[aboutMovieBundle.url_trailer.length - 4]).toString()
+        aboutMovieBundle = arguments?.getParcelable(BUNDLE_MOVIE) ?: Doc()
 
-        if (movie_point == ".") {
-            displayMovie(aboutMovieBundle)
-        } else {
-            displayWebPage(aboutMovieBundle)
+        viewModelPlay.trailerMovie(aboutMovieBundle.id, requireContext())
+
+
+
+
+        val observer = Observer<String> {
+            val movie_point =
+                (it[it.length - 4]).toString()
+            if (movie_point == ".") {
+                displayMovie(it, aboutMovieBundle.name)
+            } else {
+                displayWebPage(it)
+            }
         }
-
+        viewModelPlay.getPlayData().observe(viewLifecycleOwner, observer)
 
     }
 
     @RequiresApi(Build.VERSION_CODES.N)
-    private fun displayWebPage(docs_data: Docs) {
+    private fun displayWebPage(urlStr: String) {
         binding.webview.visibility = View.VISIBLE
-        viewModelPlay.fromDetailFragment(docs_data)
+        viewModelPlay.fromDetailFragment(urlStr)
 
         val observer = Observer<String> {
             binding.webview.loadDataWithBaseURL(
@@ -84,15 +91,14 @@ class PlayMovieFragment : Fragment() {
 
     }
 
-
     @RequiresApi(Build.VERSION_CODES.N)
-    private fun displayMovie(docs_data: Docs) {
+    private fun displayMovie(urlStr: String, name : String) {
         binding.videoView.visibility = View.VISIBLE
         binding.idTVHeading.visibility = View.VISIBLE
         try {
             with(binding) {
-                idTVHeading.text = docs_data.name
-                val videoUrl = docs_data.url_trailer
+                idTVHeading.text = name
+                val videoUrl = urlStr
                 val uri: Uri = Uri.parse(videoUrl)
                 videoView.setVideoURI(uri)
                 val mediaController = MediaController(requireContext())
