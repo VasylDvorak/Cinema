@@ -5,8 +5,6 @@ import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.util.Log
-import android.view.View
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
@@ -15,6 +13,7 @@ import com.example.cinema.model.DetailsService
 import com.example.cinema.model.REQUEST_MOVIE
 import com.example.cinema.model.Repository
 import com.example.cinema.model.RepositoryImpl
+
 import com.example.cinema.model.gson_kinopoisk_API.MovieDTO
 import com.example.cinema.view.Extensions
 

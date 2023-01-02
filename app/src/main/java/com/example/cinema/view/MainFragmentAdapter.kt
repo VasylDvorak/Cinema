@@ -10,7 +10,10 @@ import com.bumptech.glide.GenericTransitionOptions
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions.bitmapTransform
 import com.example.cinema.R
+
 import com.example.cinema.model.gson_kinopoisk_API.Docs
+
+
 import jp.wasabeef.glide.transformations.RoundedCornersTransformation
 
 class MainFragmentAdapter(private var onItemViewClickListener: OnItemViewClickListener?) :

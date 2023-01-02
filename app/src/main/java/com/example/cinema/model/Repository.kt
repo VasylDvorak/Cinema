@@ -1,5 +1,6 @@
 package com.example.cinema.model
 
+
 import com.example.cinema.model.gson_kinopoisk_API.MovieDTO
 
 interface Repository {

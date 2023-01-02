@@ -1,5 +1,6 @@
 package com.example.cinema.view
 
+
 import android.annotation.SuppressLint
 import android.app.SearchManager
 import android.content.Context
@@ -20,7 +21,7 @@ import com.example.cinema.model.gson_kinopoisk_API.MovieDTO
 import com.example.cinema.view.MainActivity.Companion.start_cinema
 import com.example.cinema.view.details.DetailsFragment
 import com.example.cinema.viewmodel.AppState
-import com.example.cinema.viewmodel.MainViewModel
+import com.example.cinema.viewmodel.DetailsViewModel
 import kotlinx.android.synthetic.main.fragment_main.*
 
 class MainFragment : Fragment() {
@@ -30,22 +31,33 @@ class MainFragment : Fragment() {
     private val binding
         get() = _binding!!
 
-    private val viewModel: MainViewModel by lazy {
-        ViewModelProvider(this).get(MainViewModel::class.java)
+    /*
+        private val viewModel: MainViewModel by lazy {
+            ViewModelProvider(this).get(MainViewModel::class.java)
+
+        }
+     */
+    private val viewModel: DetailsViewModel by lazy {
+        ViewModelProvider(this).get(DetailsViewModel::class.java)
 
     }
+
+
+/*
+
+    private val viewModel: StartViewModel by lazy {
+        ViewModelProvider(this).get(StartViewModel::class.java)
+
+    }
+*/
+
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-        val observer = Observer<AppState> { renderData(it) }
-        viewModel.getData().observe(viewLifecycleOwner, observer)
+        //  val observer = Observer<AppState> { renderData(it) }
+        //  viewModel.getData().observe(viewLifecycleOwner, observer)
 
-
-    }
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
 
         if (savedInstanceState == null) {
             var start_string = getString(R.string.first_request)
@@ -54,15 +66,44 @@ class MainFragment : Fragment() {
                 start_string = start_cinema
                 start_cinema = ""
             }
+/*
+            viewModel.getNalMoney()
+            viewModel.myMoneyList.observe(viewLifecycleOwner,{it ->
+                showData(it.body()!!)
+            })
             viewModel.getDataFromRemoteSource(start_string, context)
+       */
+            viewModel.getLiveData().observe(viewLifecycleOwner, Observer { renderData(it) })
+            viewModel.getMovieFromRemoteSource(start_string)
+
+
         }
+
+
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+/*
+        if (savedInstanceState == null) {
+            var start_string = getString(R.string.first_request)
+
+            if (!(start_cinema.equals("", true))) {
+                start_string = start_cinema
+                start_cinema = ""
+            }
+          //  viewModel.getDataFromRemoteSource(start_string, context)
+            viewModel.getLiveData().observe(viewLifecycleOwner, Observer { renderData(it) })
+            viewModel.getMovieFromRemoteSource(start_string)
+        }
+
+ */
         retainInstance = true
     }
 
     @RequiresApi(Build.VERSION_CODES.N)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
     }
 
 
@@ -109,7 +150,10 @@ class MainFragment : Fragment() {
                         mainView,
                         getString(R.string.error),
                         getString(R.string.reload),
-                        { viewModel.getAboutMovie() }
+                        {
+                            // viewModel.getAboutMovie()
+
+                        }
                     )
                 }
             }
@@ -168,14 +212,11 @@ class MainFragment : Fragment() {
             searchView.also {
 
                 it.setSearchableInfo(manager.getSearchableInfo(requireActivity().componentName))
-
-
-
-
                 it.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
 
                     override fun onQueryTextSubmit(query: String?): Boolean {
-                        viewModel.getDataFromRemoteSource(query, context)
+                        //  viewModel.getDataFromRemoteSource(query, context)
+                        viewModel.getMovieFromRemoteSource(query!!)
                         it.clearFocus()
                         it.setQuery("", false)
                         collapseActionView()
@@ -229,6 +270,8 @@ class MainFragment : Fragment() {
                         .commitAllowingStateLoss()
                 }
             }
+
+
         })
     }
 
