@@ -89,6 +89,8 @@ class MainFragmentAdapter(private var onItemViewClickListener: OnItemViewClickLi
                             }
 
                         }
+
+
                         setOnClickListener {
                             onItemViewClickListener?.onItemClick(aboutMovieItem)
                         }
