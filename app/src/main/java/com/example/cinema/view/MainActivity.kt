@@ -10,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.example.cinema.R
 import com.example.cinema.databinding.ActivityMainBinding
+import com.example.cinema.model.data_base.DBHelper
 
 
 const val NAME_MSG: String = "MSG"
@@ -25,6 +26,8 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+
+
         initNotificationChannel()
         broadcastIntent()
 
@@ -34,15 +37,21 @@ class MainActivity : AppCompatActivity() {
 
 
         val mainFragment = MainFragment()
-        val firstFragment = FirstFragment()
+        val favoriteMovieFragment = FavoriteMovieFragment()
         val secondFragment = SecondFragment()
         setCurrentFragment(mainFragment)
 
+
+
+
+
         binding.bottomNavigationView.setOnNavigationItemSelectedListener {
+
+
 
             when (it.itemId) {
                 R.id.home -> setCurrentFragment(mainFragment)
-                R.id.favorites -> setCurrentFragment(firstFragment)
+                R.id.favorites -> setCurrentFragment(favoriteMovieFragment)
                 R.id.ratings -> setCurrentFragment(secondFragment)
             }
 

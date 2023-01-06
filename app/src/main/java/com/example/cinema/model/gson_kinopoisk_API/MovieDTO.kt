@@ -7,7 +7,7 @@ import kotlinx.android.parcel.Parcelize
 @Parcelize
 data class MovieDTO(
 
-    val docs: List<Docs> = listOf(),
+    val docs: MutableList<Docs> = mutableListOf(),
     val total: Int = 1,
     val limit: Int = 1,
     val page: Int = 1,

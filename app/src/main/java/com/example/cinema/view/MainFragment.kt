@@ -11,6 +11,7 @@ import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.cinema.R
@@ -20,12 +21,13 @@ import com.example.cinema.model.gson_kinopoisk_API.MovieDTO
 import com.example.cinema.view.MainActivity.Companion.start_cinema
 import com.example.cinema.view.details.DetailsFragment
 import com.example.cinema.viewmodel.AppState
+import com.example.cinema.viewmodel.DetailsFragmentViewModel
 import com.example.cinema.viewmodel.MainViewModel
 import kotlinx.android.synthetic.main.fragment_main.*
 
 class MainFragment : Fragment() {
 
-
+private var b = false
     private var _binding: FragmentMainBinding? = null
     private val binding
         get() = _binding!!
@@ -48,13 +50,15 @@ class MainFragment : Fragment() {
         super.onCreate(savedInstanceState)
 
         if (savedInstanceState == null) {
-            var start_string = getString(R.string.first_request)
 
             if (!(start_cinema.equals("", true))) {
-                start_string = start_cinema
+                viewModel.getDataFromRemoteSource(start_cinema, context)
                 start_cinema = ""
+            } else{
+                b=true
+
             }
-            viewModel.getDataFromRemoteSource(start_string, context)
+
         }
         retainInstance = true
     }
@@ -63,6 +67,12 @@ class MainFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        if (b){
+            viewModel.getFromDataBase(requireContext())
+            val observer = Observer<AppState> { renderData(it) }
+            viewModel.getData().observe(viewLifecycleOwner, observer)
+
+    }
     }
 
 
@@ -80,6 +90,9 @@ class MainFragment : Fragment() {
 
         return binding.root
     }
+
+
+
 
     override fun onDestroyView() {
         super.onDestroyView()
@@ -117,6 +130,7 @@ class MainFragment : Fragment() {
     }
 
     private fun showData(movieDTO: MovieDTO) {
+
         var AboutMovieData = movieDTO
         with(binding) {
             loadingLayout.visibility = View.GONE
@@ -219,18 +233,19 @@ class MainFragment : Fragment() {
         return MainFragmentAdapter(object : MainFragmentAdapter.OnItemViewClickListener {
 
             override fun onItemClick(aboutMovie: Docs) {
-
+                val model = ViewModelProviders.of(requireActivity()).get(DetailsFragmentViewModel::class.java)
+                model.select(aboutMovie)
                 activity?.supportFragmentManager?.apply {
                     beginTransaction()
-                        .replace(R.id.flFragment, DetailsFragment.newInstance(Bundle().apply {
-                            putParcelable(DetailsFragment.BUNDLE_EXTRA, aboutMovie)
-                        }))
+                        .replace(R.id.flFragment, DetailsFragment.newInstance(Bundle()))
                         .addToBackStack("")
                         .commitAllowingStateLoss()
                 }
             }
         })
     }
+
+
 
 
 }

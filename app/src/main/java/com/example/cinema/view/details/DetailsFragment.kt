@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProviders
 import coil.api.load
 import coil.transform.CircleCropTransformation
 import com.example.cinema.R
@@ -15,6 +16,8 @@ import com.example.cinema.databinding.FragmentDetailsBinding
 import com.example.cinema.model.gson_kinopoisk_API.Docs
 import com.example.cinema.view.Extensions
 import com.example.cinema.view.PlayMovieFragment
+import com.example.cinema.viewmodel.DetailsFragmentViewModel
+
 
 
 class DetailsFragment : Fragment() {
@@ -48,14 +51,15 @@ class DetailsFragment : Fragment() {
     }
 
 
-    private lateinit var aboutMovieBundle: Docs
-
-
     @RequiresApi(Build.VERSION_CODES.N)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        aboutMovieBundle = arguments?.getParcelable(BUNDLE_EXTRA) ?: Docs()
-        displayMovie(aboutMovieBundle)
+
+        val model = ViewModelProviders.of(requireActivity()).get(DetailsFragmentViewModel::class.java)
+        model.getSelected().observe(viewLifecycleOwner, { item ->
+            displayMovie(item)
+        })
+
     }
 
     private fun displayMovie(docs_data: Docs) {
@@ -107,27 +111,7 @@ class DetailsFragment : Fragment() {
 
                     detailsDescriptionMovie.text = description
 
-                    var heart: ImageView = binding.detailsIsLikeMovie
 
-                    heart.apply {
-
-                        if (!isLike) {
-                            setImageResource(R.drawable.ic_baseline_favorite_border_24_empty)
-                        } else {
-                            setImageResource(R.drawable.ic_baseline_favorite_24_yellow)
-                        }
-
-                        setOnClickListener {
-
-                            if (isLike) {
-                                setImageResource(R.drawable.ic_baseline_favorite_border_24_empty)
-                                isLike = false
-                            } else {
-                                setImageResource(R.drawable.ic_baseline_favorite_24_yellow)
-                                isLike = true
-                            }
-                        }
-                    }
 
                 }
             }
@@ -148,7 +132,6 @@ class DetailsFragment : Fragment() {
         activity?.supportFragmentManager?.apply {
             beginTransaction()
                 .replace(R.id.flFragment, PlayMovieFragment.newInstance(Bundle().apply {
-                    putParcelable(PlayMovieFragment.BUNDLE_MOVIE, docs_data)
                 }))
                 .addToBackStack("")
                 .commitAllowingStateLoss()

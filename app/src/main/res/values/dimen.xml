@@ -19,10 +19,11 @@
     <dimen name="title_size_details">40sp</dimen>
     <dimen name="margin_top">20sp</dimen>
     <dimen name="original_title">30sp</dimen>
-    <dimen name="heart_width">50sp</dimen>
+    <dimen name="heart_width">70sp</dimen>
     <dimen name="heart_margin">20sp</dimen>
     <dimen name="heart_size">20dp</dimen>
     <dimen name="width_genre">200dp</dimen>
     <dimen name="card_radius">10dp</dimen>
     <dimen name="card_margin">10dp</dimen>
+    <dimen name="title_padding">100dp</dimen>
 </resources>

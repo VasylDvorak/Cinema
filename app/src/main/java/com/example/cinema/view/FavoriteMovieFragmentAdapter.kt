@@ -8,6 +8,8 @@ import android.widget.TextView
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.RecyclerView
+import coil.api.load
+import coil.transform.CircleCropTransformation
 import com.bumptech.glide.GenericTransitionOptions
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions.bitmapTransform
@@ -17,8 +19,8 @@ import com.example.cinema.model.gson_kinopoisk_API.Docs
 import com.example.cinema.viewmodel.MainViewModel
 import jp.wasabeef.glide.transformations.RoundedCornersTransformation
 
-class MainFragmentAdapter(private var onItemViewClickListener: OnItemViewClickListener?) :
-    RecyclerView.Adapter<MainFragmentAdapter.MainViewHolder>() {
+class FavoriteMovieFragmentAdapter(private var onItemViewClickListener: OnItemViewClickListener?) :
+    RecyclerView.Adapter<FavoriteMovieFragmentAdapter.MainViewHolder>() {
 
 
     private var aboutMovie: List<Docs> = listOf()
@@ -43,14 +45,41 @@ class MainFragmentAdapter(private var onItemViewClickListener: OnItemViewClickLi
             itemView.apply {
                 with(aboutMovieItem) {
                     aboutMovieItem.let {
-                        findViewById<TextView>(R.id.now_playing_title_movie).text =
+                        findViewById<TextView>(R.id.details_title_movie).text =
                             aboutMovieItem.name
-                        findViewById<TextView>(R.id.now_playing_year_movie).text =
-                            aboutMovieItem.year.toString()
+                        findViewById<TextView>(R.id.details_original_title_movie).text =
+                            aboutMovieItem.alternativeName
+
+                        findViewById<TextView>(R.id.details_genre_movie).text =
+                            resources.getText(R.string.genere)
+                                as String + " " + aboutMovieItem.type
+
+
+                        findViewById<TextView>(R.id.details_duration_movie).text =
+                            aboutMovieItem.movieLength.toString() + " " +
+                                resources.getText(R.string.min)
+                                        as String
+
+                        findViewById<TextView>(R.id.details_year_movie).text = resources.getText(R.string.release_date)
+                                as String + " " + aboutMovieItem.year.toString()
+
+
                         aboutMovieItem.rating?.let {
-                            findViewById<TextView>(R.id.now_playing_rating_movie).text =
-                                rating?.kp.toString()
+                            with(aboutMovieItem.rating) {
+                                findViewById<TextView>(R.id.details_rating_movie).text =
+                                    resources.getText(com.example.cinema.R.string.rating)
+                                        as String + " " + kp.toString()
+                                findViewById<TextView>(R.id.details_budget_movie).text =
+                                    resources.getText(com.example.cinema.R.string.budget)
+                                        as String + " " +
+                                        (russianFilmCritics * 10000) + " $"
+                                findViewById<TextView>(R.id.details_revenue_movie).text =
+                                    resources.getText(com.example.cinema.R.string.revenue)
+                                        as String + " " + (await * 10000) + " $"
+                            }
                         }
+
+
 
                         var strr = ""
                         aboutMovieItem.poster?.let {
@@ -59,10 +88,10 @@ class MainFragmentAdapter(private var onItemViewClickListener: OnItemViewClickLi
                             Glide.with( context ).load( strr )
                                 .apply(bitmapTransform(
                                     RoundedCornersTransformation(120, 0,
-                                    RoundedCornersTransformation.CornerType.DIAGONAL_FROM_TOP_RIGHT)
+                                        RoundedCornersTransformation.CornerType.DIAGONAL_FROM_TOP_RIGHT)
                                 ))
                                 .transition(GenericTransitionOptions.with(R.anim.zoom_in))
-                                .into(findViewById(R.id.now_playing_banner))
+                                .into(findViewById(R.id.details_banner_movie))
 
                         }
 
@@ -70,18 +99,12 @@ class MainFragmentAdapter(private var onItemViewClickListener: OnItemViewClickLi
 
 
 
-
-                        if (upcoming) {
-                            findViewById<TextView>(R.id.now_playing_rating_movie).visibility =
-                                View.GONE
-                            findViewById<ImageView>(R.id.star).visibility = View.GONE
-                        }
 
                         var heart: ImageView = findViewById(R.id.is_like_movie)
 
                         heart.apply {
 
-                           var dbHelper = DBHelper(context, null)
+                            var dbHelper = DBHelper(context, null)
 
                             if (!dbHelper.like(aboutMovieItem)) {
                                 setImageResource(R.drawable.ic_baseline_favorite_border_24_empty)
@@ -110,6 +133,7 @@ class MainFragmentAdapter(private var onItemViewClickListener: OnItemViewClickLi
                             }
                             dbHelper.close()
                         }
+
                         setOnClickListener {
                             onItemViewClickListener?.onItemClick(aboutMovieItem)
                         }
@@ -124,7 +148,7 @@ class MainFragmentAdapter(private var onItemViewClickListener: OnItemViewClickLi
 
         return MainViewHolder(
             LayoutInflater.from(parent.context).inflate(
-                R.layout.now_playing_item,
+                R.layout.favorite_item,
                 parent, false
             ) as View
         )
@@ -132,7 +156,7 @@ class MainFragmentAdapter(private var onItemViewClickListener: OnItemViewClickLi
     }
 
     override fun onBindViewHolder(holder: MainViewHolder, position: Int) {
-              holder.bind(aboutMovie[position])
+        holder.bind(aboutMovie[position])
     }
 
     override fun getItemCount(): Int {

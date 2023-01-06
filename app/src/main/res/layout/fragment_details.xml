@@ -23,16 +23,8 @@
                 android:textColor="@color/black"
                 android:textSize="@dimen/title_size_details"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/details_is_like_movie" />
+                app:layout_constraintBottom_toTopOf="@+id/details_original_title_movie"/>
 
-            <ImageView
-                android:id="@+id/details_is_like_movie"
-                android:layout_width="@dimen/heart_width"
-                android:layout_height="@dimen/heart_width"
-                android:layout_margin="@dimen/heart_margin"
-                android:src="@drawable/ic_baseline_favorite_border_24_empty"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/details_original_title_movie"

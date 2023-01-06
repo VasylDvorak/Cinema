@@ -1,12 +1,12 @@
 package com.example.cinema.viewmodel
 
+import android.annotation.SuppressLint
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.util.Log
-import android.view.View
-import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
@@ -15,6 +15,8 @@ import com.example.cinema.model.DetailsService
 import com.example.cinema.model.REQUEST_MOVIE
 import com.example.cinema.model.Repository
 import com.example.cinema.model.RepositoryImpl
+import com.example.cinema.model.data_base.DBHelper
+import com.example.cinema.model.gson_kinopoisk_API.Docs
 import com.example.cinema.model.gson_kinopoisk_API.MovieDTO
 import com.example.cinema.view.Extensions
 
@@ -49,6 +51,10 @@ class MainViewModel(
         context_VM.let {
             LocalBroadcastManager.getInstance(it).unregisterReceiver(loadResultsReceiver)
         }
+        liveDataToObserveUpdate(isNowPlaying)
+    }
+
+    fun liveDataToObserveUpdate(isNowPlaying: Boolean){
         Thread {
 
             liveDataToObserve.postValue(
@@ -63,7 +69,31 @@ class MainViewModel(
                 )
             )
         }.start()
+
+
+
     }
+
+
+    fun getFromDataBase(context: Context){
+        var dbHelper = DBHelper(context, null)
+        try {
+            var start_condition = dbHelper.readCurrentMovieDTO()
+            start_condition?.let {
+                if (!(it.equals(""))){
+                    repositoryImpl.getAboutMovieFromServer(start_condition)
+
+                    liveDataToObserveUpdate(true)
+
+                }
+            }
+
+        }catch (e : NullPointerException){}
+        dbHelper.close()
+
+
+    }
+
 
     fun getDataFromRemoteSource(
         find_request: String?,
@@ -87,6 +117,7 @@ class MainViewModel(
 
 
     private val loadResultsReceiver: BroadcastReceiver = object : BroadcastReceiver() {
+        @SuppressLint("Range")
         override fun onReceive(context: Context, intent: Intent) {
             Log.d("TAG", "onReceive")
 
@@ -109,6 +140,17 @@ class MainViewModel(
                 DETAILS_RESPONSE_SUCCESS_EXTRA -> {
                     var movieDTO_from_broadcast =
                         intent.getParcelableExtra<MovieDTO>(DETAILS_CONDITION_EXTRA)
+
+                    var dbHelper = DBHelper(context_VM, null)
+                  dbHelper.renewCurrentMovieDTO(movieDTO_from_broadcast!!)
+
+
+
+                    dbHelper.close()
+
+
+
+
                     movieDTO_from_broadcast?.let {
                         repositoryImpl.getAboutMovieFromServer(movieDTO_from_broadcast)
                         getDataFromLocalSource(true)

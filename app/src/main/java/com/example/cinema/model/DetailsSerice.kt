@@ -5,16 +5,19 @@ import android.annotation.SuppressLint
 import android.app.IntentService
 import android.content.Context
 import android.content.Intent
+import android.database.CursorIndexOutOfBoundsException
 import android.util.Log
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.android.volley.Request
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 import com.example.cinema.BuildConfig
+import com.example.cinema.model.data_base.DBHelper
 import com.example.cinema.model.gson_kinopoisk_API.Docs
 import com.example.cinema.model.gson_kinopoisk_API.MovieDTO
 import com.example.cinema.model.gson_kinopoisk_API.Poster
 import com.example.cinema.model.gson_kinopoisk_API.Rating
+import com.example.cinema.view.MainActivity
 import com.example.cinema.view.details.*
 import com.example.cinema.viewmodel.*
 import org.json.JSONException
@@ -26,9 +29,9 @@ const val url_trailer = "https://www.youtube.com/embed/DlM2CWNTQ84"
 
 class DetailsService(name: String = "DetailService") : IntentService(name) {
 
-    private val list_trailers = ArrayList<String>()
-    private var is_like_list: ArrayList<Boolean> = ArrayList()
     private lateinit var item_finish: MovieDTO
+private var strr = ""
+    private var list_trailer: MutableList<String> = mutableListOf()
 
 
     private val broadcastIntent = Intent(DETAILS_INTENT_FILTER)
@@ -56,7 +59,7 @@ class DetailsService(name: String = "DetailService") : IntentService(name) {
     private fun onResponse(movieDTO: MovieDTO) {
         val fact = movieDTO
 
-        fact.let {
+        fact?.let {
             onSuccessfulResponse(movieDTO)
         }
     }
@@ -162,10 +165,11 @@ class DetailsService(name: String = "DetailService") : IntentService(name) {
 
         var dto = parseMovieDataHead(mainObject, list)
 
+        item_finish=dto
         return dto
     }
 
-    private fun parseDocs(mainObject: JSONObject): List<Docs> {
+    private fun parseDocs(mainObject: JSONObject): MutableList<Docs> {
 
         val list = ArrayList<Docs>()
         val docsArray = mainObject.getJSONArray("docs")
@@ -192,9 +196,9 @@ class DetailsService(name: String = "DetailService") : IntentService(name) {
 
             try {
                 val ratingObject = ratingPoster(docs.getJSONObject("rating"))
-
+                strr=""
                 trailerMovie(docs.getInt("id"))
-
+              //  do{}while (strr.equals("", false))
                 val item_docs = with(docs) {
                     Docs(
                         null, null,
@@ -204,9 +208,10 @@ class DetailsService(name: String = "DetailService") : IntentService(name) {
                         getString("alternativeName") ?: let { " " },
                         getString("description") ?: let { " " },
                         null, movieLength,
-                        getString("name") ?: let { " " }, null, null,
+                        getString("name") ?: let { " " }, null,
+                        getString("shortDescription"),
                         getString("type") ?: let { " " }, getInt("year"),
-                        null, url_trailer = ""
+                        null, url_trailer = strr
                     )
                 }
 
@@ -250,7 +255,7 @@ class DetailsService(name: String = "DetailService") : IntentService(name) {
 
     private fun parseMovieDataHead(
         mainObject: JSONObject,
-        movieItem: List<Docs>
+        movieItem: MutableList<Docs>
     ): MovieDTO {
         val item = with(mainObject) {
             MovieDTO(
@@ -262,9 +267,15 @@ class DetailsService(name: String = "DetailService") : IntentService(name) {
 
             )
         }
-        item_finish = item
-        return item
+
+
+
+
+
+
+           return item
     }
+
 
     private fun trailerMovie(id: Int) {
 
@@ -297,33 +308,25 @@ class DetailsService(name: String = "DetailService") : IntentService(name) {
 
     @SuppressLint("SuspiciousIndentation")
     private fun parseTrailerMovieData(result: String?) {
-
-        try {
-            var videos = JSONObject(result).getJSONObject("videos")
-            var trailer = videos.getJSONArray("trailers")
-            var trailer0 = trailer[0] as JSONObject
-            var str = trailer0.getString("url")
-            is_like_list.add(true)
-            list_trailers.add(str)
-        } catch (e: Exception) {
-            list_trailers.add(url_trailer)
-            is_like_list.add(false)
-        }
-
-        for (i in 0 until list_trailers.size) {
+       var str=url_trailer
             try {
-                item_finish.docs[i].isLike = is_like_list[i]
-                item_finish.docs[i].url_trailer = list_trailers[i]
+                var videos = JSONObject(result).getJSONObject("videos")
+                var trailer = videos.getJSONArray("trailers")
+                var trailer0 = trailer[0] as JSONObject
+                str = trailer0.getString("url")
 
-            } catch (e: IndexOutOfBoundsException) {
+            } catch (e: Exception) { }
+        finally {
+            list_trailer.add(str)
+            for(i in 0 until list_trailer.size){
+                item_finish.docs[i].url_trailer=list_trailer[i]
+
             }
-
-            onResponse(item_finish)
-
+if(item_finish.docs.size == list_trailer.size){
+            onResponse(item_finish)}
         }
 
-    }
-}
+}}
 
 
 
