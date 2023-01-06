@@ -1,5 +1,6 @@
 package com.example.cinema.view
 
+import android.content.Context
 import android.os.Build
 import android.os.Bundle
 import android.view.*
@@ -127,6 +128,10 @@ class FavoriteMovieFragment : Fragment() {
                         .addToBackStack("")
                         .commitAllowingStateLoss()
                 }
+            }
+        },object : FavoriteMovieFragmentAdapter.removeMovieListener{
+            override fun removeMovieClick(like: Boolean, aboutMovieItem: Docs, context: Context) {
+                viewModel.changeLikeDataInDB(like,aboutMovieItem, context)
             }
         })
     }

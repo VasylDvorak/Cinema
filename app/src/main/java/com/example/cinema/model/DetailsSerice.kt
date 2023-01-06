@@ -319,7 +319,12 @@ private var strr = ""
         finally {
             list_trailer.add(str)
             for(i in 0 until list_trailer.size){
-                item_finish.docs[i].url_trailer=list_trailer[i]
+                try{
+                    item_finish.docs[i].url_trailer=list_trailer[i]
+                }
+                catch(e: IndexOutOfBoundsException){
+                    item_finish.docs[0].url_trailer=list_trailer[0]
+                }
 
             }
 if(item_finish.docs.size == list_trailer.size){

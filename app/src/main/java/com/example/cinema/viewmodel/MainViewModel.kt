@@ -6,7 +6,6 @@ import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.util.Log
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
@@ -113,6 +112,26 @@ class MainViewModel(
 
     fun getData(): MutableLiveData<AppState> {
         return liveDataToObserve
+    }
+
+    fun changeLikeDataInDB(like: Boolean, aboutMovieItem: Docs, context: Context) {
+        var dbHelper = DBHelper(context, null)
+        if (like){
+            dbHelper.addFavoriteMovie(aboutMovieItem)
+
+        }else{
+            dbHelper.removeFavoriteMovie(aboutMovieItem)
+        }
+        dbHelper.close()
+
+    }
+
+    fun getLike(aboutMovieItem: Docs, context: Context) : Boolean {
+        var dbHelper = DBHelper(context, null)
+        val like_movie = dbHelper.like(aboutMovieItem)
+        dbHelper.close()
+        return like_movie
+
     }
 
 

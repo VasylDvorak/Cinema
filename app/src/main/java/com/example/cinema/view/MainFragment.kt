@@ -3,6 +3,7 @@ package com.example.cinema.view
 import android.annotation.SuppressLint
 import android.app.SearchManager
 import android.content.Context
+import android.database.CursorIndexOutOfBoundsException
 import android.os.Build
 import android.os.Bundle
 import android.view.*
@@ -27,22 +28,13 @@ import kotlinx.android.synthetic.main.fragment_main.*
 
 class MainFragment : Fragment() {
 
-private var b = false
+    private var b = false
     private var _binding: FragmentMainBinding? = null
     private val binding
         get() = _binding!!
 
     private val viewModel: MainViewModel by lazy {
         ViewModelProvider(this).get(MainViewModel::class.java)
-
-    }
-
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-
-        val observer = Observer<AppState> { renderData(it) }
-        viewModel.getData().observe(viewLifecycleOwner, observer)
-
 
     }
 
@@ -54,8 +46,12 @@ private var b = false
             if (!(start_cinema.equals("", true))) {
                 viewModel.getDataFromRemoteSource(start_cinema, context)
                 start_cinema = ""
-            } else{
-                b=true
+                val observer = Observer<AppState> {
+                    renderData(it)
+                }
+                viewModel.getData().observe(viewLifecycleOwner, observer)
+            } else {
+                b = true
 
             }
 
@@ -67,12 +63,24 @@ private var b = false
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        if (b){
-            viewModel.getFromDataBase(requireContext())
-            val observer = Observer<AppState> { renderData(it) }
-            viewModel.getData().observe(viewLifecycleOwner, observer)
+        if (b) {
+            try {
 
-    }
+                viewModel.getFromDataBase(requireContext())
+                val observer = Observer<AppState> {
+                    renderData(it) }
+                viewModel.getData().observe(viewLifecycleOwner, observer)
+            }catch (e: CursorIndexOutOfBoundsException){
+                viewModel.getDataFromRemoteSource(
+                    resources.getString(R.string.first_request),
+                    context)
+                val observer2 = Observer<AppState> {
+                    renderData(it) }
+                viewModel.getData().observe(viewLifecycleOwner, observer2)
+            }
+
+        }
+
     }
 
 
@@ -90,8 +98,6 @@ private var b = false
 
         return binding.root
     }
-
-
 
 
     override fun onDestroyView() {
@@ -233,7 +239,8 @@ private var b = false
         return MainFragmentAdapter(object : MainFragmentAdapter.OnItemViewClickListener {
 
             override fun onItemClick(aboutMovie: Docs) {
-                val model = ViewModelProviders.of(requireActivity()).get(DetailsFragmentViewModel::class.java)
+                val model = ViewModelProviders.of(requireActivity())
+                    .get(DetailsFragmentViewModel::class.java)
                 model.select(aboutMovie)
                 activity?.supportFragmentManager?.apply {
                     beginTransaction()
@@ -242,10 +249,12 @@ private var b = false
                         .commitAllowingStateLoss()
                 }
             }
-        })
+        }, object : MainFragmentAdapter.LikeClickListener {
+            override fun onLikeClick(like: Boolean, aboutMovieItem: Docs, context: Context) {
+                viewModel.changeLikeDataInDB(like, aboutMovieItem, context)
+            }
+        }, viewModel)
     }
-
-
 
 
 }

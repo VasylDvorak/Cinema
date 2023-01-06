@@ -1,5 +1,6 @@
 package com.example.cinema.view
 
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -19,13 +20,17 @@ import com.example.cinema.model.gson_kinopoisk_API.Docs
 import com.example.cinema.viewmodel.MainViewModel
 import jp.wasabeef.glide.transformations.RoundedCornersTransformation
 
-class FavoriteMovieFragmentAdapter(private var onItemViewClickListener: OnItemViewClickListener?) :
+class FavoriteMovieFragmentAdapter(private var onItemViewClickListener: OnItemViewClickListener?,
+                                   private var removeMovie: removeMovieListener?) :
     RecyclerView.Adapter<FavoriteMovieFragmentAdapter.MainViewHolder>() {
 
 
     private var aboutMovie: List<Docs> = listOf()
     private var upcoming: Boolean = false
 
+    interface removeMovieListener{
+        fun removeMovieClick(like: Boolean, aboutMovieItem: Docs, context: Context)
+    }
 
     interface OnItemViewClickListener {
         fun onItemClick(aboutMovie: Docs)
@@ -104,34 +109,12 @@ class FavoriteMovieFragmentAdapter(private var onItemViewClickListener: OnItemVi
 
                         heart.apply {
 
-                            var dbHelper = DBHelper(context, null)
-
-                            if (!dbHelper.like(aboutMovieItem)) {
-                                setImageResource(R.drawable.ic_baseline_favorite_border_24_empty)
-                            } else {
-                                setImageResource(R.drawable.ic_baseline_favorite_24_yellow)
-                            }
-
-
-
                             setOnClickListener {
 
-                                if (isLike) {
-                                    setImageResource(R.drawable.ic_baseline_favorite_border_24_empty)
-                                    isLike = false
-                                    dbHelper.removeFavoriteMovie(aboutMovieItem)
-
-
-                                } else {
-                                    setImageResource(R.drawable.ic_baseline_favorite_24_yellow)
-                                    isLike = true
-                                    dbHelper.addFavoriteMovie(aboutMovieItem)
-
-                                }
-
+                                removeMovie?.removeMovieClick(false, aboutMovieItem, context)
 
                             }
-                            dbHelper.close()
+
                         }
 
                         setOnClickListener {

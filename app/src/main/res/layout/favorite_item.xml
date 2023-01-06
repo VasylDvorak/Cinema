@@ -130,7 +130,7 @@
             android:layout_width="@dimen/heart_width"
             android:layout_height="@dimen/heart_width"
             android:layout_margin="@dimen/heart_margin"
-            android:src="@drawable/ic_baseline_favorite_border_24"
+            android:src="@drawable/ic_baseline_favorite_24_yellow"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
         <TextView

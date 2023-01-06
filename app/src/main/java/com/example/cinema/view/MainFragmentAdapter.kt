@@ -1,28 +1,36 @@
 package com.example.cinema.view
 
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.fragment.app.FragmentActivity
-import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.GenericTransitionOptions
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions.bitmapTransform
 import com.example.cinema.R
-import com.example.cinema.model.data_base.DBHelper
 import com.example.cinema.model.gson_kinopoisk_API.Docs
 import com.example.cinema.viewmodel.MainViewModel
 import jp.wasabeef.glide.transformations.RoundedCornersTransformation
 
-class MainFragmentAdapter(private var onItemViewClickListener: OnItemViewClickListener?) :
+class MainFragmentAdapter(
+    private var onItemViewClickListener: OnItemViewClickListener?,
+    private var likeClickListener: LikeClickListener?,
+    private var viewModel: MainViewModel
+) :
     RecyclerView.Adapter<MainFragmentAdapter.MainViewHolder>() {
 
 
     private var aboutMovie: List<Docs> = listOf()
     private var upcoming: Boolean = false
+
+
+    interface LikeClickListener{
+        fun onLikeClick(like: Boolean, aboutMovieItem: Docs, context: Context)
+    }
 
 
     interface OnItemViewClickListener {
@@ -81,14 +89,11 @@ class MainFragmentAdapter(private var onItemViewClickListener: OnItemViewClickLi
 
                         heart.apply {
 
-                           var dbHelper = DBHelper(context, null)
-
-                            if (!dbHelper.like(aboutMovieItem)) {
+                            if (!(viewModel.getLike(aboutMovieItem, context))) {
                                 setImageResource(R.drawable.ic_baseline_favorite_border_24_empty)
                             } else {
                                 setImageResource(R.drawable.ic_baseline_favorite_24_yellow)
                             }
-
 
 
                             setOnClickListener {
@@ -96,19 +101,19 @@ class MainFragmentAdapter(private var onItemViewClickListener: OnItemViewClickLi
                                 if (isLike) {
                                     setImageResource(R.drawable.ic_baseline_favorite_border_24_empty)
                                     isLike = false
-                                    dbHelper.removeFavoriteMovie(aboutMovieItem)
+                                    likeClickListener?.onLikeClick(isLike, aboutMovieItem, context)
 
 
                                 } else {
                                     setImageResource(R.drawable.ic_baseline_favorite_24_yellow)
                                     isLike = true
-                                    dbHelper.addFavoriteMovie(aboutMovieItem)
+                                    likeClickListener?.onLikeClick(isLike, aboutMovieItem, context)
 
                                 }
 
 
                             }
-                            dbHelper.close()
+
                         }
                         setOnClickListener {
                             onItemViewClickListener?.onItemClick(aboutMovieItem)
