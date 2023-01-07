@@ -110,9 +110,8 @@ private var strr = ""
     }
 
     fun loadMovie(find_request: String?) {
-        val url = "https://api.kinopoisk.dev/movie?field" +
-                "=name&search=${find_request}&isStrict=false&" +
-                "token=${BuildConfig.KINOPOISK_API_KEY}"
+        val url = find_request
+
         try {
             try {
                 requestMovieData(url.toString())
@@ -198,7 +197,7 @@ private var strr = ""
                 val ratingObject = ratingPoster(docs.getJSONObject("rating"))
                 strr=""
                 trailerMovie(docs.getInt("id"))
-              //  do{}while (strr.equals("", false))
+
                 val item_docs = with(docs) {
                     Docs(
                         null, null,

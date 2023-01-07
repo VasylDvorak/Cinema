@@ -55,7 +55,7 @@ class FavoriteMovieFragmentAdapter(private var onItemViewClickListener: OnItemVi
                             aboutMovieItem.alternativeName
 
                         findViewById<TextView>(R.id.details_genre_movie).text =
-                            resources.getText(R.string.genere)
+                            resources.getText(R.string.type)
                                 as String + " " + aboutMovieItem.type
 
 

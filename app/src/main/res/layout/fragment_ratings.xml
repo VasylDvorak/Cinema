@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center">
+<LinearLayout
+    android:id="@+id/layout_ratings"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center"
+    tools:context=".view.RatingsFragment">
+
+
+    <TextView
+        android:id="@+id/movie"
+        style="@style/TextRatingsStyle"
+        android:background="@android:color/holo_green_light"
+        android:text="@string/movie_ratings" />
+
+    <TextView
+        android:id="@+id/TV_series"
+        style="@style/TextRatingsStyle"
+        android:background="@android:color/holo_orange_light"
+        android:text="@string/tv_series_ratings" />
+
+    <TextView
+        android:id="@+id/cartoon"
+        style="@style/TextRatingsStyle"
+        android:background="@android:color/holo_green_light"
+        android:text="@string/cartoon_ratings" />
+    <TextView
+        android:id="@+id/anime"
+        style="@style/TextRatingsStyle"
+        android:background="@android:color/holo_orange_light"
+        android:text="@string/anime_ratings" />
+    <TextView
+        android:id="@+id/animated_series"
+        style="@style/TextRatingsStyle"
+        android:background="@android:color/holo_green_light"
+        android:text="@string/animated_series_ratings" />
+
+    <TextView
+        android:id="@+id/TV_show"
+        style="@style/TextRatingsStyle"
+        android:background="@android:color/holo_orange_light"
+        android:text="@string/tv_show_ratings" />
+
+    <TextView
+        android:id="@+id/mini_series"
+        style="@style/TextRatingsStyle"
+        android:background="@android:color/holo_green_light"
+        android:text="@string/mini_series_ratings" />
+
+
+
+</LinearLayout>
+</ScrollView>

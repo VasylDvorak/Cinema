@@ -9,6 +9,7 @@ import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
+import com.example.cinema.BuildConfig
 import com.example.cinema.R
 import com.example.cinema.model.DetailsService
 import com.example.cinema.model.REQUEST_MOVIE
@@ -104,7 +105,9 @@ class MainFragmentViewModel(
         LocalBroadcastManager.getInstance(context)
             .registerReceiver(loadResultsReceiver, IntentFilter(DETAILS_INTENT_FILTER))
         context.startService(Intent(context, DetailsService::class.java).apply {
-            putExtra(REQUEST_MOVIE, find_request)
+            putExtra(REQUEST_MOVIE, "https://api.kinopoisk.dev/movie?field" +
+                    "=name&search=${find_request}&isStrict=false&" +
+                    "token=${BuildConfig.KINOPOISK_API_KEY}")
         })
 
 

@@ -38,7 +38,7 @@ class MainActivity : AppCompatActivity() {
 
         val mainFragment = MainFragment()
         val favoriteMovieFragment = FavoriteMovieFragment()
-        val secondFragment = SecondFragment()
+        val ratingsFragment = RatingsFragment()
         setCurrentFragment(mainFragment)
 
 
@@ -52,7 +52,7 @@ class MainActivity : AppCompatActivity() {
             when (it.itemId) {
                 R.id.home -> setCurrentFragment(mainFragment)
                 R.id.favorites -> setCurrentFragment(favoriteMovieFragment)
-                R.id.ratings -> setCurrentFragment(secondFragment)
+                R.id.ratings -> setCurrentFragment(ratingsFragment)
             }
 
             true

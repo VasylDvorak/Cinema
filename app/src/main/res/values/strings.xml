@@ -26,7 +26,7 @@
     <string name="search">Search</string>
     <string name="about">About</string>
     <string name="looking_for">Looking for:</string>
-    <string name="genere">Genere:</string>
+    <string name="type">Type of movie:</string>
     <string name="min">min</string>
     <string name="rating">Rating:</string>
     <string name="first_request">король</string>
@@ -35,4 +35,11 @@
     <string name="new_request_for_movie">New request for movie</string>
     <string name="name">name</string>
     <string name="change_connection">Lost connection</string>
+    <string name="movie_ratings">MOVIE</string>
+    <string name="tv_series_ratings">TV-SERIES</string>
+    <string name="cartoon_ratings">CARTOON</string>
+    <string name="anime_ratings">ANIME</string>
+    <string name="animated_series_ratings">ANIMATED SERIES</string>
+    <string name="tv_show_ratings">TV SHOW</string>
+    <string name="mini_series_ratings">MINI SERIES</string>
 </resources>

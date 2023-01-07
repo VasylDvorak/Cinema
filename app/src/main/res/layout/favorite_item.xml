@@ -10,7 +10,7 @@
     android:foreground="?android:attr/selectableItemBackground"
     android:padding="@dimen/padding_card"
     app:cardBackgroundColor="@color/card_color"
-    app:cardCornerRadius="@dimen/favoite_card_corner_radius"
+    app:cardCornerRadius="@dimen/favorite_card_corner_radius"
     app:layout_constraintStart_toStartOf="parent"
     app:layout_constraintTop_toTopOf="parent">
 

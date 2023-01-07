@@ -103,7 +103,7 @@ class DetailsFragment : Fragment() {
 
 
                 docs_data.apply {
-                    detailsGenreMovie.text = resources.getText(R.string.genere)
+                    detailsGenreMovie.text = resources.getText(R.string.type)
                             as String + " " + type
                     detailsDurationMovie.text = movieLength.toString() + " " +
                             resources.getText(R.string.min)
