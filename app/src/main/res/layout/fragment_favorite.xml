@@ -16,7 +16,7 @@
 
 
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recycler_view_lines_now_playing"
+                android:id="@+id/recycler_view_lines_favorite"
                 app.layaoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

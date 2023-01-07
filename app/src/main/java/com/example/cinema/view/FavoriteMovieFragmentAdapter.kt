@@ -17,7 +17,7 @@ import com.bumptech.glide.request.RequestOptions.bitmapTransform
 import com.example.cinema.R
 import com.example.cinema.model.data_base.DBHelper
 import com.example.cinema.model.gson_kinopoisk_API.Docs
-import com.example.cinema.viewmodel.MainViewModel
+
 import jp.wasabeef.glide.transformations.RoundedCornersTransformation
 
 class FavoriteMovieFragmentAdapter(private var onItemViewClickListener: OnItemViewClickListener?,
@@ -26,22 +26,21 @@ class FavoriteMovieFragmentAdapter(private var onItemViewClickListener: OnItemVi
 
 
     private var aboutMovie: List<Docs> = listOf()
-    private var upcoming: Boolean = false
+
 
     interface removeMovieListener{
-        fun removeMovieClick(like: Boolean, aboutMovieItem: Docs, context: Context)
+        fun removeMovieClick(like: Boolean, aboutMovieItem: Docs, context: Context, position: Int)
     }
 
     interface OnItemViewClickListener {
         fun onItemClick(aboutMovie: Docs)
     }
 
-    fun setAboutMovie(data: List<Docs>, upcoming: Boolean) {
+    fun setAboutMovie(data: List<Docs>) {
 
         aboutMovie = data
         notifyDataSetChanged()
 
-        this.upcoming = upcoming
     }
 
     inner class MainViewHolder(view: View) : RecyclerView.ViewHolder(view) {
@@ -105,13 +104,14 @@ class FavoriteMovieFragmentAdapter(private var onItemViewClickListener: OnItemVi
 
 
 
-                        var heart: ImageView = findViewById(R.id.is_like_movie)
+                        var heart: ImageView = findViewById(R.id.delete)
 
                         heart.apply {
 
                             setOnClickListener {
 
-                                removeMovie?.removeMovieClick(false, aboutMovieItem, context)
+                                removeMovie?.removeMovieClick(false, aboutMovieItem, context,
+                                    absoluteAdapterPosition)
 
                             }
 

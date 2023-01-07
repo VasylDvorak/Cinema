@@ -10,7 +10,7 @@
     android:foreground="?android:attr/selectableItemBackground"
     android:padding="@dimen/padding_card"
     app:cardBackgroundColor="@color/card_color"
-    app:cardCornerRadius="@dimen/card_radius"
+    app:cardCornerRadius="@dimen/favoite_card_corner_radius"
     app:layout_constraintStart_toStartOf="parent"
     app:layout_constraintTop_toTopOf="parent">
 
@@ -126,11 +126,11 @@
             app:layout_constraintLeft_toRightOf="@+id/fragment_banner_movie"
             app:layout_constraintTop_toBottomOf="@+id/details_budget_movie" />
         <ImageView
-            android:id="@+id/is_like_movie"
+            android:id="@+id/delete"
             android:layout_width="@dimen/heart_width"
             android:layout_height="@dimen/heart_width"
             android:layout_margin="@dimen/heart_margin"
-            android:src="@drawable/ic_baseline_favorite_24_yellow"
+            android:src="@drawable/ic_baseline_delete_forever_24"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
         <TextView

@@ -23,7 +23,7 @@ import com.example.cinema.view.MainActivity.Companion.start_cinema
 import com.example.cinema.view.details.DetailsFragment
 import com.example.cinema.viewmodel.AppState
 import com.example.cinema.viewmodel.DetailsFragmentViewModel
-import com.example.cinema.viewmodel.MainViewModel
+import com.example.cinema.viewmodel.MainFragmentViewModel
 import kotlinx.android.synthetic.main.fragment_main.*
 
 class MainFragment : Fragment() {
@@ -33,8 +33,8 @@ class MainFragment : Fragment() {
     private val binding
         get() = _binding!!
 
-    private val viewModel: MainViewModel by lazy {
-        ViewModelProvider(this).get(MainViewModel::class.java)
+    private val viewModel: MainFragmentViewModel by lazy {
+        ViewModelProvider(this).get(MainFragmentViewModel::class.java)
 
     }
 

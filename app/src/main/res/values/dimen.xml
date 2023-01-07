@@ -26,4 +26,5 @@
     <dimen name="card_radius">10dp</dimen>
     <dimen name="card_margin">10dp</dimen>
     <dimen name="title_padding">100dp</dimen>
+    <dimen name="favoite_card_corner_radius">40dp</dimen>
 </resources>

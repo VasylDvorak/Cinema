@@ -33,7 +33,7 @@ const val DETAILS_RESPONSE_SUCCESS_EXTRA = "RESPONSE SUCCESS"
 const val DETAILS_CONDITION_EXTRA = "NEW REQUEST"
 const val PROCESS_ERROR = "Обработка ошибки"
 
-class MainViewModel(
+class MainFragmentViewModel(
     val liveDataToObserve: MutableLiveData<AppState> = MutableLiveData(),
     private val repositoryImpl: Repository = RepositoryImpl(),
 ) : ViewModel() {

@@ -13,13 +13,14 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions.bitmapTransform
 import com.example.cinema.R
 import com.example.cinema.model.gson_kinopoisk_API.Docs
-import com.example.cinema.viewmodel.MainViewModel
+import com.example.cinema.viewmodel.MainFragmentViewModel
+
 import jp.wasabeef.glide.transformations.RoundedCornersTransformation
 
 class MainFragmentAdapter(
     private var onItemViewClickListener: OnItemViewClickListener?,
     private var likeClickListener: LikeClickListener?,
-    private var viewModel: MainViewModel
+    private var viewModel: MainFragmentViewModel
 ) :
     RecyclerView.Adapter<MainFragmentAdapter.MainViewHolder>() {
 
