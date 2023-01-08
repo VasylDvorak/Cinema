@@ -1,7 +1,5 @@
 package com.example.cinema.model.data_base
 
-
-import android.annotation.SuppressLint
 import android.content.ContentValues
 import android.content.Context
 import android.database.Cursor
@@ -12,9 +10,8 @@ import com.example.cinema.model.gson_kinopoisk_API.Docs
 import com.example.cinema.model.gson_kinopoisk_API.MovieDTO
 import com.google.gson.Gson
 
-class DBHelper(context: Context, factory: SQLiteDatabase.CursorFactory?) :
+class DataBase(context: Context, factory: SQLiteDatabase.CursorFactory?) :
     SQLiteOpenHelper(context, DATABASE_NAME, factory, DATABASE_VERSION) {
-private var context_app = context
 
     companion object {
         // here we have defined variables for our database
@@ -50,10 +47,10 @@ private var context_app = context
 
         // below is a sqlite query, where column names
         // along with their data types is given
-        val query = ("CREATE TABLE IF NOT EXISTS "+TABLE_NAME+" ("
-        +ID_COL+" INTEGER PRIMARY KEY AUTOINCREMENT, "+
-        MOVIEDTO_COl+" TEXT,"+
-                MOVIEDTOFAVORITE_COL+" TEXT"+")")
+        val query = ("CREATE TABLE IF NOT EXISTS " + TABLE_NAME + " ("
+                + ID_COL + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                MOVIEDTO_COl + " TEXT," +
+                MOVIEDTOFAVORITE_COL + " TEXT" + ")")
 
         // we are calling sqlite
         // method for executing our query
@@ -66,88 +63,84 @@ private var context_app = context
     }
 
 
-
-    fun renewCurrentMovieDTO(movieDTO: MovieDTO){
+    fun renewCurrentMovieDTO(movieDTO: MovieDTO) {
         updateFavoriteMovie(movieDTO, MOVIEDTO_COl, MOVIEDTOFAVORITE_COL)
-}
+    }
 
 
-  fun readCurrentMovieDTO() : MovieDTO?{
+    fun readCurrentMovieDTO(): MovieDTO? {
 
-      return readFromDB(MOVIEDTO_COl)
-  }
+        return readFromDB(MOVIEDTO_COl)
+    }
 
-    fun readFavoriteMovieMovieDTO() : MovieDTO?{
+    fun readFavoriteMovieMovieDTO(): MovieDTO? {
 
         return readFromDB(MOVIEDTOFAVORITE_COL)
     }
 
 
+    fun readFromDB(str: String): MovieDTO? {
+
+        var db = this.readableDatabase
+        var cursor = db.query(
+            TABLE_NAME, arrayOf(str),
+            null, null, null, null, null
+        )
+
+        cursor!!.moveToFirst()
+
+        var jsonString = cursor.getString(0)
 
 
-fun readFromDB(str: String): MovieDTO?{
-
-    var db = this.readableDatabase
-    var cursor = db.query(
-        TABLE_NAME, arrayOf(str),
-        null, null, null, null, null
-    )
-
-    cursor!!.moveToFirst()
-
-    var jsonString=cursor.getString(0)
+        val gson = Gson()
 
 
-
-    val gson = Gson()
-
-
-    var movieDTO = gson.fromJson(jsonString, MovieDTO::class.java)
-    cursor.close()
-    db.close()
+        var movieDTO = gson.fromJson(jsonString, MovieDTO::class.java)
+        cursor.close()
+        db.close()
 
 
-    return movieDTO
+        return movieDTO
 
-}
+    }
 
 
-    fun removeFavoriteMovie(docs: Docs){
+    fun removeFavoriteMovie(docs: Docs) {
 
         var MovieDTOLike = readFromDB(MOVIEDTOFAVORITE_COL)
 
-MovieDTOLike?.let{MovieDTOLike
+        MovieDTOLike?.let {
+            MovieDTOLike
 
-    for (i in 0 until it.docs.size) {
-        if (it.docs[i].id == docs.id) {
-            it.docs.removeAt(i)
-            break
+            for (i in 0 until it.docs.size) {
+                if (it.docs[i].id == docs.id) {
+                    it.docs.removeAt(i)
+                    break
+                }
+            }
+
+
+
+            updateFavoriteMovie(MovieDTOLike, MOVIEDTOFAVORITE_COL, MOVIEDTO_COl)
+
         }
     }
 
 
+    fun addFavoriteMovie(docs: Docs) {
 
-        updateFavoriteMovie(MovieDTOLike, MOVIEDTOFAVORITE_COL, MOVIEDTO_COl)
+        var MovieDTOLike: MovieDTO? = readFromDB(MOVIEDTOFAVORITE_COL)
 
-    }
-    }
-
-
-
-    fun addFavoriteMovie(docs: Docs){
-
-        var MovieDTOLike : MovieDTO? = readFromDB(MOVIEDTOFAVORITE_COL)
-
-var b= true
-        if (MovieDTOLike !=null) {
+        var b = true
+        if (MovieDTOLike != null) {
             for (docss in MovieDTOLike.docs) {
                 if (docs.id == docss.id) {
                     b = false
                     break
                 }
             }
-        }else{
-          MovieDTOLike = MovieDTO(docs= mutableListOf(docs))
+        } else {
+            MovieDTOLike = MovieDTO(docs = mutableListOf(docs))
         }
 
         if (b) {
@@ -158,21 +151,21 @@ var b= true
         }
     }
 
-    fun updateFavoriteMovie(movieDTO: MovieDTO?, changable : String, non_changeble : String){
-        var  db = this.writableDatabase
+    fun updateFavoriteMovie(movieDTO: MovieDTO?, changable: String, non_changeble: String) {
+        var db = this.writableDatabase
 
-        var  cursor = db.query(
+        var cursor = db.query(
             TABLE_NAME, arrayOf(non_changeble),
             null, null, null, null, null
         )
         cursor!!.moveToFirst()
         val gson = Gson()
-        val values = ContentValues();
+        val values = ContentValues()
         values.put(changable, gson.toJson(movieDTO))
 
         try {
             values.put(non_changeble, cursor.getString(0))
-        }catch (e: CursorIndexOutOfBoundsException){
+        } catch (e: CursorIndexOutOfBoundsException) {
             values.put(non_changeble, "")
         }
 
@@ -180,18 +173,15 @@ var b= true
         // on below line we are calling a update method to update our database and passing our values.
         // and we are comparing it with name of our course which is stored in original name variable.
 
-        if(cursor.count !=0){
-        db.update(TABLE_NAME, values, null, null)}
-        else{
+        if (cursor.count != 0) {
+            db.update(TABLE_NAME, values, null, null)
+        } else {
             db.insert(TABLE_NAME, null, values)
         }
 
 
         cursor.close()
         db.close()
-
-
-
 
 
     }
@@ -208,32 +198,32 @@ var b= true
 
         // below code returns a cursor to
         // read data from the database
-        return db.rawQuery("SELECT * FROM "+TABLE_NAME, null)
+        return db.rawQuery("SELECT * FROM " + TABLE_NAME, null)
 
 
     }
 
-    fun openCreate(context: Context){
-        context.applicationContext.openOrCreateDatabase("test.db", Context.MODE_PRIVATE,null)
+    fun openCreate(context: Context) {
+        context.applicationContext.openOrCreateDatabase("test.db", Context.MODE_PRIVATE, null)
     }
 
-fun like(docs: Docs): Boolean{
-    readFavoriteMovieMovieDTO()
+    fun like(docs: Docs): Boolean {
+        readFavoriteMovieMovieDTO()
 
-    var MovieDTOLike : MovieDTO? = readFavoriteMovieMovieDTO()
+        var MovieDTOLike: MovieDTO? = readFavoriteMovieMovieDTO()
 
-    var b= false
-    if (MovieDTOLike !=null) {
-        for (docss in MovieDTOLike.docs) {
-            if (docs.id == docss.id) {
-                b = true
-                break
+        var b = false
+        if (MovieDTOLike != null) {
+            for (docss in MovieDTOLike.docs) {
+                if (docs.id == docss.id) {
+                    b = true
+                    break
+                }
             }
         }
-    }
 
-  return b
-}
+        return b
+    }
 
 
 }

@@ -6,7 +6,8 @@ import com.example.cinema.model.gson_kinopoisk_API.nowPlaying
 class RepositoryImpl : Repository {
     private var newest_movie_DTO: MovieDTO = nowPlaying()
     private lateinit var  new_favorite_movie_DTO_changed : MovieDTO
-    override fun getAboutMovieFromServer(new_movie_DTO: MovieDTO) {
+    private lateinit var  the_best_movie_DTO_changed : MovieDTO
+    override fun setAboutMovieFromServer(new_movie_DTO: MovieDTO) {
         newest_movie_DTO = new_movie_DTO
     }
 
@@ -17,4 +18,9 @@ class RepositoryImpl : Repository {
 
     }
     override fun getFavoriteMovie(): MovieDTO=new_favorite_movie_DTO_changed
+    override fun setTheBestMovie(the_best_movie_DTO: MovieDTO) {
+        the_best_movie_DTO_changed=the_best_movie_DTO
+    }
+
+    override fun getTheBestMovie(): MovieDTO = the_best_movie_DTO_changed
 }

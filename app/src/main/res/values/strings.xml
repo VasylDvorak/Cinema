@@ -12,7 +12,6 @@
     <string name="home">Home</string>
     <string name="favorites">Favorites</string>
     <string name="ratings">Ratings</string>
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="dummy_button">Dummy Button</string>
     <string name="dummy_content">DUMMY\nCONTENT</string>
@@ -35,11 +34,11 @@
     <string name="new_request_for_movie">New request for movie</string>
     <string name="name">name</string>
     <string name="change_connection">Lost connection</string>
-    <string name="movie_ratings">MOVIE</string>
-    <string name="tv_series_ratings">TV-SERIES</string>
-    <string name="cartoon_ratings">CARTOON</string>
-    <string name="anime_ratings">ANIME</string>
-    <string name="animated_series_ratings">ANIMATED SERIES</string>
-    <string name="tv_show_ratings">TV SHOW</string>
-    <string name="mini_series_ratings">MINI SERIES</string>
+    <string name="movie_ratings">THE BEST MOVIE</string>
+    <string name="tv_series_ratings">THE BEST TV SERIES</string>
+    <string name="cartoon_ratings">THE BEST CARTOON</string>
+    <string name="anime_ratings">THE BEST ANIME</string>
+    <string name="animated_series_ratings">THE BEST ANIMATED SERIES</string>
+    <string name="tv_show_ratings">THE BEST TV SHOW</string>
+    <string name="mini_series_ratings">THE BEST MINI SERIES</string>
 </resources>

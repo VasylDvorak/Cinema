@@ -9,14 +9,19 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <LinearLayout
             android:id="@+id/mainView"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+            <TextView
+                android:id="@+id/title_ratings"
+                style="@style/TextRatingsStyle"
+                android:gravity="center"
+                android:background="@color/purple_200"/>
 
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recycler_view_lines_favorite"
+                android:id="@+id/recycler_view_lines_the_best"
                 app.layaoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -24,11 +29,10 @@
                 android:scrollbars="vertical"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                tools:listitem="@layout/favorite_item"
-                />
+                tools:listitem="@layout/the_best_item" />
 
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
+        </LinearLayout>
     </ScrollView>
 
     <FrameLayout

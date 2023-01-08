@@ -5,8 +5,6 @@ import android.content.Intent
 import android.util.Log
 import com.example.cinema.R
 import com.example.cinema.view.Extensions
-import com.example.cinema.view.MainActivity
-import com.example.cinema.view.MainFragment
 
 private const val TAG = "MainServiceTAG"
 const val MAIN_SERVICE_STRING_EXTRA = "MainServiceExtra"

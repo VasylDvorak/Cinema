@@ -10,7 +10,9 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.example.cinema.R
 import com.example.cinema.databinding.ActivityMainBinding
-import com.example.cinema.model.data_base.DBHelper
+import com.example.cinema.view.favorite_movie.FavoriteMovieFragment
+import com.example.cinema.view.main_movie.MainFragment
+import com.example.cinema.view.ratings_movie.RatingsFragment
 
 
 const val NAME_MSG: String = "MSG"
@@ -26,8 +28,6 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-
-
         initNotificationChannel()
         broadcastIntent()
 
@@ -35,39 +35,28 @@ class MainActivity : AppCompatActivity() {
         val view = binding.root
         setContentView(view)
 
-
         val mainFragment = MainFragment()
         val favoriteMovieFragment = FavoriteMovieFragment()
         val ratingsFragment = RatingsFragment()
         setCurrentFragment(mainFragment)
 
-
-
-
-
         binding.bottomNavigationView.setOnNavigationItemSelectedListener {
-
-
-
             when (it.itemId) {
                 R.id.home -> setCurrentFragment(mainFragment)
                 R.id.favorites -> setCurrentFragment(favoriteMovieFragment)
                 R.id.ratings -> setCurrentFragment(ratingsFragment)
             }
-
             true
         }
 
     }
 
     private fun setCurrentFragment(fragment: Fragment) =
-
         supportFragmentManager.beginTransaction().apply {
             replace(R.id.flFragment, fragment)
             addToBackStack("")
             commit()
         }
-
     // инициализация канала нотификаций
     private fun initNotificationChannel() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {

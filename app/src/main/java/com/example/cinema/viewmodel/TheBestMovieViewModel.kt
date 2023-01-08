@@ -21,95 +21,45 @@ import com.example.cinema.model.gson_kinopoisk_API.MovieDTO
 import com.example.cinema.view.Extensions
 
 
-const val DETAILS_INTENT_FILTER = "DETAILS INTENT FILTER"
-const val DETAILS_LOAD_RESULT_EXTRA = "LOAD RESULT"
-const val DETAILS_INTENT_EMPTY_EXTRA = "INTENT IS EMPTY"
-const val DETAILS_DATA_EMPTY_EXTRA = "DATA IS EMPTY"
-const val DETAILS_RESPONSE_EMPTY_EXTRA = "RESPONSE IS EMPTY"
-const val DETAILS_REQUEST_ERROR_EXTRA = "REQUEST ERROR"
-const val DETAILS_REQUEST_ERROR_MESSAGE_EXTRA = "REQUEST ERROR MESSAGE"
-const val DETAILS_URL_MALFORMED_EXTRA = "URL MALFORMED"
-const val DETAILS_RESPONSE_SUCCESS_EXTRA = "RESPONSE SUCCESS"
-const val DETAILS_CONDITION_EXTRA = "NEW REQUEST"
-const val PROCESS_ERROR = "Обработка ошибки"
-
-class MainFragmentViewModel(
+class TheBestMovieViewModel(
     val liveDataToObserve: MutableLiveData<AppState> = MutableLiveData(),
     private val repositoryImpl: Repository = RepositoryImpl(),
 ) : ViewModel() {
 
     private lateinit var context_VM: Context
 
-
-    var liveDataCurrent = MutableLiveData<AppState>()
-    fun getAboutMovie() = getDataFromLocalSource(true)
-    fun getUpcomingMovie() = repositoryImpl.getAboutMovieLocalStorageUpcoming()
-
-    private fun getDataFromLocalSource(isNowPlaying: Boolean) {
+    fun getAboutMovie() = getDataFromLocalSource()
+    private fun getDataFromLocalSource() {
         liveDataToObserve.value = AppState.Loading
         context_VM.let {
             LocalBroadcastManager.getInstance(it).unregisterReceiver(loadResultsReceiver)
         }
-        liveDataToObserveUpdate(isNowPlaying)
+        liveDataToObserveUpdate()
     }
 
-    fun liveDataToObserveUpdate(isNowPlaying: Boolean) {
+    fun liveDataToObserveUpdate() {
         Thread {
-
-            liveDataToObserve.postValue(
-                AppState.Success(
-                    if (isNowPlaying) {
-
-                        repositoryImpl.getAboutMovieLocalStorageNowPlaying()
-
-                    } else {
-                        repositoryImpl.getAboutMovieLocalStorageUpcoming()
-                    }
-                )
-            )
+            liveDataToObserve.postValue(AppState.Success(repositoryImpl.getTheBestMovie()))
         }.start()
-
-
-    }
-
-
-    fun getFromDataBase(context: Context) {
-        var dbHelper = DataBase(context, null)
-        try {
-            var start_condition = dbHelper.readCurrentMovieDTO()
-            start_condition?.let {
-                if (!(it.equals(""))) {
-                    repositoryImpl.setAboutMovieFromServer(start_condition)
-
-                    liveDataToObserveUpdate(true)
-
-                }
-            }
-
-        } catch (e: NullPointerException) {
-        }
-        dbHelper.close()
-
-
     }
 
 
     fun getDataFromRemoteSource(
-        find_request: String?,
-        context: Context?
+        find_type: Int?, context: Context
     ) {
 
-        context_VM = context!!
-
+        context_VM = context
         LocalBroadcastManager.getInstance(context)
             .registerReceiver(loadResultsReceiver, IntentFilter(DETAILS_INTENT_FILTER))
         context.startService(Intent(context, DetailsService::class.java).apply {
             putExtra(
-                REQUEST_MOVIE, "https://api.kinopoisk.dev/movie?limit=50&field" +
-                        "=name&search=${find_request}&isStrict=false&" +
-                        "token=${BuildConfig.KINOPOISK_API_KEY}"
+                REQUEST_MOVIE,
+                "https://api.kinopoisk.dev/movie?limit=50&field=rating.kp&search=1-10"
+                        + "&field=typeNumber&search=${find_type}&"
+                        + "sortField=rating.kp&sortType=-1&token=${BuildConfig.KINOPOISK_API_KEY}"
             )
         })
+
 
     }
 
@@ -134,7 +84,6 @@ class MainFragmentViewModel(
         val like_movie = dbHelper.like(aboutMovieItem)
         dbHelper.close()
         return like_movie
-
     }
 
 
@@ -168,13 +117,9 @@ class MainFragmentViewModel(
                 DETAILS_RESPONSE_SUCCESS_EXTRA -> {
                     var movieDTO_from_broadcast =
                         intent.getParcelableExtra<MovieDTO>(DETAILS_CONDITION_EXTRA)
-
-                    var dbHelper = DataBase(context_VM, null)
-                    dbHelper.renewCurrentMovieDTO(movieDTO_from_broadcast!!)
-                    dbHelper.close()
-                    movieDTO_from_broadcast.let {
-                        repositoryImpl.setAboutMovieFromServer(movieDTO_from_broadcast)
-                        getDataFromLocalSource(true)
+                    movieDTO_from_broadcast?.let {
+                        repositoryImpl.setTheBestMovie(movieDTO_from_broadcast)
+                        getDataFromLocalSource()
                     }
 
 

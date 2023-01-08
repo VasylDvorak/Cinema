@@ -5,7 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.cinema.model.Repository
 import com.example.cinema.model.RepositoryImpl
-import com.example.cinema.model.data_base.DBHelper
+import com.example.cinema.model.data_base.DataBase
 import com.example.cinema.model.gson_kinopoisk_API.Docs
 import com.example.cinema.model.gson_kinopoisk_API.MovieDTO
 
@@ -16,7 +16,7 @@ class FavoriteMovieFragmentViewModel(
 
     fun getDataFromDataBase(context: Context) {
 
-        var dbHelper = DBHelper(context, null)
+        var dbHelper = DataBase(context, null)
 
         try {
             var favorite_movie = dbHelper.readFavoriteMovieMovieDTO()
@@ -35,7 +35,7 @@ class FavoriteMovieFragmentViewModel(
     }
 
     fun changeLikeDataInDB(like: Boolean, aboutMovieItem: Docs, context: Context) {
-        var dbHelper = DBHelper(context, null)
+        var dbHelper = DataBase(context, null)
         if (like) {
             dbHelper.addFavoriteMovie(aboutMovieItem)
 

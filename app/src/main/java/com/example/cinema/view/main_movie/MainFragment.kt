@@ -1,4 +1,4 @@
-package com.example.cinema.view
+package com.example.cinema.view.main_movie
 
 import android.annotation.SuppressLint
 import android.app.SearchManager
@@ -19,6 +19,7 @@ import com.example.cinema.R
 import com.example.cinema.databinding.FragmentMainBinding
 import com.example.cinema.model.gson_kinopoisk_API.Docs
 import com.example.cinema.model.gson_kinopoisk_API.MovieDTO
+import com.example.cinema.view.Extensions
 import com.example.cinema.view.MainActivity.Companion.start_cinema
 import com.example.cinema.view.details.DetailsFragment
 import com.example.cinema.viewmodel.AppState
@@ -68,14 +69,17 @@ class MainFragment : Fragment() {
 
                 viewModel.getFromDataBase(requireContext())
                 val observer = Observer<AppState> {
-                    renderData(it) }
+                    renderData(it)
+                }
                 viewModel.getData().observe(viewLifecycleOwner, observer)
-            }catch (e: CursorIndexOutOfBoundsException){
+            } catch (e: CursorIndexOutOfBoundsException) {
                 viewModel.getDataFromRemoteSource(
                     resources.getString(R.string.first_request),
-                    context)
+                    context
+                )
                 val observer2 = Observer<AppState> {
-                    renderData(it) }
+                    renderData(it)
+                }
                 viewModel.getData().observe(viewLifecycleOwner, observer2)
             }
 
@@ -93,9 +97,6 @@ class MainFragment : Fragment() {
     ): View {
         _binding = FragmentMainBinding.inflate(inflater, container, false)
         setHasOptionsMenu(true)
-
-
-
         return binding.root
     }
 
@@ -180,18 +181,11 @@ class MainFragment : Fragment() {
         val searchItem = menu.findItem(R.id.search)
         val searchView = searchItem?.actionView as SearchView
 
-
-
-
         searchItem.apply {
 
             searchView.also {
 
                 it.setSearchableInfo(manager.getSearchableInfo(requireActivity().componentName))
-
-
-
-
                 it.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
 
                     override fun onQueryTextSubmit(query: String?): Boolean {

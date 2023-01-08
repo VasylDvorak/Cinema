@@ -1,4 +1,4 @@
-package com.example.cinema.view
+package com.example.cinema.view.favorite_movie
 
 import android.content.Context
 import android.view.LayoutInflater
@@ -6,16 +6,11 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.fragment.app.FragmentActivity
-import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.RecyclerView
-import coil.api.load
-import coil.transform.CircleCropTransformation
 import com.bumptech.glide.GenericTransitionOptions
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions.bitmapTransform
 import com.example.cinema.R
-import com.example.cinema.model.data_base.DBHelper
 import com.example.cinema.model.gson_kinopoisk_API.Docs
 
 import jp.wasabeef.glide.transformations.RoundedCornersTransformation

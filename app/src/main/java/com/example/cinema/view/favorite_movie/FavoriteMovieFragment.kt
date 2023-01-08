@@ -1,4 +1,4 @@
-package com.example.cinema.view
+package com.example.cinema.view.favorite_movie
 
 import android.content.Context
 import android.os.Build

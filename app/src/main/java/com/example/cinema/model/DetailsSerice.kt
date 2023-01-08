@@ -5,19 +5,16 @@ import android.annotation.SuppressLint
 import android.app.IntentService
 import android.content.Context
 import android.content.Intent
-import android.database.CursorIndexOutOfBoundsException
 import android.util.Log
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.android.volley.Request
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 import com.example.cinema.BuildConfig
-import com.example.cinema.model.data_base.DBHelper
 import com.example.cinema.model.gson_kinopoisk_API.Docs
 import com.example.cinema.model.gson_kinopoisk_API.MovieDTO
 import com.example.cinema.model.gson_kinopoisk_API.Poster
 import com.example.cinema.model.gson_kinopoisk_API.Rating
-import com.example.cinema.view.MainActivity
 import com.example.cinema.view.details.*
 import com.example.cinema.viewmodel.*
 import org.json.JSONException
@@ -30,7 +27,7 @@ const val url_trailer = "https://www.youtube.com/embed/DlM2CWNTQ84"
 class DetailsService(name: String = "DetailService") : IntentService(name) {
 
     private lateinit var item_finish: MovieDTO
-private var strr = ""
+    private var strr = ""
     private var list_trailer: MutableList<String> = mutableListOf()
 
 
@@ -59,7 +56,7 @@ private var strr = ""
     private fun onResponse(movieDTO: MovieDTO) {
         val fact = movieDTO
 
-        fact?.let {
+        fact.let {
             onSuccessfulResponse(movieDTO)
         }
     }
@@ -164,7 +161,7 @@ private var strr = ""
 
         var dto = parseMovieDataHead(mainObject, list)
 
-        item_finish=dto
+        item_finish = dto
         return dto
     }
 
@@ -195,7 +192,7 @@ private var strr = ""
 
             try {
                 val ratingObject = ratingPoster(docs.getJSONObject("rating"))
-                strr=""
+                strr = ""
                 trailerMovie(docs.getInt("id"))
 
                 val item_docs = with(docs) {
@@ -272,7 +269,7 @@ private var strr = ""
 
 
 
-           return item
+        return item
     }
 
 
@@ -307,30 +304,31 @@ private var strr = ""
 
     @SuppressLint("SuspiciousIndentation")
     private fun parseTrailerMovieData(result: String?) {
-       var str=url_trailer
-            try {
-                var videos = JSONObject(result).getJSONObject("videos")
-                var trailer = videos.getJSONArray("trailers")
-                var trailer0 = trailer[0] as JSONObject
-                str = trailer0.getString("url")
+        var str = url_trailer
+        try {
+            var videos = JSONObject(result).getJSONObject("videos")
+            var trailer = videos.getJSONArray("trailers")
+            var trailer0 = trailer[0] as JSONObject
+            str = trailer0.getString("url")
 
-            } catch (e: Exception) { }
-        finally {
+        } catch (e: Exception) {
+        } finally {
             list_trailer.add(str)
-            for(i in 0 until list_trailer.size){
-                try{
-                    item_finish.docs[i].url_trailer=list_trailer[i]
-                }
-                catch(e: IndexOutOfBoundsException){
-                    item_finish.docs[0].url_trailer=list_trailer[0]
+            for (i in 0 until list_trailer.size) {
+                try {
+                    item_finish.docs[i].url_trailer = list_trailer[i]
+                } catch (e: IndexOutOfBoundsException) {
+                    item_finish.docs[0].url_trailer = list_trailer[0]
                 }
 
             }
-if(item_finish.docs.size == list_trailer.size){
-            onResponse(item_finish)}
+            if (item_finish.docs.size == list_trailer.size) {
+                onResponse(item_finish)
+            }
         }
 
-}}
+    }
+}
 
 
 
