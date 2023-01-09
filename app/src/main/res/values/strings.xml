@@ -3,15 +3,15 @@
 
     <string name="temperature_label">Температура</string>
     <string name="feels_like_label">Ощущается как</string>
-    <string name="city_coordinates">lt/ln: %s, %s"</string>
+    <string name="Movie_could_not_find">Фильм не найден</string>
     <string name="error">Error</string>
+    <string name="OK">OK</string>
     <string name="reload">Reload</string>
     <string name="now_playing">Now playing</string>
     <string name="upcoming">Upcoming</string>
     <string name="home">Home</string>
     <string name="favorites">Favorites</string>
     <string name="ratings">Ratings</string>
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="dummy_button">Dummy Button</string>
     <string name="dummy_content">DUMMY\nCONTENT</string>
@@ -24,4 +24,21 @@
     <string name="revenue">Revenue: </string>
     <string name="search">Search</string>
     <string name="about">About</string>
+    <string name="looking_for">Looking for:</string>
+    <string name="type">Type of movie:</string>
+    <string name="min">min</string>
+    <string name="rating">Rating:</string>
+    <string name="first_request">король</string>
+    <string name="receive_message">Receive message</string>
+    <string name="error_reading">Reading error</string>
+    <string name="new_request_for_movie">New request for movie</string>
+    <string name="name">name</string>
+    <string name="change_connection">Lost connection</string>
+    <string name="movie_ratings">THE BEST MOVIE</string>
+    <string name="tv_series_ratings">THE BEST TV SERIES</string>
+    <string name="cartoon_ratings">THE BEST CARTOON</string>
+    <string name="anime_ratings">THE BEST ANIME</string>
+    <string name="animated_series_ratings">THE BEST ANIMATED SERIES</string>
+    <string name="tv_show_ratings">THE BEST TV SHOW</string>
+    <string name="mini_series_ratings">THE BEST MINI SERIES</string>
 </resources>

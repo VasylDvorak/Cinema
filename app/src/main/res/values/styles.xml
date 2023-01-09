@@ -12,4 +12,14 @@
         <item name="android:buttonBarStyle">?android:attr/buttonBarStyle</item>
     </style>
 
+    <style name ="TextRatingsStyle" >
+        <item name ="android:layout_height" >wrap_content</item >
+        <item name ="android:layout_width" >match_parent</item >
+        <item name ="android:textColor" >@android:color/holo_red_dark</item >
+        <item name ="android:textSize" >@dimen/title_height</item >
+        <item name ="android:textStyle" >bold</item >
+        <item name ="android:clickable" >true</item >
+    </style >
+
+
 </resources>
