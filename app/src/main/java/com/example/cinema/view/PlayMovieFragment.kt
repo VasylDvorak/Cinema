@@ -13,7 +13,6 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.example.cinema.R
 import com.example.cinema.databinding.FragmentPlayMovieBinding
-import com.example.cinema.model.model_stuio.Doc
 import com.example.cinema.viewmodel.PlayViewModel
 
 class PlayMovieFragment : Fragment() {

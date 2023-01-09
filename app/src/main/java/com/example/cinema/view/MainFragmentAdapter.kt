@@ -11,8 +11,6 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions.bitmapTransform
 import com.example.cinema.R
 
-import com.example.cinema.model.model_stuio.Doc
-
 
 import jp.wasabeef.glide.transformations.RoundedCornersTransformation
 

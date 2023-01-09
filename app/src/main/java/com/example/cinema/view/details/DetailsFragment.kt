@@ -12,7 +12,6 @@ import coil.api.load
 import coil.transform.CircleCropTransformation
 import com.example.cinema.R
 import com.example.cinema.databinding.FragmentDetailsBinding
-import com.example.cinema.model.model_stuio.Doc
 import com.example.cinema.view.Extensions
 import com.example.cinema.view.PlayMovieFragment
 

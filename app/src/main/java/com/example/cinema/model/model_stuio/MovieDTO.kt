@@ -1,18 +1,20 @@
 package com.example.cinema.model.model_stuio
 
 import android.os.Parcelable
-import com.example.cinema.model.gson_kinopoisk_API.Docs
-import com.example.cinema.model.model_stuio.MovieDTO
 import kotlinx.android.parcel.Parcelize
+
 
 @Parcelize
 data class MovieDTO(
-    val docs: List<Doc> = listOf(),
-    val limit: Int =0,
-    val page: Int=0,
-    val pages: Int=0,
-    val total: Int=0
-) : Parcelable
+
+    val docs: MutableList<Docs> = mutableListOf(),
+    val total: Int = 1,
+    val limit: Int = 1,
+    val page: Int = 1,
+    val pages: Int = 1,
+
+    ) : Parcelable
+
 
 fun nowPlaying(): MovieDTO = MovieDTO()
 

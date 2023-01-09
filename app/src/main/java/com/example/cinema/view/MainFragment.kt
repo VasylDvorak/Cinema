@@ -16,7 +16,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.cinema.R
 import com.example.cinema.databinding.FragmentMainBinding
-import com.example.cinema.model.model_stuio.Doc
 import com.example.cinema.model.model_stuio.MovieDTO
 import com.example.cinema.view.MainActivity.Companion.start_cinema
 import com.example.cinema.view.details.DetailsFragment
