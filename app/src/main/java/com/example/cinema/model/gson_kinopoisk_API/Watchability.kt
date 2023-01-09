@@ -5,6 +5,6 @@ import kotlinx.android.parcel.Parcelize
 @Parcelize
 data class Watchability (
 
-	val _id : String,
-	val items : String
+	val _id : String="",
+	val items : String=""
 ): Parcelable

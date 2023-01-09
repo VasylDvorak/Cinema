@@ -54,7 +54,7 @@ class TheBestMovieViewModel(
         context.startService(Intent(context, DetailsService::class.java).apply {
             putExtra(
                 REQUEST_MOVIE,
-                "https://api.kinopoisk.dev/movie?limit=50&field=rating.kp&search=1-10"
+                "https://api.kinopoisk.dev/movie?limit=10&field=rating.kp&search=1-10"
                         + "&field=typeNumber&search=${find_type}&"
                         + "sortField=rating.kp&sortType=-1&token=${BuildConfig.KINOPOISK_API_KEY}"
             )

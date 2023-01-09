@@ -11,10 +11,7 @@ import com.android.volley.Request
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 import com.example.cinema.BuildConfig
-import com.example.cinema.model.gson_kinopoisk_API.Docs
-import com.example.cinema.model.gson_kinopoisk_API.MovieDTO
-import com.example.cinema.model.gson_kinopoisk_API.Poster
-import com.example.cinema.model.gson_kinopoisk_API.Rating
+import com.example.cinema.model.gson_kinopoisk_API.*
 import com.example.cinema.view.details.*
 import com.example.cinema.viewmodel.*
 import org.json.JSONException
@@ -197,17 +194,17 @@ class DetailsService(name: String = "DetailService") : IntentService(name) {
 
                 val item_docs = with(docs) {
                     Docs(
-                        null, null,
+                        ExternalId(), Logo(),
                         posterObject, ratingObject,
-                        null, null,
+                        Votes(), Watchability(),
                         getInt("id"),
-                        getString("alternativeName") ?: let { " " },
-                        getString("description") ?: let { " " },
-                        null, movieLength,
-                        getString("name") ?: let { " " }, null,
+                        getString("alternativeName"),
+                        getString("description"),
+                        "", movieLength,
+                        getString("name"), mutableListOf(),
                         getString("shortDescription"),
-                        getString("type") ?: let { " " }, getInt("year"),
-                        null, url_trailer = strr
+                        getString("type"), getInt("year"),
+                        mutableListOf(), url_trailer = strr
                     )
                 }
 
@@ -225,7 +222,7 @@ class DetailsService(name: String = "DetailService") : IntentService(name) {
     private fun ratingPoster(ratingObject: JSONObject): Rating {
         return with(ratingObject) {
             Rating(
-                getString("_id") ?: let { " " },
+                getString("_id"),
                 getInt("kp"),
                 getInt("imdb"),
                 getInt("filmCritics"),
@@ -240,9 +237,9 @@ class DetailsService(name: String = "DetailService") : IntentService(name) {
     private fun parsePoster(posterObject: JSONObject): Poster {
         var poster = with(posterObject) {
             Poster(
-                getString("_id") ?: let { " " },
-                getString("url") ?: let { " " },
-                getString("previewUrl") ?: let { " " }
+                getString("_id"),
+                getString("url"),
+                getString("previewUrl")
             )
         }
         return poster

@@ -105,7 +105,7 @@ class MainFragmentViewModel(
             .registerReceiver(loadResultsReceiver, IntentFilter(DETAILS_INTENT_FILTER))
         context.startService(Intent(context, DetailsService::class.java).apply {
             putExtra(
-                REQUEST_MOVIE, "https://api.kinopoisk.dev/movie?limit=50&field" +
+                REQUEST_MOVIE, "https://api.kinopoisk.dev/movie?limit=10&field" +
                         "=name&search=${find_request}&isStrict=false&" +
                         "token=${BuildConfig.KINOPOISK_API_KEY}"
             )
