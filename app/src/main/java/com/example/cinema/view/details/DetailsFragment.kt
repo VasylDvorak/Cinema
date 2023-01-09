@@ -12,6 +12,7 @@ import coil.api.load
 import coil.transform.CircleCropTransformation
 import com.example.cinema.R
 import com.example.cinema.databinding.FragmentDetailsBinding
+import com.example.cinema.model.model_stuio.Docs
 import com.example.cinema.view.Extensions
 import com.example.cinema.view.PlayMovieFragment
 
@@ -47,17 +48,17 @@ class DetailsFragment : Fragment() {
     }
 
 
-    private lateinit var aboutMovieBundle: Doc
+    private lateinit var aboutMovieBundle: Docs
 
 
     @RequiresApi(Build.VERSION_CODES.N)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        aboutMovieBundle = arguments?.getParcelable(BUNDLE_EXTRA) ?: Doc()
+        aboutMovieBundle = arguments?.getParcelable(BUNDLE_EXTRA) ?: Docs()
         displayMovie(aboutMovieBundle)
     }
 
-    private fun displayMovie(docs_data: Doc) {
+    private fun displayMovie(docs_data: Docs) {
         try {
             with(binding) {
                 mainView.visibility = View.VISIBLE
@@ -142,7 +143,7 @@ class DetailsFragment : Fragment() {
         }
     }
 
-    private fun callPlayMovie(docs_data: Doc) {
+    private fun callPlayMovie(docs_data: Docs) {
 
         activity?.supportFragmentManager?.apply {
             beginTransaction()

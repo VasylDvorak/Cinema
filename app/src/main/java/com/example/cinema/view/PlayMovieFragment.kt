@@ -13,6 +13,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.example.cinema.R
 import com.example.cinema.databinding.FragmentPlayMovieBinding
+import com.example.cinema.model.model_stuio.Docs
 import com.example.cinema.viewmodel.PlayViewModel
 
 class PlayMovieFragment : Fragment() {
@@ -47,7 +48,7 @@ class PlayMovieFragment : Fragment() {
         _binding = null
     }
 
-    private lateinit var aboutMovieBundle: Doc
+    private lateinit var aboutMovieBundle: Docs
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -56,7 +57,7 @@ class PlayMovieFragment : Fragment() {
         binding.videoView.visibility = View.GONE
         binding.idTVHeading.visibility = View.GONE
 
-        aboutMovieBundle = arguments?.getParcelable(BUNDLE_MOVIE) ?: Doc()
+        aboutMovieBundle = arguments?.getParcelable(BUNDLE_MOVIE) ?: Docs()
 
         viewModelPlay.trailerMovie(aboutMovieBundle.id, requireContext())
 

@@ -10,6 +10,7 @@ import com.bumptech.glide.GenericTransitionOptions
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions.bitmapTransform
 import com.example.cinema.R
+import com.example.cinema.model.model_stuio.Docs
 
 
 import jp.wasabeef.glide.transformations.RoundedCornersTransformation
@@ -17,21 +18,21 @@ import jp.wasabeef.glide.transformations.RoundedCornersTransformation
 class MainFragmentAdapter(private var onItemViewClickListener: OnItemViewClickListener?) :
     RecyclerView.Adapter<MainFragmentAdapter.MainViewHolder>() {
 
-    private var aboutMovie: List<Doc> = listOf()
+    private var aboutMovie: List<Docs> = listOf()
     private var upcoming: Boolean = false
 
     interface OnItemViewClickListener {
-        fun onItemClick(aboutMovie: Doc)
+        fun onItemClick(aboutMovie: Docs)
     }
 
-    fun setAboutMovie(data: List<Doc>, upcoming: Boolean) {
+    fun setAboutMovie(data: List<Docs>, upcoming: Boolean) {
         aboutMovie = data
         notifyDataSetChanged()
         this.upcoming = upcoming
     }
 
     inner class MainViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        fun bind(aboutMovieItem: Doc) {
+        fun bind(aboutMovieItem: Docs) {
             itemView.apply {
                 with(aboutMovieItem) {
                     aboutMovieItem.let {
