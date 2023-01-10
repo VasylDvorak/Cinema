@@ -7,9 +7,8 @@ import java.util.*
 
 @Entity
 @Parcelize
-data class Poster_db (@PrimaryKey val id: UUID = UUID.randomUUID(),
-
-					  val _id : String,
-					  val url : String,
-					  val previewUrl : String
+data class Poster_db (
+					  val _id : String="",
+					  val url : String="",
+					  val previewUrl : String=""
 ): Parcelable

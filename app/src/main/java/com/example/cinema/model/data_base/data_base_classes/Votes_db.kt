@@ -7,12 +7,12 @@ import java.util.*
 
 @Entity
 @Parcelize
-data class Votes_db (@PrimaryKey val id: UUID = UUID.randomUUID(),
+data class Votes_db (
 
-					 val kp : Int,
-					 val imdb : Int,
-					 val filmCritics : Int,
-					 val russianFilmCritics : Int,
-					 val await : Int,
-					 val _id : String
+					 val kp : Int=0,
+					 val imdb : Int=0,
+					 val filmCritics : Int=0,
+					 val russianFilmCritics : Int=0,
+					 val await : Int=0,
+					 val _id : String=""
 ): Parcelable

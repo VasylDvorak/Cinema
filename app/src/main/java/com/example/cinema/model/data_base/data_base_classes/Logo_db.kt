@@ -7,8 +7,8 @@ import java.util.*
 
 @Entity
 @Parcelize
-data class Logo_db (@PrimaryKey val id: UUID = UUID.randomUUID(),
+data class Logo_db (
 
-					val _id : String,
-					val url : String
+					val _id : String="",
+					val url : String=""
 ): Parcelable
