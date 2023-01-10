@@ -7,8 +7,8 @@ import java.util.*
 
 @Entity
 @Parcelize
-data class Watchability_db (@PrimaryKey val id: UUID = UUID.randomUUID(),
+data class Watchability_db (
 
-							val _id : String,
-							val items : String
+							val _id : String="",
+							val items : String=""
 ): Parcelable

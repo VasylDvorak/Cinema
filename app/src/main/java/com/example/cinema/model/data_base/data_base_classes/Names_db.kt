@@ -7,8 +7,8 @@ import java.util.*
 
 @Entity
 @Parcelize
-data class Names_db (@PrimaryKey val id: UUID = UUID.randomUUID(),
+data class Names_db (@PrimaryKey(autoGenerate = true) val id: Int? = null,
 
-					 val _id : String,
-					 val name : String
+					 val _id : String="",
+					 val name : String=""
 ): Parcelable
