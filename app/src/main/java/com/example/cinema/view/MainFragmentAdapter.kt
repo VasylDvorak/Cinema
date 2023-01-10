@@ -6,64 +6,102 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.GenericTransitionOptions
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions.bitmapTransform
 import com.example.cinema.R
-import com.example.cinema.model.AboutMovie
+import com.example.cinema.model.model_stuio.Docs
+
+
+import jp.wasabeef.glide.transformations.RoundedCornersTransformation
 
 class MainFragmentAdapter(private var onItemViewClickListener: OnItemViewClickListener?) :
     RecyclerView.Adapter<MainFragmentAdapter.MainViewHolder>() {
-    private var aboutMovie: List<AboutMovie> = listOf()
+
+    private var aboutMovie: List<Docs> = listOf()
     private var upcoming: Boolean = false
 
     interface OnItemViewClickListener {
-        fun onItemClick(aboutMovie: AboutMovie)
+        fun onItemClick(aboutMovie: Docs)
     }
 
-    fun setAboutMovie(data: List<AboutMovie>, upcoming: Boolean) {
+    fun setAboutMovie(data: List<Docs>, upcoming: Boolean) {
         aboutMovie = data
         notifyDataSetChanged()
         this.upcoming = upcoming
-
     }
 
-
     inner class MainViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        fun bind(aboutMovie: AboutMovie) {
-            itemView.findViewById<TextView>(R.id.now_playing_title_movie).text =
-                aboutMovie.movie.movie_title
-            itemView.findViewById<TextView>(R.id.now_playing_year_movie).text =
-                aboutMovie.release_date
-            itemView.findViewById<TextView>(R.id.now_playing_rating_movie).text = aboutMovie.rating
-            itemView.findViewById<ImageView>(R.id.now_playing_banner)
-                .setImageResource(aboutMovie.movie.picture)
-            if (upcoming) {
-                itemView.findViewById<TextView>(R.id.now_playing_rating_movie).visibility =
-                    View.GONE
-                itemView.findViewById<ImageView>(R.id.star).visibility = View.GONE
-            }
+        fun bind(aboutMovieItem: Docs) {
+            itemView.apply {
+                with(aboutMovieItem) {
+                    aboutMovieItem.let {
+                        findViewById<TextView>(R.id.now_playing_title_movie).text =
+                            aboutMovieItem.name
+                        findViewById<TextView>(R.id.now_playing_year_movie).text =
+                            aboutMovieItem.year.toString()
+                        aboutMovieItem.rating?.let {
+                            findViewById<TextView>(R.id.now_playing_rating_movie).text =
+                                rating?.kp.toString()
+                        }
 
-            var heart: ImageView = itemView.findViewById(R.id.is_like_movie)
-            if (!aboutMovie.isLike) {
-                heart.setImageResource(R.drawable.ic_baseline_favorite_border_24_empty)
-            } else {
-                heart.setImageResource(R.drawable.ic_baseline_favorite_24_yellow)
-            }
-            heart.setOnClickListener {
-                if (aboutMovie.isLike) {
-                    heart.setImageResource(R.drawable.ic_baseline_favorite_border_24_empty)
-                    aboutMovie.isLike = false
-                } else {
-                    heart.setImageResource(R.drawable.ic_baseline_favorite_24_yellow)
-                    aboutMovie.isLike = true
+                        var strr = ""
+                        aboutMovieItem.poster?.let {
+                            strr = poster!!.url
+
+                            Glide.with( context ).load( strr )
+                                .apply(bitmapTransform(
+                                    RoundedCornersTransformation(120, 0,
+                                    RoundedCornersTransformation.CornerType.DIAGONAL_FROM_TOP_RIGHT)
+                                ))
+                                .transition(GenericTransitionOptions.with(R.anim.zoom_in))
+                                .into(findViewById(R.id.now_playing_banner))
+
+                        }
+
+
+                        if (upcoming) {
+                            findViewById<TextView>(R.id.now_playing_rating_movie).visibility =
+                                View.GONE
+                            findViewById<ImageView>(R.id.star).visibility = View.GONE
+                        }
+
+                        var heart: ImageView = findViewById(R.id.is_like_movie)
+
+                        heart.apply {
+                            if (!isLike) {
+                                setImageResource(R.drawable.ic_baseline_favorite_border_24_empty)
+                            } else {
+                                setImageResource(R.drawable.ic_baseline_favorite_24_yellow)
+                            }
+
+                            setOnClickListener {
+
+                                if (isLike) {
+                                    setImageResource(R.drawable.ic_baseline_favorite_border_24_empty)
+                                    isLike = false
+                                } else {
+                                    setImageResource(R.drawable.ic_baseline_favorite_24_yellow)
+                                    isLike = true
+                                }
+
+                            }
+
+                        }
+
+
+                        setOnClickListener {
+                            onItemViewClickListener?.onItemClick(aboutMovieItem)
+                        }
+
+                    }
                 }
             }
-            itemView.setOnClickListener {
-                onItemViewClickListener?.onItemClick(aboutMovie)
-            }
-
         }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MainViewHolder {
+
         return MainViewHolder(
             LayoutInflater.from(parent.context).inflate(
                 R.layout.now_playing_item,
@@ -80,6 +118,5 @@ class MainFragmentAdapter(private var onItemViewClickListener: OnItemViewClickLi
     override fun getItemCount(): Int {
         return aboutMovie.size
     }
-
 
 }
