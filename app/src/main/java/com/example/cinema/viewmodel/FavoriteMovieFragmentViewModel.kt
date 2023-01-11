@@ -17,6 +17,7 @@ class FavoriteMovieFragmentViewModel(
     fun getDataFromDataBase(context: Context) {
 
         var dbHelper = DataBase(context, null)
+        //  var dbHelper = DataBaseRoom(context)
 
         try {
             var favorite_movie = dbHelper.readFavoriteMovieMovieDTO()
@@ -36,6 +37,7 @@ class FavoriteMovieFragmentViewModel(
 
     fun changeLikeDataInDB(like: Boolean, aboutMovieItem: Docs, context: Context) {
         var dbHelper = DataBase(context, null)
+        //  var dbHelper = DataBaseRoom(context)
         if (like) {
             dbHelper.addFavoriteMovie(aboutMovieItem)
 

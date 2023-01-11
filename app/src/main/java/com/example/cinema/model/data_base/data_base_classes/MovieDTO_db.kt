@@ -4,19 +4,19 @@ import android.os.Parcelable
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import kotlinx.android.parcel.Parcelize
-import java.util.*
 
-@Entity
+@Entity //(tableName = "MovieDTO_db")
 @Parcelize
-data class MovieDTO_db(@PrimaryKey val id: UUID = UUID.randomUUID(),
+data class MovieDTO_db(
+    @PrimaryKey(autoGenerate = true) val id: Int? = null,
 
-                       val docs: Docs_db_list? =Docs_db_list(),
-                       val total: Int = 1,
-                       val limit: Int = 1,
-                       val page: Int = 1,
-                       val pages: Int = 1,
+    val docs: MutableList<Docs_db> = mutableListOf(),
+    val total: Int = 1,
+    val limit: Int = 1,
+    val page: Int = 1,
+    val pages: Int = 1,
 
-                       ) : Parcelable
+    ) : Parcelable
 
 
 fun nowPlaying(): MovieDTO_db = MovieDTO_db()

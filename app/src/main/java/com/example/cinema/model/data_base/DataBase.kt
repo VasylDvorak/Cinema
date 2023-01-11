@@ -6,9 +6,12 @@ import android.database.Cursor
 import android.database.CursorIndexOutOfBoundsException
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
+import android.os.Handler
+
 import com.example.cinema.model.gson_kinopoisk_API.Docs
 import com.example.cinema.model.gson_kinopoisk_API.MovieDTO
 import com.google.gson.Gson
+
 
 class DataBase(context: Context, factory: SQLiteDatabase.CursorFactory?) :
     SQLiteOpenHelper(context, DATABASE_NAME, factory, DATABASE_VERSION) {
@@ -98,8 +101,7 @@ class DataBase(context: Context, factory: SQLiteDatabase.CursorFactory?) :
         var movieDTO = gson.fromJson(jsonString, MovieDTO::class.java)
         cursor.close()
         db.close()
-
-
+      //  movieDTO = readRawFromDB(str)
         return movieDTO
 
     }
@@ -140,7 +142,7 @@ class DataBase(context: Context, factory: SQLiteDatabase.CursorFactory?) :
                 }
             }
         } else {
-            MovieDTOLike = MovieDTO(docs = mutableListOf(docs))
+            MovieDTOLike = MovieDTO()
         }
 
         if (b) {
@@ -152,37 +154,37 @@ class DataBase(context: Context, factory: SQLiteDatabase.CursorFactory?) :
     }
 
     fun updateFavoriteMovie(movieDTO: MovieDTO?, changable: String, non_changeble: String) {
-        var db = this.writableDatabase
 
-        var cursor = db.query(
-            TABLE_NAME, arrayOf(non_changeble),
-            null, null, null, null, null
-        )
-        cursor!!.moveToFirst()
-        val gson = Gson()
-        val values = ContentValues()
-        values.put(changable, gson.toJson(movieDTO))
+            var db = this.writableDatabase
 
-        try {
-            values.put(non_changeble, cursor.getString(0))
-        } catch (e: CursorIndexOutOfBoundsException) {
-            values.put(non_changeble, "")
-        }
+            var cursor = db.query(
+                TABLE_NAME, arrayOf(non_changeble),
+                null, null, null, null, null
+            )
+            cursor!!.moveToFirst()
+            val gson = Gson()
+            val values = ContentValues()
+            values.put(changable, gson.toJson(movieDTO))
 
-
-        // on below line we are calling a update method to update our database and passing our values.
-        // and we are comparing it with name of our course which is stored in original name variable.
-
-        if (cursor.count != 0) {
-            db.update(TABLE_NAME, values, null, null)
-        } else {
-            db.insert(TABLE_NAME, null, values)
-        }
+            try {
+                values.put(non_changeble, cursor.getString(0))
+            } catch (e: CursorIndexOutOfBoundsException) {
+                values.put(non_changeble, "")
+            }
 
 
-        cursor.close()
-        db.close()
+            // on below line we are calling a update method to update our database and passing our values.
+            // and we are comparing it with name of our course which is stored in original name variable.
 
+            if (cursor.count != 0) {
+                db.update(TABLE_NAME, values, null, null)
+            } else {
+                db.insert(TABLE_NAME, null, values)
+            }
+
+            cursor.close()
+            db.close()
+      //  updateRawFavoriteMovie(movieDTO, changable)
 
     }
 
@@ -208,7 +210,6 @@ class DataBase(context: Context, factory: SQLiteDatabase.CursorFactory?) :
     }
 
     fun like(docs: Docs): Boolean {
-        readFavoriteMovieMovieDTO()
 
         var MovieDTOLike: MovieDTO? = readFavoriteMovieMovieDTO()
 
@@ -223,6 +224,39 @@ class DataBase(context: Context, factory: SQLiteDatabase.CursorFactory?) :
         }
 
         return b
+    }
+
+
+    fun updateRawFavoriteMovie(movieDTO: MovieDTO?, changable: String) {
+        var db = this.writableDatabase
+
+
+        try {
+            db.rawQuery(
+                " UPDATE ${TABLE_NAME} SET ${changable} = '${Gson().toJson(movieDTO)}'",
+                null
+            )
+        } catch (e: Exception) {
+            db.rawQuery(
+                " INSERT INTO ${TABLE_NAME} (${changable}) VALUES ('${Gson().toJson(movieDTO)}')",
+                null
+            )
+        }
+        db.close()
+    }
+
+
+    fun readRawFromDB(str: String): MovieDTO? {
+        var db = this.readableDatabase
+
+        var jsonString = db.rawQuery(" SELECT ${str} FROM ${TABLE_NAME} WHERE ${ID_COL} = 0", null)
+            .getString(0)
+        var movieDTO = Gson().fromJson(jsonString, MovieDTO::class.java)
+        db.close()
+
+
+        return movieDTO
+
     }
 
 

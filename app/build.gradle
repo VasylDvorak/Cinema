@@ -64,6 +64,13 @@ dependencies {
 
     implementation 'androidx.room:room-runtime:2.1.0-alpha04'
 
+    def room_version = "2.4.3"
+
+    implementation "androidx.room:room-runtime:$room_version"
+    annotationProcessor "androidx.room:room-compiler:$room_version"
+    kapt "androidx.room:room-compiler:$room_version"
+
+
     implementation 'io.coil-kt:coil:0.11.0'
 
     implementation 'com.squareup.picasso:picasso:2.71828'

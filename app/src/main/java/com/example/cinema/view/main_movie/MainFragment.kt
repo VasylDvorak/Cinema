@@ -129,7 +129,7 @@ class MainFragment : Fragment() {
                         mainView,
                         getString(R.string.error),
                         getString(R.string.reload),
-                        { viewModel.getAboutMovie() }
+                        { viewModel.getAboutMovie(context) }
                     )
                 }
             }

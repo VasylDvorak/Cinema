@@ -38,16 +38,14 @@ class MainFragmentViewModel(
     private val repositoryImpl: Repository = RepositoryImpl(),
 ) : ViewModel() {
 
-    private lateinit var context_VM: Context
-
 
     var liveDataCurrent = MutableLiveData<AppState>()
-    fun getAboutMovie() = getDataFromLocalSource(true)
+    fun getAboutMovie(context: Context?) = getDataFromLocalSource(context, true)
     fun getUpcomingMovie() = repositoryImpl.getAboutMovieLocalStorageUpcoming()
 
-    private fun getDataFromLocalSource(isNowPlaying: Boolean) {
+    private fun getDataFromLocalSource(context: Context?, isNowPlaying: Boolean) {
         liveDataToObserve.value = AppState.Loading
-        context_VM.let {
+        context?.let {
             LocalBroadcastManager.getInstance(it).unregisterReceiver(loadResultsReceiver)
         }
         liveDataToObserveUpdate(isNowPlaying)
@@ -75,6 +73,7 @@ class MainFragmentViewModel(
 
     fun getFromDataBase(context: Context) {
         var dbHelper = DataBase(context, null)
+        //  var dbHelper = DataBaseRoom(context)
         try {
             var start_condition = dbHelper.readCurrentMovieDTO()
             start_condition?.let {
@@ -99,9 +98,8 @@ class MainFragmentViewModel(
         context: Context?
     ) {
 
-        context_VM = context!!
 
-        LocalBroadcastManager.getInstance(context)
+        LocalBroadcastManager.getInstance(context!!)
             .registerReceiver(loadResultsReceiver, IntentFilter(DETAILS_INTENT_FILTER))
         context.startService(Intent(context, DetailsService::class.java).apply {
             putExtra(
@@ -119,6 +117,7 @@ class MainFragmentViewModel(
 
     fun changeLikeDataInDB(like: Boolean, aboutMovieItem: Docs, context: Context) {
         var dbHelper = DataBase(context, null)
+        //  var dbHelper = DataBaseRoom(context)
         if (like) {
             dbHelper.addFavoriteMovie(aboutMovieItem)
 
@@ -131,6 +130,7 @@ class MainFragmentViewModel(
 
     fun getLike(aboutMovieItem: Docs, context: Context): Boolean {
         var dbHelper = DataBase(context, null)
+        //  var dbHelper = DataBaseRoom(context)
         val like_movie = dbHelper.like(aboutMovieItem)
         dbHelper.close()
         return like_movie
@@ -169,12 +169,14 @@ class MainFragmentViewModel(
                     var movieDTO_from_broadcast =
                         intent.getParcelableExtra<MovieDTO>(DETAILS_CONDITION_EXTRA)
 
-                    var dbHelper = DataBase(context_VM, null)
+                    var dbHelper = DataBase(context, null)
+                    //  var dbHelper = DataBaseRoom(context)
+
                     dbHelper.renewCurrentMovieDTO(movieDTO_from_broadcast!!)
                     dbHelper.close()
                     movieDTO_from_broadcast.let {
                         repositoryImpl.setAboutMovieFromServer(movieDTO_from_broadcast)
-                        getDataFromLocalSource(true)
+                        getDataFromLocalSource(context, true)
                     }
 
 
