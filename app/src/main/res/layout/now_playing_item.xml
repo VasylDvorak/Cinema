@@ -80,7 +80,7 @@
         android:rotation="-60"
         android:textStyle="bold"
         android:text="@string/watched"
-        android:textColor="@android:color/holo_red_light"
+        android:textColor="@color/watched_color"
         android:textSize="@dimen/watched_size"
         android:visibility="gone"/>
 </FrameLayout>
