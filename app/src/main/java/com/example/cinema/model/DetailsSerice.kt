@@ -320,6 +320,7 @@ class DetailsService(name: String = "DetailService") : IntentService(name) {
 
             }
             if (item_finish.docs.size == list_trailer.size) {
+
                 onResponse(item_finish)
             }
         }

@@ -24,8 +24,7 @@ class MainFragmentAdapter(
     RecyclerView.Adapter<MainFragmentAdapter.MainViewHolder>() {
 
 
-    private var aboutMovie: List<Docs> = listOf()
-    private var upcoming: Boolean = false
+    private var aboutMovie: MutableList<Docs> = mutableListOf()
 
 
     interface LikeClickListener{
@@ -37,96 +36,105 @@ class MainFragmentAdapter(
         fun onItemClick(aboutMovie: Docs)
     }
 
-    fun setAboutMovie(data: List<Docs>, upcoming: Boolean) {
+    fun setAboutMovie(data: MutableList<Docs>) {
 
         aboutMovie = data
-        notifyDataSetChanged()
 
-        this.upcoming = upcoming
     }
 
     inner class MainViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         fun bind(aboutMovieItem: Docs) {
 
             itemView.apply {
-                with(aboutMovieItem) {
-                    aboutMovieItem.let {
-                        findViewById<TextView>(R.id.now_playing_title_movie).text =
-                            aboutMovieItem.name
-                        findViewById<TextView>(R.id.now_playing_year_movie).text =
-                            aboutMovieItem.year.toString()
-                        aboutMovieItem.rating?.let {
-                            findViewById<TextView>(R.id.now_playing_rating_movie).text =
-                                rating?.kp.toString()
-                        }
 
-                        var strr = ""
-                        aboutMovieItem.poster?.let {
-                            strr = poster!!.url
+    with(aboutMovieItem) {
+        aboutMovieItem.let {
+            findViewById<TextView>(R.id.now_playing_title_movie).text =
+                aboutMovieItem.name
+            findViewById<TextView>(R.id.now_playing_year_movie).text =
+                aboutMovieItem.year.toString()
+            aboutMovieItem.rating?.let {
+                findViewById<TextView>(R.id.now_playing_rating_movie).text =
+                    rating?.kp.toString()
+            }
 
-                            Glide.with( context ).load( strr )
-                                .apply(bitmapTransform(
-                                    RoundedCornersTransformation(120, 0,
-                                    RoundedCornersTransformation.CornerType.DIAGONAL_FROM_TOP_RIGHT)
-                                ))
-                                .transition(GenericTransitionOptions.with(R.anim.zoom_in))
-                                .into(findViewById(R.id.now_playing_banner))
+            var strr = ""
+            aboutMovieItem.poster?.let {
+                strr = poster!!.url
 
-                        }
+                Glide.with(context).load(strr)
+                    .apply(
+                        bitmapTransform(
+                            RoundedCornersTransformation(
+                                120, 0,
+                                RoundedCornersTransformation.CornerType.DIAGONAL_FROM_TOP_RIGHT
+                            )
+                        )
+                    )
+                    .transition(GenericTransitionOptions.with(R.anim.zoom_in))
+                    .into(findViewById(R.id.now_playing_banner))
 
-
-
-
-
-
-                        if (upcoming) {
-                            findViewById<TextView>(R.id.now_playing_rating_movie).visibility =
-                                View.GONE
-                            findViewById<ImageView>(R.id.star).visibility = View.GONE
-                        }
-
-                        var heart: ImageView = findViewById(R.id.is_like_movie)
-
-                        heart.apply {
-
-                            if (!(viewModel.getLike(aboutMovieItem, context))) {
-                                setImageResource(R.drawable.ic_baseline_favorite_border_24_empty)
-                            } else {
-                                setImageResource(R.drawable.ic_baseline_favorite_24_yellow)
-                            }
+            }
 
 
-                            setOnClickListener {
+            var heart: ImageView = findViewById(R.id.is_like_movie)
 
-                                if (isLike) {
-                                    setImageResource(R.drawable.ic_baseline_favorite_border_24_empty)
-                                    isLike = false
-                                    likeClickListener?.onLikeClick(isLike, aboutMovieItem, context)
+            heart.apply {
 
-
-                                } else {
-                                    setImageResource(R.drawable.ic_baseline_favorite_24_yellow)
-                                    isLike = true
-                                    likeClickListener?.onLikeClick(isLike, aboutMovieItem, context)
-
-                                }
+                if (!(viewModel.getLike(aboutMovieItem, context))) {
+                    setImageResource(R.drawable.ic_baseline_favorite_border_24_empty)
+                } else {
+                    setImageResource(R.drawable.ic_baseline_favorite_24_yellow)
+                }
 
 
-                            }
+                setOnClickListener {
 
-                        }
-                        setOnClickListener {
-                            onItemViewClickListener?.onItemClick(aboutMovieItem)
-                        }
+                    if (isLike) {
+                        setImageResource(R.drawable.ic_baseline_favorite_border_24_empty)
+                        isLike = false
+                        likeClickListener?.onLikeClick(isLike, aboutMovieItem, context)
+
+
+                    } else {
+                        setImageResource(R.drawable.ic_baseline_favorite_24_yellow)
+                        isLike = true
+                        likeClickListener?.onLikeClick(isLike, aboutMovieItem, context)
 
                     }
+
+
                 }
+
             }
+            setOnClickListener {
+                onItemViewClickListener?.onItemClick(aboutMovieItem)
+            }
+
+        }
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            }
+
         }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MainViewHolder {
-
         return MainViewHolder(
             LayoutInflater.from(parent.context).inflate(
                 R.layout.now_playing_item,

@@ -31,7 +31,7 @@
                 android:id="@+id/recycler_view_lines_now_playing"
                 app.layaoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="234dp"
                 android:orientation="horizontal"
                 android:scrollbars="horizontal"
                 app:layout_constraintStart_toStartOf="parent"
@@ -55,11 +55,12 @@
                 android:id="@+id/recycler_view_lines_upcoming"
                 app.layaoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="234dp"
                 android:orientation="horizontal"
                 android:scrollbars="horizontal"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/upcoming" />
+                app:layout_constraintTop_toBottomOf="@+id/upcoming"
+                tools:listitem="@layout/now_playing_item"/>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>

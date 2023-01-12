@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import coil.api.load
 import coil.transform.CircleCropTransformation
@@ -17,13 +18,16 @@ import com.example.cinema.model.gson_kinopoisk_API.Docs
 import com.example.cinema.view.Extensions
 import com.example.cinema.view.PlayMovieFragment
 import com.example.cinema.viewmodel.DetailsFragmentViewModel
-
+import com.example.cinema.viewmodel.MainFragmentViewModel
 
 
 class DetailsFragment : Fragment() {
     private var _binding: FragmentDetailsBinding? = null
     private val binding get() = _binding!!
+    private val model: DetailsFragmentViewModel by lazy {
+        ViewModelProviders.of(requireActivity()).get(DetailsFragmentViewModel::class.java)
 
+    }
 
     companion object {
         const val BUNDLE_EXTRA = "AboutMovie"
@@ -55,7 +59,7 @@ class DetailsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val model = ViewModelProviders.of(requireActivity()).get(DetailsFragmentViewModel::class.java)
+            // val model = ViewModelProviders.of(requireActivity()).get(DetailsFragmentViewModel::class.java)
         model.getSelected().observe(viewLifecycleOwner, { item ->
             displayMovie(item)
         })
@@ -128,7 +132,7 @@ class DetailsFragment : Fragment() {
     }
 
     private fun callPlayMovie(docs_data: Docs) {
-
+model.addNowPlaying(docs_data, context)
         activity?.supportFragmentManager?.apply {
             beginTransaction()
                 .replace(R.id.flFragment, PlayMovieFragment.newInstance(Bundle().apply {

@@ -29,7 +29,7 @@ import kotlinx.android.synthetic.main.fragment_main.*
 
 class MainFragment : Fragment() {
 
-    private var b = false
+
     private var _binding: FragmentMainBinding? = null
     private val binding
         get() = _binding!!
@@ -42,47 +42,39 @@ class MainFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        if (savedInstanceState == null) {
-
-            if (!(start_cinema.equals("", true))) {
-                viewModel.getDataFromRemoteSource(start_cinema, context)
-                start_cinema = ""
-                val observer = Observer<AppState> {
-                    renderData(it)
-                }
-                viewModel.getData().observe(viewLifecycleOwner, observer)
-            } else {
-                b = true
-
-            }
-
-        }
         retainInstance = true
     }
 
     @RequiresApi(Build.VERSION_CODES.N)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        with(binding){
+        upcoming.text = getString(R.string.upcoming)
+        nowPlaying.text = getString(R.string.now_playing)}
 
-        if (b) {
-            try {
 
+        viewModel.getNowPlayingFromDataBase(requireContext())
+        val observer3 = Observer<MovieDTO> { movie ->
+
+           showDataNowPlaying(movie)
+        }
+        viewModel.getDataNowPlaying().observe(viewLifecycleOwner, observer3)
+
+        if (savedInstanceState == null){
+            if (start_cinema.equals("", true)){
+                start_cinema = resources.getString(R.string.first_request)}
+            viewModel.getDataFromRemoteSource(start_cinema, context)
+            start_cinema = ""
+            val observer = Observer<AppState> {
+                renderData(it)
+            }
+            viewModel.getData().observe(viewLifecycleOwner, observer)
+        }else {
                 viewModel.getFromDataBase(requireContext())
                 val observer = Observer<AppState> {
                     renderData(it)
                 }
                 viewModel.getData().observe(viewLifecycleOwner, observer)
-            } catch (e: CursorIndexOutOfBoundsException) {
-                viewModel.getDataFromRemoteSource(
-                    resources.getString(R.string.first_request),
-                    context
-                )
-                val observer2 = Observer<AppState> {
-                    renderData(it)
-                }
-                viewModel.getData().observe(viewLifecycleOwner, observer2)
-            }
-
         }
 
     }
@@ -129,7 +121,7 @@ class MainFragment : Fragment() {
                         mainView,
                         getString(R.string.error),
                         getString(R.string.reload),
-                        { viewModel.getAboutMovie(context) }
+                        { viewModel.getDataFromLocalSource(context) }
                     )
                 }
             }
@@ -137,40 +129,49 @@ class MainFragment : Fragment() {
     }
 
     private fun showData(movieDTO: MovieDTO) {
-
+        adapter = initAdapter()
         var AboutMovieData = movieDTO
         with(binding) {
             loadingLayout.visibility = View.GONE
 
-            adapter = initAdapter()
 
-            adapter.setAboutMovie(AboutMovieData.docs, false)
-
-            val recyclerViewNowPlaying: RecyclerView = recyclerViewLinesNowPlaying
-
-            recyclerViewNowPlaying.layoutManager = LinearLayoutManager(
-                context,
-                LinearLayoutManager.HORIZONTAL, false
-            )
-            recyclerViewNowPlaying.recycledViewPool.clear()
-            recyclerViewNowPlaying.adapter = adapter
-
+            adapter.setAboutMovie(AboutMovieData.docs)
             val recyclerViewUpcoming: RecyclerView = recyclerViewLinesUpcoming
 
-            recyclerViewUpcoming.layoutManager = LinearLayoutManager(
+
+            recyclerViewLinesUpcoming.layoutManager = LinearLayoutManager(
                 context,
                 LinearLayoutManager.HORIZONTAL, false
             )
-            adapter = initAdapter()
+            recyclerViewLinesUpcoming.recycledViewPool.clear()
+            recyclerViewLinesUpcoming.adapter = adapter
 
-
-            adapter.setAboutMovie(AboutMovieData.docs, true)
-            recyclerViewUpcoming.adapter = adapter
-
-            upcoming.text = getString(R.string.upcoming)
-            nowPlaying.text = getString(R.string.now_playing)
         }
     }
+
+
+    private fun showDataNowPlaying(movieDTO: MovieDTO){
+        adapter = initAdapter()
+            with(binding) {
+
+            adapter.setAboutMovie(movieDTO.docs)
+            val recyclerViewNowPlaying: RecyclerView = recyclerViewLinesNowPlaying
+
+                recyclerViewLinesNowPlaying.layoutManager = LinearLayoutManager(
+                context,
+                LinearLayoutManager.HORIZONTAL, false
+            )
+
+                recyclerViewLinesNowPlaying.recycledViewPool.clear()
+                recyclerViewLinesNowPlaying.adapter = adapter
+
+
+
+        }
+
+    }
+
+
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
 

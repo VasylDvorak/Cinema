@@ -38,31 +38,20 @@ class MainFragmentViewModel(
     private val repositoryImpl: Repository = RepositoryImpl(),
 ) : ViewModel() {
 
-
-    var liveDataCurrent = MutableLiveData<AppState>()
-    fun getAboutMovie(context: Context?) = getDataFromLocalSource(context, true)
-    fun getUpcomingMovie() = repositoryImpl.getAboutMovieLocalStorageUpcoming()
-
-    private fun getDataFromLocalSource(context: Context?, isNowPlaying: Boolean) {
+    fun getDataFromLocalSource(context: Context?) {
         liveDataToObserve.value = AppState.Loading
         context?.let {
             LocalBroadcastManager.getInstance(it).unregisterReceiver(loadResultsReceiver)
         }
-        liveDataToObserveUpdate(isNowPlaying)
+        liveDataToObserveUpdate()
     }
 
-    fun liveDataToObserveUpdate(isNowPlaying: Boolean) {
+    fun liveDataToObserveUpdate() {
         Thread {
 
             liveDataToObserve.postValue(
                 AppState.Success(
-                    if (isNowPlaying) {
-
-                        repositoryImpl.getAboutMovieLocalStorageNowPlaying()
-
-                    } else {
-                        repositoryImpl.getAboutMovieLocalStorageUpcoming()
-                    }
+                    repositoryImpl.getAboutMovieLocalStorageUpcoming()
                 )
             )
         }.start()
@@ -76,20 +65,45 @@ class MainFragmentViewModel(
         //  var dbHelper = DataBaseRoom(context)
         try {
             var start_condition = dbHelper.readCurrentMovieDTO()
+            dbHelper.close()
             start_condition?.let {
-                if (!(it.equals(""))) {
+                if (it.docs.size > 0) {
                     repositoryImpl.setAboutMovieFromServer(start_condition)
 
-                    liveDataToObserveUpdate(true)
+                    liveDataToObserveUpdate()
 
                 }
             }
 
         } catch (e: NullPointerException) {
         }
-        dbHelper.close()
 
 
+
+    }
+  private var liveDataToObserveNowPlaying: MutableLiveData<MovieDTO> = MutableLiveData()
+    fun getNowPlayingFromDataBase(context: Context) {
+        var dbHelper = DataBase(context, null)
+        //  var dbHelper = DataBaseRoom(context)
+        try {
+            var start_condition = dbHelper.readNowPlayingMovieMovieDTO()
+
+            dbHelper.close()
+            start_condition?.let {
+                if (!(it.equals(""))) {
+                    repositoryImpl.setTheNowPlayingMovie(start_condition)
+
+                    liveDataToObserveNowPlaying.postValue(repositoryImpl.getTheNowPlayingMovie())
+
+                }
+            }
+
+        } catch (e: NullPointerException) {
+        }
+    }
+
+    fun getDataNowPlaying(): MutableLiveData<MovieDTO> {
+        return liveDataToObserveNowPlaying
     }
 
 
@@ -176,7 +190,8 @@ class MainFragmentViewModel(
                     dbHelper.close()
                     movieDTO_from_broadcast.let {
                         repositoryImpl.setAboutMovieFromServer(movieDTO_from_broadcast)
-                        getDataFromLocalSource(context, true)
+
+                        getDataFromLocalSource(context)
                     }
 
 

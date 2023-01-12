@@ -6,11 +6,13 @@ import android.database.Cursor
 import android.database.CursorIndexOutOfBoundsException
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
-import android.os.Handler
 
 import com.example.cinema.model.gson_kinopoisk_API.Docs
 import com.example.cinema.model.gson_kinopoisk_API.MovieDTO
 import com.google.gson.Gson
+import kotlinx.coroutines.flow.asFlow
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.take
 
 
 class DataBase(context: Context, factory: SQLiteDatabase.CursorFactory?) :
@@ -42,6 +44,7 @@ class DataBase(context: Context, factory: SQLiteDatabase.CursorFactory?) :
         // below is the variable for age column
 
         val MOVIEDTOFAVORITE_COL = "MOVIEDTOFAVORITE"
+        val MOVIEDTONOWPLAYING_COL = "MOVIEDTONOWPLAYING"
 
     }
 
@@ -50,10 +53,11 @@ class DataBase(context: Context, factory: SQLiteDatabase.CursorFactory?) :
 
         // below is a sqlite query, where column names
         // along with their data types is given
+
         val query = ("CREATE TABLE IF NOT EXISTS " + TABLE_NAME + " ("
                 + ID_COL + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 MOVIEDTO_COl + " TEXT," +
-                MOVIEDTOFAVORITE_COL + " TEXT" + ")")
+                MOVIEDTOFAVORITE_COL + " TEXT, " + MOVIEDTONOWPLAYING_COL + " TEXT "+")")
 
         // we are calling sqlite
         // method for executing our query
@@ -67,7 +71,8 @@ class DataBase(context: Context, factory: SQLiteDatabase.CursorFactory?) :
 
 
     fun renewCurrentMovieDTO(movieDTO: MovieDTO) {
-        updateFavoriteMovie(movieDTO, MOVIEDTO_COl, MOVIEDTOFAVORITE_COL)
+        updateFavoriteMovie(movieDTO, MOVIEDTO_COl, MOVIEDTOFAVORITE_COL,
+             MOVIEDTONOWPLAYING_COL)
     }
 
 
@@ -80,6 +85,10 @@ class DataBase(context: Context, factory: SQLiteDatabase.CursorFactory?) :
 
         return readFromDB(MOVIEDTOFAVORITE_COL)
     }
+    fun readNowPlayingMovieMovieDTO(): MovieDTO? {
+
+        return readFromDB(MOVIEDTONOWPLAYING_COL)
+    }
 
 
     fun readFromDB(str: String): MovieDTO? {
@@ -89,18 +98,24 @@ class DataBase(context: Context, factory: SQLiteDatabase.CursorFactory?) :
             TABLE_NAME, arrayOf(str),
             null, null, null, null, null
         )
-
         cursor!!.moveToFirst()
+        var movieDTO = MovieDTO()
+try {
+
 
         var jsonString = cursor.getString(0)
-
+        cursor.close()
+        db.close()
 
         val gson = Gson()
 
+ try {
+     movieDTO = gson.fromJson(jsonString, MovieDTO::class.java)
+ } catch (e: NullPointerException){}
 
-        var movieDTO = gson.fromJson(jsonString, MovieDTO::class.java)
-        cursor.close()
-        db.close()
+
+    }    catch (e: CursorIndexOutOfBoundsException) {}
+
       //  movieDTO = readRawFromDB(str)
         return movieDTO
 
@@ -123,7 +138,8 @@ class DataBase(context: Context, factory: SQLiteDatabase.CursorFactory?) :
 
 
 
-            updateFavoriteMovie(MovieDTOLike, MOVIEDTOFAVORITE_COL, MOVIEDTO_COl)
+            updateFavoriteMovie(MovieDTOLike, MOVIEDTOFAVORITE_COL, MOVIEDTO_COl
+                , MOVIEDTONOWPLAYING_COL)
 
         }
     }
@@ -148,17 +164,23 @@ class DataBase(context: Context, factory: SQLiteDatabase.CursorFactory?) :
         if (b) {
             MovieDTOLike.docs.add(docs)
 
-            updateFavoriteMovie(MovieDTOLike, MOVIEDTOFAVORITE_COL, MOVIEDTO_COl)
+            updateFavoriteMovie(MovieDTOLike, MOVIEDTOFAVORITE_COL, MOVIEDTO_COl
+                , MOVIEDTONOWPLAYING_COL)
 
         }
     }
 
-    fun updateFavoriteMovie(movieDTO: MovieDTO?, changable: String, non_changeble: String) {
+    fun updateFavoriteMovie(
+        movieDTO: MovieDTO?,
+        changable: String,
+        non_changeble_1: String,
+        non_changeble_2: String
+    ) {
 
             var db = this.writableDatabase
 
             var cursor = db.query(
-                TABLE_NAME, arrayOf(non_changeble),
+                TABLE_NAME, arrayOf(non_changeble_1, non_changeble_2),
                 null, null, null, null, null
             )
             cursor!!.moveToFirst()
@@ -167,10 +189,17 @@ class DataBase(context: Context, factory: SQLiteDatabase.CursorFactory?) :
             values.put(changable, gson.toJson(movieDTO))
 
             try {
-                values.put(non_changeble, cursor.getString(0))
+                values.put(non_changeble_1, cursor.getString(0))
             } catch (e: CursorIndexOutOfBoundsException) {
-                values.put(non_changeble, "")
+                values.put(non_changeble_1, "")
             }
+
+        try {
+            values.put(non_changeble_2, cursor.getString(1))
+        } catch (e: CursorIndexOutOfBoundsException) {
+            values.put(non_changeble_2, "")
+        }
+
 
 
             // on below line we are calling a update method to update our database and passing our values.
@@ -258,6 +287,38 @@ class DataBase(context: Context, factory: SQLiteDatabase.CursorFactory?) :
         return movieDTO
 
     }
+
+    fun addNowPlayingMovieDTO(docs: Docs) {
+        var MovieDTONowPlayng: MovieDTO? = readFromDB(MOVIEDTONOWPLAYING_COL)
+
+        var b = true
+        if (MovieDTONowPlayng != null) {
+
+                 for (docss in MovieDTONowPlayng.docs) {
+                if (docss.id == docs.id) {
+                    b = false
+                    break
+                }
+            }
+
+        } else {
+            MovieDTONowPlayng = MovieDTO()
+        }
+
+        if (b) {
+            MovieDTONowPlayng.docs =mutableListOf(docs).plus(MovieDTONowPlayng.docs).toMutableList()
+
+            if (MovieDTONowPlayng.docs.size > 10){
+                MovieDTONowPlayng.docs.removeAt(10) }
+
+
+            updateFavoriteMovie(MovieDTONowPlayng,MOVIEDTONOWPLAYING_COL, MOVIEDTOFAVORITE_COL,
+                MOVIEDTO_COl)
+
+        }
+    }
+
+
 
 
 }
