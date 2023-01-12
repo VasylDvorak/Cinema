@@ -12,7 +12,7 @@ import coil.api.load
 import coil.transform.CircleCropTransformation
 import com.example.cinema.R
 import com.example.cinema.databinding.FragmentDetailsBinding
-import com.example.cinema.model.model_stuio.Docs
+import com.example.cinema.model.model_stuio.Doc
 import com.example.cinema.view.Extensions
 import com.example.cinema.view.PlayMovieFragment
 
@@ -48,17 +48,17 @@ class DetailsFragment : Fragment() {
     }
 
 
-    private lateinit var aboutMovieBundle: Docs
+    private lateinit var aboutMovieBundle: Doc
 
 
     @RequiresApi(Build.VERSION_CODES.N)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        aboutMovieBundle = arguments?.getParcelable(BUNDLE_EXTRA) ?: Docs()
+        aboutMovieBundle = arguments?.getParcelable(BUNDLE_EXTRA) ?: Doc()
         displayMovie(aboutMovieBundle)
     }
 
-    private fun displayMovie(docs_data: Docs) {
+    private fun displayMovie(docs_data: Doc) {
         try {
             with(binding) {
                 mainView.visibility = View.VISIBLE
@@ -111,7 +111,7 @@ class DetailsFragment : Fragment() {
 
                     heart.apply {
 
-                        if (!isLike) {
+                        if (!true) {
                             setImageResource(R.drawable.ic_baseline_favorite_border_24_empty)
                         } else {
                             setImageResource(R.drawable.ic_baseline_favorite_24_yellow)
@@ -119,12 +119,12 @@ class DetailsFragment : Fragment() {
 
                         setOnClickListener {
 
-                            if (isLike) {
+                            if (true) {
                                 setImageResource(R.drawable.ic_baseline_favorite_border_24_empty)
-                                isLike = false
+
                             } else {
                                 setImageResource(R.drawable.ic_baseline_favorite_24_yellow)
-                                isLike = true
+
                             }
                         }
                     }
@@ -143,7 +143,7 @@ class DetailsFragment : Fragment() {
         }
     }
 
-    private fun callPlayMovie(docs_data: Docs) {
+    private fun callPlayMovie(docs_data: Doc) {
 
         activity?.supportFragmentManager?.apply {
             beginTransaction()

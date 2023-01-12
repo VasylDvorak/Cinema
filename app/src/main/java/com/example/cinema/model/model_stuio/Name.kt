@@ -4,7 +4,7 @@ import android.os.Parcelable
 import kotlinx.android.parcel.Parcelize
 
 @Parcelize
-data class Watchability(
+data class Name(
     val _id: String="",
-    val items: MutableList<Item> = mutableListOf()
+    val name: String=""
 ) : Parcelable

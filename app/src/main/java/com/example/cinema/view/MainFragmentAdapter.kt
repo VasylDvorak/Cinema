@@ -10,7 +10,7 @@ import com.bumptech.glide.GenericTransitionOptions
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions.bitmapTransform
 import com.example.cinema.R
-import com.example.cinema.model.model_stuio.Docs
+import com.example.cinema.model.model_stuio.Doc
 
 
 import jp.wasabeef.glide.transformations.RoundedCornersTransformation
@@ -18,21 +18,21 @@ import jp.wasabeef.glide.transformations.RoundedCornersTransformation
 class MainFragmentAdapter(private var onItemViewClickListener: OnItemViewClickListener?) :
     RecyclerView.Adapter<MainFragmentAdapter.MainViewHolder>() {
 
-    private var aboutMovie: List<Docs> = listOf()
+    private var aboutMovie: List<Doc> = listOf()
     private var upcoming: Boolean = false
 
     interface OnItemViewClickListener {
-        fun onItemClick(aboutMovie: Docs)
+        fun onItemClick(aboutMovie: Doc)
     }
 
-    fun setAboutMovie(data: List<Docs>, upcoming: Boolean) {
+    fun setAboutMovie(data: List<Doc>, upcoming: Boolean) {
         aboutMovie = data
         notifyDataSetChanged()
         this.upcoming = upcoming
     }
 
     inner class MainViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        fun bind(aboutMovieItem: Docs) {
+        fun bind(aboutMovieItem: Doc) {
             itemView.apply {
                 with(aboutMovieItem) {
                     aboutMovieItem.let {
@@ -69,7 +69,7 @@ class MainFragmentAdapter(private var onItemViewClickListener: OnItemViewClickLi
                         var heart: ImageView = findViewById(R.id.is_like_movie)
 
                         heart.apply {
-                            if (!isLike) {
+                            if (true) {
                                 setImageResource(R.drawable.ic_baseline_favorite_border_24_empty)
                             } else {
                                 setImageResource(R.drawable.ic_baseline_favorite_24_yellow)
@@ -77,12 +77,12 @@ class MainFragmentAdapter(private var onItemViewClickListener: OnItemViewClickLi
 
                             setOnClickListener {
 
-                                if (isLike) {
+                                if (true) {
                                     setImageResource(R.drawable.ic_baseline_favorite_border_24_empty)
-                                    isLike = false
+
                                 } else {
                                     setImageResource(R.drawable.ic_baseline_favorite_24_yellow)
-                                    isLike = true
+
                                 }
 
                             }

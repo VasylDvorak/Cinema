@@ -6,6 +6,7 @@ import com.example.cinema.model.model_stuio.MovieDTO
 import com.google.gson.GsonBuilder
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
+
 import okhttp3.logging.HttpLoggingInterceptor
 
 import retrofit2.Callback

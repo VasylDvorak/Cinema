@@ -6,6 +6,6 @@ import kotlinx.android.parcel.Parcelize
 @Parcelize
 data class Poster(
     val _id: String="",
-    val url: String="",
-    val previewUrl: String=""
+    val previewUrl: String="",
+    val url: String=""
 ) : Parcelable
