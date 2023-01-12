@@ -27,7 +27,7 @@ class MainFragmentAdapter(
     private var aboutMovie: MutableList<Docs> = mutableListOf()
 
 
-    interface LikeClickListener{
+    interface LikeClickListener {
         fun onLikeClick(like: Boolean, aboutMovieItem: Docs, context: Context)
     }
 
@@ -47,86 +47,82 @@ class MainFragmentAdapter(
 
             itemView.apply {
 
-    with(aboutMovieItem) {
-        aboutMovieItem.let {
-            findViewById<TextView>(R.id.now_playing_title_movie).text =
-                aboutMovieItem.name
-            findViewById<TextView>(R.id.now_playing_year_movie).text =
-                aboutMovieItem.year.toString()
-            aboutMovieItem.rating?.let {
-                findViewById<TextView>(R.id.now_playing_rating_movie).text =
-                    rating?.kp.toString()
-            }
+                with(aboutMovieItem) {
+                    aboutMovieItem.let {
+                        findViewById<TextView>(R.id.now_playing_title_movie).text =
+                            aboutMovieItem.name
+                        findViewById<TextView>(R.id.now_playing_year_movie).text =
+                            aboutMovieItem.year.toString()
+                        aboutMovieItem.rating?.let {
+                            findViewById<TextView>(R.id.now_playing_rating_movie).text =
+                                rating?.kp.toString()
+                        }
 
-            var strr = ""
-            aboutMovieItem.poster?.let {
-                strr = poster!!.url
+                        var strr = ""
+                        aboutMovieItem.poster?.let {
+                            strr = poster!!.url
 
-                Glide.with(context).load(strr)
-                    .apply(
-                        bitmapTransform(
-                            RoundedCornersTransformation(
-                                120, 0,
-                                RoundedCornersTransformation.CornerType.DIAGONAL_FROM_TOP_RIGHT
-                            )
-                        )
-                    )
-                    .transition(GenericTransitionOptions.with(R.anim.zoom_in))
-                    .into(findViewById(R.id.now_playing_banner))
+                            Glide.with(context).load(strr)
+                                .apply(
+                                    bitmapTransform(
+                                        RoundedCornersTransformation(
+                                            120, 0,
+                                            RoundedCornersTransformation.CornerType
+                                                .DIAGONAL_FROM_TOP_RIGHT
+                                        )
+                                    )
+                                )
+                                .transition(GenericTransitionOptions.with(R.anim.zoom_in))
+                                .into(findViewById(R.id.now_playing_banner))
 
-            }
+                        }
 
+                        val watched : TextView= findViewById(R.id.watched)
 
-            var heart: ImageView = findViewById(R.id.is_like_movie)
-
-            heart.apply {
-
-                if (!(viewModel.getLike(aboutMovieItem, context))) {
-                    setImageResource(R.drawable.ic_baseline_favorite_border_24_empty)
-                } else {
-                    setImageResource(R.drawable.ic_baseline_favorite_24_yellow)
-                }
+                        if (viewModel.getWatched(aboutMovieItem, context)) {
+                            watched.visibility = View.VISIBLE
+                        } else {
+                            watched.visibility = View.GONE
+                        }
 
 
-                setOnClickListener {
 
-                    if (isLike) {
-                        setImageResource(R.drawable.ic_baseline_favorite_border_24_empty)
-                        isLike = false
-                        likeClickListener?.onLikeClick(isLike, aboutMovieItem, context)
+                        var heart: ImageView = findViewById(R.id.is_like_movie)
+
+                        heart.apply {
+
+                            if (!(viewModel.getLike(aboutMovieItem, context))) {
+                                setImageResource(R.drawable.ic_baseline_favorite_border_24_empty)
+                            } else {
+                                setImageResource(R.drawable.ic_baseline_favorite_24_yellow)
+                            }
 
 
-                    } else {
-                        setImageResource(R.drawable.ic_baseline_favorite_24_yellow)
-                        isLike = true
-                        likeClickListener?.onLikeClick(isLike, aboutMovieItem, context)
+                            setOnClickListener {
+
+                                if (isLike) {
+                                    setImageResource(R.drawable.ic_baseline_favorite_border_24_empty)
+                                    isLike = false
+                                    likeClickListener?.onLikeClick(isLike, aboutMovieItem, context)
+
+
+                                } else {
+                                    setImageResource(R.drawable.ic_baseline_favorite_24_yellow)
+                                    isLike = true
+                                    likeClickListener?.onLikeClick(isLike, aboutMovieItem, context)
+
+                                }
+
+
+                            }
+
+                        }
+                        setOnClickListener {
+                            onItemViewClickListener?.onItemClick(aboutMovieItem)
+                        }
 
                     }
-
-
                 }
-
-            }
-            setOnClickListener {
-                onItemViewClickListener?.onItemClick(aboutMovieItem)
-            }
-
-        }
-    }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
             }
@@ -145,7 +141,7 @@ class MainFragmentAdapter(
     }
 
     override fun onBindViewHolder(holder: MainViewHolder, position: Int) {
-              holder.bind(aboutMovie[position])
+        holder.bind(aboutMovie[position])
     }
 
     override fun getItemCount(): Int {

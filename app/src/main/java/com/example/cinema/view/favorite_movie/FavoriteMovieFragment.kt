@@ -117,7 +117,7 @@ class FavoriteMovieFragment : Fragment() {
                 AboutMovieData.removeAt(position)
                 adapter_main.notifyItemRemoved(position)
             }
-        })
+        }, viewModel)
     }
 
 

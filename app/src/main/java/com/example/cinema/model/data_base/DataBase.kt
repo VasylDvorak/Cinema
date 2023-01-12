@@ -6,13 +6,9 @@ import android.database.Cursor
 import android.database.CursorIndexOutOfBoundsException
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
-
 import com.example.cinema.model.gson_kinopoisk_API.Docs
 import com.example.cinema.model.gson_kinopoisk_API.MovieDTO
 import com.google.gson.Gson
-import kotlinx.coroutines.flow.asFlow
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.take
 
 
 class DataBase(context: Context, factory: SQLiteDatabase.CursorFactory?) :
@@ -57,7 +53,7 @@ class DataBase(context: Context, factory: SQLiteDatabase.CursorFactory?) :
         val query = ("CREATE TABLE IF NOT EXISTS " + TABLE_NAME + " ("
                 + ID_COL + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 MOVIEDTO_COl + " TEXT," +
-                MOVIEDTOFAVORITE_COL + " TEXT, " + MOVIEDTONOWPLAYING_COL + " TEXT "+")")
+                MOVIEDTOFAVORITE_COL + " TEXT, " + MOVIEDTONOWPLAYING_COL + " TEXT " + ")")
 
         // we are calling sqlite
         // method for executing our query
@@ -71,8 +67,10 @@ class DataBase(context: Context, factory: SQLiteDatabase.CursorFactory?) :
 
 
     fun renewCurrentMovieDTO(movieDTO: MovieDTO) {
-        updateFavoriteMovie(movieDTO, MOVIEDTO_COl, MOVIEDTOFAVORITE_COL,
-             MOVIEDTONOWPLAYING_COL)
+        updateFavoriteMovie(
+            movieDTO, MOVIEDTO_COl, MOVIEDTOFAVORITE_COL,
+            MOVIEDTONOWPLAYING_COL
+        )
     }
 
 
@@ -85,6 +83,7 @@ class DataBase(context: Context, factory: SQLiteDatabase.CursorFactory?) :
 
         return readFromDB(MOVIEDTOFAVORITE_COL)
     }
+
     fun readNowPlayingMovieMovieDTO(): MovieDTO? {
 
         return readFromDB(MOVIEDTONOWPLAYING_COL)
@@ -100,23 +99,25 @@ class DataBase(context: Context, factory: SQLiteDatabase.CursorFactory?) :
         )
         cursor!!.moveToFirst()
         var movieDTO = MovieDTO()
-try {
+        try {
 
 
-        var jsonString = cursor.getString(0)
-        cursor.close()
-        db.close()
+            var jsonString = cursor.getString(0)
+            cursor.close()
+            db.close()
 
-        val gson = Gson()
+            val gson = Gson()
 
- try {
-     movieDTO = gson.fromJson(jsonString, MovieDTO::class.java)
- } catch (e: NullPointerException){}
+            try {
+                movieDTO = gson.fromJson(jsonString, MovieDTO::class.java)
+            } catch (e: NullPointerException) {
+            }
 
 
-    }    catch (e: CursorIndexOutOfBoundsException) {}
+        } catch (e: CursorIndexOutOfBoundsException) {
+        }
 
-      //  movieDTO = readRawFromDB(str)
+        //  movieDTO = readRawFromDB(str)
         return movieDTO
 
     }
@@ -138,8 +139,9 @@ try {
 
 
 
-            updateFavoriteMovie(MovieDTOLike, MOVIEDTOFAVORITE_COL, MOVIEDTO_COl
-                , MOVIEDTONOWPLAYING_COL)
+            updateFavoriteMovie(
+                MovieDTOLike, MOVIEDTOFAVORITE_COL, MOVIEDTO_COl, MOVIEDTONOWPLAYING_COL
+            )
 
         }
     }
@@ -164,8 +166,9 @@ try {
         if (b) {
             MovieDTOLike.docs.add(docs)
 
-            updateFavoriteMovie(MovieDTOLike, MOVIEDTOFAVORITE_COL, MOVIEDTO_COl
-                , MOVIEDTONOWPLAYING_COL)
+            updateFavoriteMovie(
+                MovieDTOLike, MOVIEDTOFAVORITE_COL, MOVIEDTO_COl, MOVIEDTONOWPLAYING_COL
+            )
 
         }
     }
@@ -177,22 +180,22 @@ try {
         non_changeble_2: String
     ) {
 
-            var db = this.writableDatabase
+        var db = this.writableDatabase
 
-            var cursor = db.query(
-                TABLE_NAME, arrayOf(non_changeble_1, non_changeble_2),
-                null, null, null, null, null
-            )
-            cursor!!.moveToFirst()
-            val gson = Gson()
-            val values = ContentValues()
-            values.put(changable, gson.toJson(movieDTO))
+        var cursor = db.query(
+            TABLE_NAME, arrayOf(non_changeble_1, non_changeble_2),
+            null, null, null, null, null
+        )
+        cursor!!.moveToFirst()
+        val gson = Gson()
+        val values = ContentValues()
+        values.put(changable, gson.toJson(movieDTO))
 
-            try {
-                values.put(non_changeble_1, cursor.getString(0))
-            } catch (e: CursorIndexOutOfBoundsException) {
-                values.put(non_changeble_1, "")
-            }
+        try {
+            values.put(non_changeble_1, cursor.getString(0))
+        } catch (e: CursorIndexOutOfBoundsException) {
+            values.put(non_changeble_1, "")
+        }
 
         try {
             values.put(non_changeble_2, cursor.getString(1))
@@ -201,19 +204,18 @@ try {
         }
 
 
+        // on below line we are calling a update method to update our database and passing our values.
+        // and we are comparing it with name of our course which is stored in original name variable.
 
-            // on below line we are calling a update method to update our database and passing our values.
-            // and we are comparing it with name of our course which is stored in original name variable.
+        if (cursor.count != 0) {
+            db.update(TABLE_NAME, values, null, null)
+        } else {
+            db.insert(TABLE_NAME, null, values)
+        }
 
-            if (cursor.count != 0) {
-                db.update(TABLE_NAME, values, null, null)
-            } else {
-                db.insert(TABLE_NAME, null, values)
-            }
-
-            cursor.close()
-            db.close()
-      //  updateRawFavoriteMovie(movieDTO, changable)
+        cursor.close()
+        db.close()
+        //  updateRawFavoriteMovie(movieDTO, changable)
 
     }
 
@@ -278,7 +280,8 @@ try {
     fun readRawFromDB(str: String): MovieDTO? {
         var db = this.readableDatabase
 
-        var jsonString = db.rawQuery(" SELECT ${str} FROM ${TABLE_NAME} WHERE ${ID_COL} = 0", null)
+        var jsonString = db.rawQuery(" SELECT ${str} FROM ${TABLE_NAME} WHERE ${ID_COL} = 0"
+            , null)
             .getString(0)
         var movieDTO = Gson().fromJson(jsonString, MovieDTO::class.java)
         db.close()
@@ -294,7 +297,7 @@ try {
         var b = true
         if (MovieDTONowPlayng != null) {
 
-                 for (docss in MovieDTONowPlayng.docs) {
+            for (docss in MovieDTONowPlayng.docs) {
                 if (docss.id == docs.id) {
                     b = false
                     break
@@ -306,19 +309,38 @@ try {
         }
 
         if (b) {
-            MovieDTONowPlayng.docs =mutableListOf(docs).plus(MovieDTONowPlayng.docs).toMutableList()
+            MovieDTONowPlayng.docs =
+                mutableListOf(docs).plus(MovieDTONowPlayng.docs).toMutableList()
 
-            if (MovieDTONowPlayng.docs.size > 10){
-                MovieDTONowPlayng.docs.removeAt(10) }
+            if (MovieDTONowPlayng.docs.size > 10) {
+                MovieDTONowPlayng.docs.removeAt(10)
+            }
 
 
-            updateFavoriteMovie(MovieDTONowPlayng,MOVIEDTONOWPLAYING_COL, MOVIEDTOFAVORITE_COL,
-                MOVIEDTO_COl)
+            updateFavoriteMovie(
+                MovieDTONowPlayng, MOVIEDTONOWPLAYING_COL, MOVIEDTOFAVORITE_COL,
+                MOVIEDTO_COl
+            )
 
         }
     }
 
+    fun watched(docs: Docs): Boolean {
 
+        var MovieDTOwatched: MovieDTO? = readNowPlayingMovieMovieDTO()
+
+        var b = false
+        if (MovieDTOwatched != null) {
+            for (docss in MovieDTOwatched.docs) {
+                if (docs.id == docss.id) {
+                    b = true
+                    break
+                }
+            }
+        }
+
+        return b
+    }
 
 
 }

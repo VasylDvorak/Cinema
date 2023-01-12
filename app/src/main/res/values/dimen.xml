@@ -27,4 +27,7 @@
     <dimen name="card_margin">10dp</dimen>
     <dimen name="title_padding">100dp</dimen>
     <dimen name="favorite_card_corner_radius">30dp</dimen>
+    <dimen name="watched_size">25sp</dimen>
+    <dimen name="card_width">119dp</dimen>
+    <dimen name="card_height">234dp</dimen>
 </resources>

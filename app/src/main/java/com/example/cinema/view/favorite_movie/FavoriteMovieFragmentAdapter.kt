@@ -12,11 +12,15 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions.bitmapTransform
 import com.example.cinema.R
 import com.example.cinema.model.gson_kinopoisk_API.Docs
+import com.example.cinema.viewmodel.FavoriteMovieFragmentViewModel
 
 import jp.wasabeef.glide.transformations.RoundedCornersTransformation
 
-class FavoriteMovieFragmentAdapter(private var onItemViewClickListener: OnItemViewClickListener?,
-                                   private var removeMovie: removeMovieListener?) :
+class FavoriteMovieFragmentAdapter(
+    private var onItemViewClickListener: OnItemViewClickListener?,
+    private var removeMovie: removeMovieListener?,
+    private var viewModel: FavoriteMovieFragmentViewModel
+) :
     RecyclerView.Adapter<FavoriteMovieFragmentAdapter.MainViewHolder>() {
 
 
@@ -44,6 +48,15 @@ class FavoriteMovieFragmentAdapter(private var onItemViewClickListener: OnItemVi
             itemView.apply {
                 with(aboutMovieItem) {
                     aboutMovieItem.let {
+
+                        val watched : TextView= findViewById(R.id.watched)
+
+                        if (viewModel.getWatched(aboutMovieItem, context)) {
+                            watched.visibility = View.VISIBLE
+                        } else {
+                            watched.visibility = View.GONE
+                        }
+
                         findViewById<TextView>(R.id.details_title_movie).text =
                             aboutMovieItem.name
                         findViewById<TextView>(R.id.details_original_title_movie).text =

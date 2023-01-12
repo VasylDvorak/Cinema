@@ -86,6 +86,14 @@ class TheBestMovieViewModel(
         return like_movie
     }
 
+    fun getWatched(aboutMovieItem: Docs, context: Context): Boolean {
+        var dbHelper = DataBase(context, null)
+        //  var dbHelper = DataBaseRoom(context)
+        val watched = dbHelper.watched(aboutMovieItem)
+        dbHelper.close()
+        return watched
+    }
+
 
     private val loadResultsReceiver: BroadcastReceiver = object : BroadcastReceiver() {
         @SuppressLint("Range")

@@ -47,6 +47,16 @@ class TheBestMovieFragmentAdapter(
             itemView.apply {
                 with(aboutMovieItem) {
                     aboutMovieItem.let {
+
+                        val watched : TextView= findViewById(R.id.watched)
+
+                        if (viewModel.getWatched(aboutMovieItem, context)) {
+                            watched.visibility = View.VISIBLE
+                        } else {
+                            watched.visibility = View.GONE
+                        }
+
+
                         findViewById<TextView>(R.id.details_title_movie).text =
                             aboutMovieItem.name
                         findViewById<TextView>(R.id.details_original_title_movie).text =
