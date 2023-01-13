@@ -13,6 +13,7 @@ import com.bumptech.glide.request.RequestOptions.bitmapTransform
 import com.example.cinema.R
 import com.example.cinema.model.gson_kinopoisk_API.Docs
 import com.example.cinema.viewmodel.FavoriteMovieFragmentViewModel
+import com.squareup.picasso.Picasso
 
 import jp.wasabeef.glide.transformations.RoundedCornersTransformation
 
@@ -97,24 +98,15 @@ class FavoriteMovieFragmentAdapter(
                         aboutMovieItem.poster?.let {
                             strr = poster!!.url
 
-                            Glide.with( context ).load( strr )
-                                .apply(bitmapTransform(
-                                    RoundedCornersTransformation(120, 0,
-                                        RoundedCornersTransformation.CornerType.DIAGONAL_FROM_TOP_RIGHT)
-                                ))
-                                .transition(GenericTransitionOptions.with(R.anim.zoom_in))
-                                .into(findViewById(R.id.details_banner_movie))
+
+                            Picasso.get ().load( strr).transform(PicassoTransformation())
+                                .into(findViewById(R.id.details_banner_movie) as ImageView)
 
                         }
 
+                        var delete: ImageView = findViewById(R.id.delete)
 
-
-
-
-
-                        var heart: ImageView = findViewById(R.id.delete)
-
-                        heart.apply {
+                        delete.apply {
 
                             setOnClickListener {
 
