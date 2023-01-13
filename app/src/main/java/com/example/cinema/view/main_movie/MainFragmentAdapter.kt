@@ -11,7 +11,7 @@ import com.bumptech.glide.GenericTransitionOptions
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions.bitmapTransform
 import com.example.cinema.R
-import com.example.cinema.model.gson_kinopoisk_API.Docs
+import com.example.cinema.model.model_stuio.Docs
 import com.example.cinema.viewmodel.MainFragmentViewModel
 
 import jp.wasabeef.glide.transformations.RoundedCornersTransformation
@@ -53,14 +53,14 @@ class MainFragmentAdapter(
                             aboutMovieItem.name
                         findViewById<TextView>(R.id.now_playing_year_movie).text =
                             aboutMovieItem.year.toString()
-                        aboutMovieItem.rating?.let {
+                        aboutMovieItem.rating.let {
                             findViewById<TextView>(R.id.now_playing_rating_movie).text =
-                                rating?.kp.toString()
+                                rating.kp.toString()
                         }
 
                         var strr = ""
-                        aboutMovieItem.poster?.let {
-                            strr = poster!!.url
+                        aboutMovieItem.poster.let {
+                            strr = poster.url
 
                             Glide.with(context).load(strr)
                                 .apply(
@@ -77,14 +77,13 @@ class MainFragmentAdapter(
 
                         }
 
-                        val watched : TextView= findViewById(R.id.watched)
+                        val watched: TextView = findViewById(R.id.watched)
 
                         if (viewModel.getWatched(aboutMovieItem, context)) {
                             watched.visibility = View.VISIBLE
                         } else {
                             watched.visibility = View.GONE
                         }
-
 
 
                         var heart: ImageView = findViewById(R.id.is_like_movie)

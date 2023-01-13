@@ -6,44 +6,46 @@ import android.database.Cursor
 import android.database.CursorIndexOutOfBoundsException
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
-import com.example.cinema.model.gson_kinopoisk_API.Docs
-import com.example.cinema.model.gson_kinopoisk_API.MovieDTO
+import com.example.cinema.model.model_stuio.Docs
+import com.example.cinema.model.model_stuio.MovieDTO
 import com.google.gson.Gson
+
+
+
 
 
 class DataBase(context: Context, factory: SQLiteDatabase.CursorFactory?) :
     SQLiteOpenHelper(context, DATABASE_NAME, factory, DATABASE_VERSION) {
 
-    companion object {
-        // here we have defined variables for our database
+companion object{
+// here we have defined variables for our database
 
-        // below is variable for database name
+    // below is variable for database name
+    private val DATABASE_NAME = "GEEKS_FOR_GEEKS"
 
-        private val DATABASE_NAME = "GEEKS_FOR_GEEKS"
+// below is the variable for database version
 
-        // below is the variable for database version
+    private val DATABASE_VERSION = 1
 
-        private val DATABASE_VERSION = 1
+// below is the variable for table name
 
-        // below is the variable for table name
+     val TABLE_NAME = "movie_table"
 
-        val TABLE_NAME = "movie_table"
+// below is the variable for id column
 
-        // below is the variable for id column
+     val ID_COL = "id"
 
-        val ID_COL = "id"
+// below is the variable for name column
 
-        // below is the variable for name column
+     val MOVIEDTO_COl = "MOVIEDTO"
 
-        val MOVIEDTO_COl = "MOVIEDTO"
+// below is the variable for age column
 
-        // below is the variable for age column
+     val MOVIEDTOFAVORITE_COL = "MOVIEDTOFAVORITE"
+     val MOVIEDTONOWPLAYING_COL = "MOVIEDTONOWPLAYING"
 
-        val MOVIEDTOFAVORITE_COL = "MOVIEDTOFAVORITE"
-        val MOVIEDTONOWPLAYING_COL = "MOVIEDTONOWPLAYING"
 
-    }
-
+}
     // below is the method for creating a database by a sqlite query
     override fun onCreate(db: SQLiteDatabase) {
 

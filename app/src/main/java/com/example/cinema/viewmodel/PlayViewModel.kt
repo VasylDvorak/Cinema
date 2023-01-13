@@ -6,7 +6,7 @@ import android.support.annotation.RequiresApi
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.cinema.model.gson_kinopoisk_API.Docs
+import com.example.cinema.model.model_stuio.Docs
 import java.io.BufferedReader
 import java.io.InputStreamReader
 import java.net.MalformedURLException

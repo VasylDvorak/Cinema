@@ -5,20 +5,17 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import coil.api.load
 import coil.transform.CircleCropTransformation
 import com.example.cinema.R
 import com.example.cinema.databinding.FragmentDetailsBinding
-import com.example.cinema.model.gson_kinopoisk_API.Docs
+import com.example.cinema.model.model_stuio.Docs
 import com.example.cinema.view.Extensions
 import com.example.cinema.view.PlayMovieFragment
 import com.example.cinema.viewmodel.DetailsFragmentViewModel
-import com.example.cinema.viewmodel.MainFragmentViewModel
 
 
 class DetailsFragment : Fragment() {
@@ -59,7 +56,7 @@ class DetailsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-            // val model = ViewModelProviders.of(requireActivity()).get(DetailsFragmentViewModel::class.java)
+        // val model = ViewModelProviders.of(requireActivity()).get(DetailsFragmentViewModel::class.java)
         model.getSelected().observe(viewLifecycleOwner, { item ->
             displayMovie(item)
         })
@@ -75,7 +72,7 @@ class DetailsFragment : Fragment() {
                 detailsOriginalTitleMovie.text = docs_data.alternativeName
 
                 var strr = ""
-                docs_data.poster?.let {
+                docs_data.poster.let {
                     strr = docs_data.poster.url
 
                     detailsBannerMovie.load(strr) {
@@ -93,7 +90,7 @@ class DetailsFragment : Fragment() {
                 detailsYearMovie.text = resources.getText(R.string.release_date)
                         as String + " " + docs_data.year.toString()
 
-                docs_data.rating?.let {
+                docs_data.rating.let {
                     with(docs_data.rating) {
                         detailsRatingMovie.text = resources.getText(R.string.rating)
                                 as String + " " + kp.toString()
@@ -116,7 +113,6 @@ class DetailsFragment : Fragment() {
                     detailsDescriptionMovie.text = description
 
 
-
                 }
             }
 
@@ -132,7 +128,7 @@ class DetailsFragment : Fragment() {
     }
 
     private fun callPlayMovie(docs_data: Docs) {
-model.addNowPlaying(docs_data, context)
+        model.addNowPlaying(docs_data, context)
         activity?.supportFragmentManager?.apply {
             beginTransaction()
                 .replace(R.id.flFragment, PlayMovieFragment.newInstance(Bundle().apply {

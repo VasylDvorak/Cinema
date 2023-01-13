@@ -6,8 +6,8 @@ import androidx.lifecycle.ViewModel
 import com.example.cinema.model.Repository
 import com.example.cinema.model.RepositoryImpl
 import com.example.cinema.model.data_base.DataBase
-import com.example.cinema.model.gson_kinopoisk_API.Docs
-import com.example.cinema.model.gson_kinopoisk_API.MovieDTO
+import com.example.cinema.model.model_stuio.Docs
+import com.example.cinema.model.model_stuio.MovieDTO
 
 class FavoriteMovieFragmentViewModel(
     private val liveDataToObserve: MutableLiveData<MovieDTO> = MutableLiveData(),

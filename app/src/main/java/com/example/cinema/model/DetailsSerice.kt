@@ -38,7 +38,7 @@ class DetailsService(name: String = "DetailService") : IntentService(name) {
         intent?.let {
 
             val find_request = intent.getStringExtra(REQUEST_MOVIE)
-println(find_request)
+            println(find_request)
             if (find_request == null) {
                 onEmptyData()
             } else {

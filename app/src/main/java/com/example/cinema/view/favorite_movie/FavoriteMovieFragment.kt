@@ -13,8 +13,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.cinema.R
 import com.example.cinema.databinding.FragmentFavoriteBinding
-import com.example.cinema.model.gson_kinopoisk_API.Docs
-import com.example.cinema.model.gson_kinopoisk_API.MovieDTO
+import com.example.cinema.model.model_stuio.Docs
+import com.example.cinema.model.model_stuio.MovieDTO
 import com.example.cinema.view.details.DetailsFragment
 import com.example.cinema.viewmodel.DetailsFragmentViewModel
 import com.example.cinema.viewmodel.FavoriteMovieFragmentViewModel
@@ -98,7 +98,7 @@ class FavoriteMovieFragment : Fragment() {
             override fun onItemClick(aboutMovie: Docs) {
                 val model = ViewModelProviders.of(requireActivity())
                     .get(DetailsFragmentViewModel::class.java)
-                model.select(aboutMovie)
+                model.select(aboutMovie, context!!)
                 activity?.supportFragmentManager?.apply {
                     beginTransaction()
                         .replace(R.id.flFragment, DetailsFragment.newInstance(Bundle().apply {

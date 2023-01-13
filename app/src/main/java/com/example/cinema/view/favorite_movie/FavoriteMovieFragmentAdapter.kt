@@ -7,15 +7,10 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.GenericTransitionOptions
-import com.bumptech.glide.Glide
-import com.bumptech.glide.request.RequestOptions.bitmapTransform
 import com.example.cinema.R
-import com.example.cinema.model.gson_kinopoisk_API.Docs
+import com.example.cinema.model.model_stuio.Docs
 import com.example.cinema.viewmodel.FavoriteMovieFragmentViewModel
 import com.squareup.picasso.Picasso
-
-import jp.wasabeef.glide.transformations.RoundedCornersTransformation
 
 class FavoriteMovieFragmentAdapter(
     private var onItemViewClickListener: OnItemViewClickListener?,
@@ -28,7 +23,7 @@ class FavoriteMovieFragmentAdapter(
     private var aboutMovie: List<Docs> = listOf()
 
 
-    interface removeMovieListener{
+    interface removeMovieListener {
         fun removeMovieClick(like: Boolean, aboutMovieItem: Docs, context: Context, position: Int)
     }
 
@@ -36,7 +31,7 @@ class FavoriteMovieFragmentAdapter(
         fun onItemClick(aboutMovie: Docs)
     }
 
-    fun setAboutMovie(data: List<Docs>) {
+    fun setAboutMovie(data: MutableList<Docs>) {
 
         aboutMovie = data
         notifyDataSetChanged()
@@ -50,7 +45,7 @@ class FavoriteMovieFragmentAdapter(
                 with(aboutMovieItem) {
                     aboutMovieItem.let {
 
-                        val watched : TextView= findViewById(R.id.watched)
+                        val watched: TextView = findViewById(R.id.watched)
 
                         if (viewModel.getWatched(aboutMovieItem, context)) {
                             watched.visibility = View.VISIBLE
@@ -65,42 +60,42 @@ class FavoriteMovieFragmentAdapter(
 
                         findViewById<TextView>(R.id.details_genre_movie).text =
                             resources.getText(R.string.type)
-                                as String + " " + aboutMovieItem.type
+                                    as String + " " + aboutMovieItem.type
 
 
                         findViewById<TextView>(R.id.details_duration_movie).text =
                             aboutMovieItem.movieLength.toString() + " " +
-                                resources.getText(R.string.min)
-                                        as String
+                                    resources.getText(R.string.min)
+                                            as String
 
-                        findViewById<TextView>(R.id.details_year_movie).text = resources.getText(R.string.release_date)
-                                as String + " " + aboutMovieItem.year.toString()
+                        findViewById<TextView>(R.id.details_year_movie).text =
+                            resources.getText(R.string.release_date)
+                                    as String + " " + aboutMovieItem.year.toString()
 
 
-                        aboutMovieItem.rating?.let {
+                        aboutMovieItem.rating.let {
                             with(aboutMovieItem.rating) {
                                 findViewById<TextView>(R.id.details_rating_movie).text =
                                     resources.getText(com.example.cinema.R.string.rating)
-                                        as String + " " + kp.toString()
+                                            as String + " " + kp.toString()
                                 findViewById<TextView>(R.id.details_budget_movie).text =
                                     resources.getText(com.example.cinema.R.string.budget)
-                                        as String + " " +
-                                        (russianFilmCritics * 10000) + " $"
+                                            as String + " " +
+                                            (russianFilmCritics * 10000) + " $"
                                 findViewById<TextView>(R.id.details_revenue_movie).text =
                                     resources.getText(com.example.cinema.R.string.revenue)
-                                        as String + " " + (await * 10000) + " $"
+                                            as String + " " + (await * 10000) + " $"
                             }
                         }
 
 
-
                         var strr = ""
-                        aboutMovieItem.poster?.let {
-                            strr = poster!!.url
+                        aboutMovieItem.poster.let {
+                            strr = poster.url
 
 
-                            Picasso.get ().load( strr).transform(PicassoTransformation())
-                                .into(findViewById(R.id.details_banner_movie) as ImageView)
+                            Picasso.get().load(strr).transform(PicassoTransformation())
+                                .into(findViewById<ImageView>(R.id.details_banner_movie))
 
                         }
 
@@ -110,8 +105,10 @@ class FavoriteMovieFragmentAdapter(
 
                             setOnClickListener {
 
-                                removeMovie?.removeMovieClick(false, aboutMovieItem, context,
-                                    absoluteAdapterPosition)
+                                removeMovie?.removeMovieClick(
+                                    false, aboutMovieItem, context,
+                                    absoluteAdapterPosition
+                                )
 
                             }
 

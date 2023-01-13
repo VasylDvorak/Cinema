@@ -15,8 +15,8 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.cinema.R
 import com.example.cinema.databinding.FragmentMainBinding
-import com.example.cinema.model.gson_kinopoisk_API.Docs
-import com.example.cinema.model.gson_kinopoisk_API.MovieDTO
+import com.example.cinema.model.model_stuio.Docs
+import com.example.cinema.model.model_stuio.MovieDTO
 import com.example.cinema.view.Extensions
 import com.example.cinema.view.MainActivity.Companion.start_cinema
 import com.example.cinema.view.details.DetailsFragment
@@ -40,7 +40,7 @@ class MainFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        retainInstance = true
+       retainInstance = true
     }
 
     @RequiresApi(Build.VERSION_CODES.N)
@@ -59,18 +59,22 @@ class MainFragment : Fragment() {
         }
         viewModel.getDataNowPlaying().observe(viewLifecycleOwner, observer3)
 
-        if (savedInstanceState == null) {
+        if ((savedInstanceState == null) && (start_cinema != "1")) {
+
             if (start_cinema.equals("", true)) {
                 start_cinema = resources.getString(R.string.first_request)
             }
             viewModel.getDataFromRemoteSource(start_cinema, context)
-            start_cinema = ""
+
+            start_cinema = "1"
             val observer = Observer<AppState> {
                 renderData(it)
             }
             viewModel.getData().observe(viewLifecycleOwner, observer)
         } else {
+
             viewModel.getFromDataBase(requireContext())
+
             val observer = Observer<AppState> {
                 renderData(it)
             }
@@ -121,7 +125,7 @@ class MainFragment : Fragment() {
                         mainView,
                         getString(R.string.error),
                         getString(R.string.reload),
-                        { viewModel.getDataFromLocalSource(context) }
+                        { viewModel.liveDataToObserveUpdate() }
                     )
                 }
             }
@@ -231,7 +235,7 @@ class MainFragment : Fragment() {
             override fun onItemClick(aboutMovie: Docs) {
                 val model = ViewModelProviders.of(requireActivity())
                     .get(DetailsFragmentViewModel::class.java)
-                model.select(aboutMovie)
+                model.select(aboutMovie, context!!)
                 activity?.supportFragmentManager?.apply {
                     beginTransaction()
                         .replace(R.id.flFragment, DetailsFragment.newInstance(Bundle()))

@@ -14,7 +14,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import com.example.cinema.R
 import com.example.cinema.databinding.FragmentPlayMovieBinding
-import com.example.cinema.model.gson_kinopoisk_API.Docs
+import com.example.cinema.model.model_stuio.Docs
 import com.example.cinema.viewmodel.DetailsFragmentViewModel
 import com.example.cinema.viewmodel.PlayViewModel
 
@@ -50,16 +50,17 @@ class PlayMovieFragment : Fragment() {
         _binding = null
     }
 
-   // private lateinit var aboutMovieBundle: Docs
+    // private lateinit var aboutMovieBundle: Docs
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-     //   aboutMovieBundle = arguments?.getParcelable(BUNDLE_MOVIE) ?: Docs()
+        //   aboutMovieBundle = arguments?.getParcelable(BUNDLE_MOVIE) ?: Docs()
         binding.webview.visibility = View.GONE
         binding.videoView.visibility = View.GONE
         binding.idTVHeading.visibility = View.GONE
 
-        val model = ViewModelProviders.of(requireActivity()).get(DetailsFragmentViewModel::class.java)
+        val model =
+            ViewModelProviders.of(requireActivity()).get(DetailsFragmentViewModel::class.java)
         model.getSelected().observe(viewLifecycleOwner, { item ->
             val movie_point =
                 (item.url_trailer[item.url_trailer.length - 4]).toString()
