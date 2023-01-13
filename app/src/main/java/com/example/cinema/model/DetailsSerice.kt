@@ -286,6 +286,7 @@ println(find_request)
             trailerUrl,
             { result ->
                 run {
+
                     parseTrailerMovieData(result)
                 }
             },
@@ -308,7 +309,7 @@ println(find_request)
             var trailer0 = trailer[0] as JSONObject
             str = trailer0.getString("url")
 
-        } catch (e: Exception) {
+        } catch (e: JSONException) {
         } finally {
             list_trailer.add(str)
             for (i in 0 until list_trailer.size) {
