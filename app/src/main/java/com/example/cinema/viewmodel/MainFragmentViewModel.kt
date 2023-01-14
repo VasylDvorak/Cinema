@@ -61,6 +61,7 @@ class MainFragmentViewModel(
 
     fun getFromDataBase(context: Context) {
         this.context=context
+        if (start_cinema == ""){
         var dbHelper = DataBase(context, null)
         //  var dbHelper = DataBaseRoom(context)
         try {
@@ -73,19 +74,23 @@ class MainFragmentViewModel(
                     liveDataToObserveUpdate()
 
                 }else{
-                    startSearch()
+                    startSearch(context.resources.getString(R.string.first_request))
                 }
             }
+
         } catch (e: NullPointerException) {
-            startSearch()
+            startSearch(context.resources.getString(R.string.first_request))
+        }
+
+        }else{
+            startSearch(start_cinema)
         }
 
     }
-    fun startSearch(){
-        if (start_cinema == ""){
-            start_cinema = context.resources.getString(R.string.first_request)
-        }
-        getDataFromRemoteSource(start_cinema, context)
+
+    fun startSearch(start : String){
+
+        getDataFromRemoteSource(start, context)
 
     }
 
@@ -147,6 +152,7 @@ class MainFragmentViewModel(
 
     fun getData() = liveDataToObserve
     fun getDataFromRemoteSource(request_movie: String?, context: Context?) {
+        start_cinema=""
         this.context=context!!
         liveDataToObserve.value = AppState.Loading
         detailsRepositoryImpl.getMovieDetailsFromServer(request_movie, callBack)
