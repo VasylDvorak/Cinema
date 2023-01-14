@@ -72,7 +72,7 @@ class DetailsFragment : Fragment() {
                 detailsOriginalTitleMovie.text = docs_data.alternativeName
 
                 var strr = ""
-                docs_data.poster.let {
+                docs_data.poster?.let {
                     strr = docs_data.poster.url
 
                     detailsBannerMovie.load(strr) {

@@ -109,12 +109,10 @@ class TheBestMovieViewModel(
             return if (serverResponse == null) {
                 AppState.Error(Throwable(CORRUPTED_DATA))
             } else {
-                var dbHelper = DataBase(context, null)
-                //  var dbHelper = DataBaseRoom(context)
+
 
                 var converted_response = converter(serverResponse)
-                dbHelper.renewCurrentMovieDTO(converted_response)
-                dbHelper.close()
+
 
                 AppState.Success(converted_response)
             }

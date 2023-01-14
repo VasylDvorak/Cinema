@@ -90,14 +90,14 @@ class FavoriteMovieFragmentAdapter(
 
 
                         var strr = ""
-                        aboutMovieItem.poster.let {
+                        aboutMovieItem.poster?.let {
                             strr = poster.url
 
-
+                            if((strr != "") && (strr != null)){
                             Picasso.get().load(strr).transform(PicassoTransformation())
                                 .into(findViewById<ImageView>(R.id.details_banner_movie))
 
-                        }
+                        }}
 
                         var delete: ImageView = findViewById(R.id.delete)
 

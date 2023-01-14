@@ -94,7 +94,7 @@ class TheBestMovieFragmentAdapter(
 
 
                         var strr = ""
-                        aboutMovieItem.poster.let {
+                        aboutMovieItem.poster?.let {
                             strr = poster.url
 
                             Glide.with(context).load(strr)

@@ -59,32 +59,18 @@ class MainFragment : Fragment() {
         }
         viewModel.getDataNowPlaying().observe(viewLifecycleOwner, observer3)
 
-        if ((savedInstanceState == null) && (start_cinema != "1")) {
+        viewModel.getFromDataBase(requireContext())
 
-            if (start_cinema.equals("", true)) {
-                start_cinema = resources.getString(R.string.first_request)
-            }
-            viewModel.getDataFromRemoteSource(start_cinema, context)
+        val observer = Observer<AppState> {
 
-            start_cinema = "1"
-            val observer = Observer<AppState> {
-                renderData(it)
-            }
-            viewModel.getData().observe(viewLifecycleOwner, observer)
-        } else {
-
-            viewModel.getFromDataBase(requireContext())
-
-            val observer = Observer<AppState> {
-                renderData(it)
-            }
-            viewModel.getData().observe(viewLifecycleOwner, observer)
+            renderData(it)
         }
+        viewModel.getData().observe(viewLifecycleOwner, observer)
 
-    }
 
+}
 
-    private lateinit var adapter: MainFragmentAdapter
+private lateinit var adapter: MainFragmentAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -137,7 +123,6 @@ class MainFragment : Fragment() {
         var AboutMovieData = movieDTO
         with(binding) {
             loadingLayout.visibility = View.GONE
-
 
             adapter.setAboutMovie(AboutMovieData.docs)
 
