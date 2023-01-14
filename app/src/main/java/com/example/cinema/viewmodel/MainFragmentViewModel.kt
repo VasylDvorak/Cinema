@@ -41,15 +41,7 @@ class MainFragmentViewModel(
 ) : ViewModel() {
 
     private lateinit var context : Context
-/*
-    fun getDataFromLocalSource(context: Context?) {
-        liveDataToObserve.value = AppState.Loading
-        context?.let {
-            LocalBroadcastManager.getInstance(it).unregisterReceiver(loadResultsReceiver)
-        }
-        liveDataToObserveUpdate()
-    }
-*/
+
     fun liveDataToObserveUpdate() {
         Thread {
 
@@ -110,29 +102,6 @@ class MainFragmentViewModel(
         return liveDataToObserveNowPlaying
     }
 
-/*
-    fun getDataFromRemoteSource(
-        find_request: String?,
-        context: Context?
-    ) {
-
-
-        LocalBroadcastManager.getInstance(context!!)
-            .registerReceiver(loadResultsReceiver, IntentFilter(DETAILS_INTENT_FILTER))
-        context.startService(Intent(context, DetailsService::class.java).apply {
-            putExtra(
-                REQUEST_MOVIE, "https://api.kinopoisk.dev/movie?limit=10&field" +
-                        "=name&search=${find_request}&isStrict=false&" +
-                        "token=${BuildConfig.KINOPOISK_API_KEY}"
-            )
-        })
-
-    }
-
-    fun getData(): MutableLiveData<AppState> {
-        return liveDataToObserve
-    }
-    */
     fun changeLikeDataInDB(like: Boolean, aboutMovieItem: Docs, context: Context) {
         var dbHelper = DataBase(context, null)
         //  var dbHelper = DataBaseRoom(context)
@@ -162,63 +131,6 @@ class MainFragmentViewModel(
         dbHelper.close()
         return watched
     }
-
-/*
-    private val loadResultsReceiver: BroadcastReceiver = object : BroadcastReceiver() {
-        @SuppressLint("Range")
-        override fun onReceive(context: Context, intent: Intent) {
-            Log.d("TAG", "onReceive")
-
-            val strExtra = intent.getStringExtra(DETAILS_LOAD_RESULT_EXTRA)
-
-            when (strExtra) {
-                DETAILS_INTENT_EMPTY_EXTRA -> Extensions.showToast(
-                    context, context.resources.getString(R.string.error_reading)
-                )
-                DETAILS_DATA_EMPTY_EXTRA -> Extensions.showToast(
-                    context, context.resources.getString(R.string.error_reading)
-                )
-                DETAILS_RESPONSE_EMPTY_EXTRA -> Extensions.showToast(
-                    context, context.resources.getString(R.string.error_reading)
-                )
-                DETAILS_REQUEST_ERROR_EXTRA -> Extensions.showToast(
-                    context, context.resources.getString(R.string.error_reading)
-                )
-                DETAILS_REQUEST_ERROR_MESSAGE_EXTRA -> Extensions.showToast(
-                    context, context.resources.getString(R.string.error_reading)
-                )
-                DETAILS_URL_MALFORMED_EXTRA -> Extensions.showToast(
-                    context, context.resources.getString(R.string.error_reading)
-                )
-
-                DETAILS_RESPONSE_SUCCESS_EXTRA -> {
-                    var movieDTO_from_broadcast =
-                        intent.getParcelableExtra<MovieDTO>(DETAILS_CONDITION_EXTRA)
-
-                    var dbHelper = DataBase(context, null)
-                    //  var dbHelper = DataBaseRoom(context)
-
-                    dbHelper.renewCurrentMovieDTO(movieDTO_from_broadcast!!)
-                    dbHelper.close()
-                    movieDTO_from_broadcast.let {
-                        repositoryImpl.setAboutMovieFromServer(movieDTO_from_broadcast)
-
-                        getDataFromLocalSource(context)
-                    }
-
-
-                }
-            }
-        }
-    }
-
-
-*/
-
-
-////////////////////////////////////////////////////////////////////////
-
-
 
     fun getData() = liveDataToObserve
     fun getDataFromRemoteSource(request_movie: String?, context: Context?) {

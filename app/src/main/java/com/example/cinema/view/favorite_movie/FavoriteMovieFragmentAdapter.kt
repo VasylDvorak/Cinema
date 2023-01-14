@@ -90,7 +90,7 @@ class FavoriteMovieFragmentAdapter(
 
 
                         var strr = ""
-                        aboutMovieItem.poster.let {
+                        aboutMovieItem.poster?.let {
                             strr = poster.url
 
 
