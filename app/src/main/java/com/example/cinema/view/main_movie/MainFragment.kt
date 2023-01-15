@@ -59,23 +59,14 @@ class MainFragment : Fragment() {
         }
         viewModel.getDataNowPlaying().observe(viewLifecycleOwner, observer3)
 
-        if ((savedInstanceState == null)&&(start_cinema != "1")) {
-            if (start_cinema.equals("", true)) {
-                start_cinema = resources.getString(R.string.first_request)
-            }
-            viewModel.getDataFromRemoteSource(start_cinema, context)
-            start_cinema = "1"
-            val observer = Observer<AppState> {
-                renderData(it)
-            }
-            viewModel.getData().observe(viewLifecycleOwner, observer)
-        } else {
-            viewModel.getFromDataBase(requireContext())
-            val observer = Observer<AppState> {
-                renderData(it)
-            }
-            viewModel.getData().observe(viewLifecycleOwner, observer)
+        viewModel.getFromDataBase(requireContext())
+
+        val observer = Observer<AppState> {
+
+            renderData(it)
         }
+        viewModel.getData().observe(viewLifecycleOwner, observer)
+
 
     }
 

@@ -19,6 +19,8 @@ import com.example.cinema.model.data_base.DataBase
 import com.example.cinema.model.gson_kinopoisk_API.Docs
 import com.example.cinema.model.gson_kinopoisk_API.MovieDTO
 import com.example.cinema.view.Extensions
+import com.example.cinema.view.MainActivity
+import com.example.cinema.view.MainActivity.Companion.start_cinema
 
 
 const val DETAILS_INTENT_FILTER = "DETAILS INTENT FILTER"
@@ -37,6 +39,7 @@ class MainFragmentViewModel(
     val liveDataToObserve: MutableLiveData<AppState> = MutableLiveData(),
     private val repositoryImpl: Repository = RepositoryImpl(),
 ) : ViewModel() {
+private lateinit var context: Context
 
     fun getDataFromLocalSource(context: Context?) {
         liveDataToObserve.value = AppState.Loading
@@ -61,6 +64,8 @@ class MainFragmentViewModel(
 
 
     fun getFromDataBase(context: Context) {
+        this.context = context
+        if (start_cinema == ""){
         var dbHelper = DataBase(context, null)
         //  var dbHelper = DataBaseRoom(context)
         try {
@@ -72,15 +77,29 @@ class MainFragmentViewModel(
 
                     liveDataToObserveUpdate()
 
+                }else{
+                    startSearch(context.resources.getString(R.string.first_request))
                 }
             }
 
         } catch (e: NullPointerException) {
+            startSearch(context.resources.getString(R.string.first_request))
         }
 
-
+    }else{
+            startSearch(start_cinema)
+        }
 
     }
+
+    fun startSearch(start : String){
+
+        getDataFromRemoteSource(start, context)
+
+    }
+
+
+
   private var liveDataToObserveNowPlaying: MutableLiveData<MovieDTO> = MutableLiveData()
     fun getNowPlayingFromDataBase(context: Context) {
         var dbHelper = DataBase(context, null)
@@ -111,7 +130,7 @@ class MainFragmentViewModel(
         find_request: String?,
         context: Context?
     ) {
-
+        start_cinema=""
 
         LocalBroadcastManager.getInstance(context!!)
             .registerReceiver(loadResultsReceiver, IntentFilter(DETAILS_INTENT_FILTER))
