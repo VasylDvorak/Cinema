@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     tools:context="view.PlayMovieFragment">
 
@@ -21,16 +22,20 @@
         android:textStyle="bold" />
 
     <!-- adding VideoView to the layout -->
-    <VideoView
+
+
+        <VideoView
         android:id="@+id/videoView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/idTVHeading"
-        android:layout_centerInParent="true" />
+        android:layout_centerInParent="true"
+            android:visibility="gone"/>
     <!-- Контейнер для загружаемой страницы -->
     <WebView
         android:id="@+id/webview"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:visibility="gone"/>
 
 </RelativeLayout>
