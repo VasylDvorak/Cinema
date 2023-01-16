@@ -7,7 +7,7 @@ import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 import com.example.cinema.BuildConfig
 import com.example.cinema.model.model_stuio.MovieDTO
-import com.example.cinema.model.url_trailer
+
 import com.google.gson.GsonBuilder
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
