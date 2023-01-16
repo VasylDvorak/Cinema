@@ -18,7 +18,6 @@ import com.example.cinema.databinding.FragmentMainBinding
 import com.example.cinema.model.gson_kinopoisk_API.Docs
 import com.example.cinema.model.gson_kinopoisk_API.MovieDTO
 import com.example.cinema.view.Extensions
-import com.example.cinema.view.MainActivity.Companion.start_cinema
 import com.example.cinema.view.details.DetailsFragment
 import com.example.cinema.viewmodel.AppState
 import com.example.cinema.viewmodel.DetailsFragmentViewModel

@@ -20,17 +20,13 @@ const val NAME_MSG: String = "MSG"
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
-    private val mainBroadcastReceiver = MainBroadcastReceiver()
 
-    companion object {
-        var start_cinema = ""
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         initNotificationChannel()
-        broadcastIntent()
+
 
         binding = ActivityMainBinding.inflate(layoutInflater)
         val view = binding.root
@@ -69,23 +65,9 @@ class MainActivity : AppCompatActivity() {
             )
             notificationManager.createNotificationChannel(channel)
         }
-        if (intent.hasExtra(NAME_MSG)) {
-            start_cinema = intent.getStringExtra(NAME_MSG)!!
-        }
     }
 
-    fun broadcastIntent() {
 
-        registerReceiver(
-            mainBroadcastReceiver,
-            IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION)
-        )
-    }
-
-    override fun onPause() {
-        super.onPause()
-        unregisterReceiver(mainBroadcastReceiver)
-    }
 
 
 }

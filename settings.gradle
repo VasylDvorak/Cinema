@@ -14,4 +14,3 @@ dependencyResolutionManagement {
 }
 rootProject.name = "Cinema"
 include ':app'
-include ':app_launcher'

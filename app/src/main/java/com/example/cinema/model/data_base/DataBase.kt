@@ -258,39 +258,6 @@ class DataBase(context: Context, factory: SQLiteDatabase.CursorFactory?) :
     }
 
 
-    fun updateRawFavoriteMovie(movieDTO: MovieDTO?, changable: String) {
-        var db = this.writableDatabase
-
-
-        try {
-            db.rawQuery(
-                " UPDATE ${TABLE_NAME} SET ${changable} = '${Gson().toJson(movieDTO)}'",
-                null
-            )
-        } catch (e: Exception) {
-            db.rawQuery(
-                " INSERT INTO ${TABLE_NAME} (${changable}) VALUES ('${Gson().toJson(movieDTO)}')",
-                null
-            )
-        }
-        db.close()
-    }
-
-
-    fun readRawFromDB(str: String): MovieDTO? {
-        var db = this.readableDatabase
-
-        var jsonString = db.rawQuery(" SELECT ${str} FROM ${TABLE_NAME} WHERE ${ID_COL} = 0"
-            , null)
-            .getString(0)
-        var movieDTO = Gson().fromJson(jsonString, MovieDTO::class.java)
-        db.close()
-
-
-        return movieDTO
-
-    }
-
     fun addNowPlayingMovieDTO(docs: Docs) {
         var MovieDTONowPlayng: MovieDTO? = readFromDB(MOVIEDTONOWPLAYING_COL)
 

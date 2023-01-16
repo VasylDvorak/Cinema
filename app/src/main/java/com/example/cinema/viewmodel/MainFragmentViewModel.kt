@@ -19,9 +19,6 @@ import com.example.cinema.model.data_base.DataBase
 import com.example.cinema.model.gson_kinopoisk_API.Docs
 import com.example.cinema.model.gson_kinopoisk_API.MovieDTO
 import com.example.cinema.view.Extensions
-import com.example.cinema.view.MainActivity
-import com.example.cinema.view.MainActivity.Companion.start_cinema
-
 
 const val DETAILS_INTENT_FILTER = "DETAILS INTENT FILTER"
 const val DETAILS_LOAD_RESULT_EXTRA = "LOAD RESULT"
@@ -65,7 +62,7 @@ private lateinit var context: Context
 
     fun getFromDataBase(context: Context) {
         this.context = context
-        if (start_cinema == ""){
+
         var dbHelper = DataBase(context, null)
         //  var dbHelper = DataBaseRoom(context)
         try {
@@ -86,9 +83,7 @@ private lateinit var context: Context
             startSearch(context.resources.getString(R.string.first_request))
         }
 
-    }else{
-            startSearch(start_cinema)
-        }
+
 
     }
 
@@ -130,7 +125,6 @@ private lateinit var context: Context
         find_request: String?,
         context: Context?
     ) {
-        start_cinema=""
 
         LocalBroadcastManager.getInstance(context!!)
             .registerReceiver(loadResultsReceiver, IntentFilter(DETAILS_INTENT_FILTER))
