@@ -306,8 +306,15 @@ println(find_request)
         try {
             var videos = JSONObject(result).getJSONObject("videos")
             var trailer = videos.getJSONArray("trailers")
-            var trailer0 = trailer[0] as JSONObject
-            str = trailer0.getString("url")
+            for (i in 0 until trailer.length()) {
+                var checked_trailer = trailer[i] as JSONObject
+              var  str2 = checked_trailer.getString("url")
+                if((str2 != null) && (str2 != "")){
+                    str=str2
+                    break
+                }
+            }
+
 
         } catch (e: JSONException) {
         } finally {
