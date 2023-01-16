@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import com.example.cinema.databinding.FragmentPlayMovieBinding
 import com.example.cinema.viewmodel.DetailsFragmentViewModel
+import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_play_movie.*
 
 
@@ -37,11 +38,13 @@ class PlayMovieFragment : Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
+        getActivity()?.bottomNavigationView?.setVisibility(View.VISIBLE)
         _binding = null
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        getActivity()?.bottomNavigationView?.setVisibility(View.GONE)
         val model =
             ViewModelProviders.of(requireActivity()).get(DetailsFragmentViewModel::class.java)
         model.getSelected().observe(viewLifecycleOwner) { item ->
