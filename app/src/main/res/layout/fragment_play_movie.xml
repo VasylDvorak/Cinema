@@ -1,41 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
     tools:context="view.PlayMovieFragment">
 
-    <!--on below line we are creating a text for heading of our app-->
-    <TextView
-        android:id="@+id/idTVHeading"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="8dp"
-        android:gravity="center"
-        android:padding="4dp"
-        android:text="Play Video from URL"
-        android:textAlignment="center"
-        android:textColor="@color/purple_200"
-        android:textSize="18sp"
-        android:textStyle="bold" />
-
-    <!-- adding VideoView to the layout -->
-
-
-        <VideoView
-        android:id="@+id/videoView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/idTVHeading"
-        android:layout_centerInParent="true"
-            android:visibility="gone"/>
-    <!-- Контейнер для загружаемой страницы -->
     <WebView
         android:id="@+id/webview"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:visibility="gone"/>
+        android:layout_height="match_parent" />
 
-</RelativeLayout>
+</FrameLayout>
