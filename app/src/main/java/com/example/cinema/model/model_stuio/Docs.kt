@@ -24,5 +24,8 @@ data class Docs(
     var watchability: Watchability = Watchability(),
     var year: Int=0,
     var isLike: Boolean = false,
-    var url_trailer: String = ""
-) : Parcelable
+    var url_trailer: String = "",
+    var note: String = ""
+) : Parcelable {
+
+}

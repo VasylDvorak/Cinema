@@ -1,13 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
     <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content">
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/note_correct"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:layout_margin="@dimen/fragment_padding"
+            android:clickable="true"
+            android:focusable="true"
+            android:foreground="@drawable/ic_baseline_edit_note_24"
+            android:scaleType="fitXY" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/mainView"
@@ -20,10 +30,11 @@
                 android:id="@+id/details_title_movie"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:paddingTop="@dimen/title_size_details"
                 android:textColor="@color/black"
                 android:textSize="@dimen/title_size_details"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintBottom_toTopOf="@+id/details_original_title_movie"/>
+                app:layout_constraintBottom_toTopOf="@+id/details_original_title_movie"
+                app:layout_constraintStart_toStartOf="parent" />
 
 
             <TextView
@@ -134,20 +145,7 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <FrameLayout
-            android:id="@+id/loadingLayout"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_gravity="center"
-            android:background="@color/loadingBackground"
-            android:visibility="gone"
-            tools:visibility="visible">
 
-            <ProgressBar
-                style="?android:attr/progressBarStyleLarge"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center" />
-        </FrameLayout>
     </FrameLayout>
+
 </ScrollView>

@@ -40,10 +40,6 @@ fun getBestMovie(
 
 */
 
-
-
-
-
 /*
 Форма запроса
 "https://api.kinopoisk.dev/movie?field" +

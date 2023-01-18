@@ -98,8 +98,7 @@ class MainFragmentViewModel(
   private var liveDataToObserveNowPlaying: MutableLiveData<MovieDTO> = MutableLiveData()
     fun getNowPlayingFromDataBase(context: Context) {
         var dbHelper = DataBase(context, null)
-        //  var dbHelper = DataBaseRoom(context)
-        try {
+           try {
             var start_condition = dbHelper.readNowPlayingMovieMovieDTO()
 
             dbHelper.close()

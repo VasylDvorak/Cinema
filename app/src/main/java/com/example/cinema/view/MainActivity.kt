@@ -2,6 +2,7 @@ package com.example.cinema.view
 
 import android.app.NotificationChannel
 import android.app.NotificationManager
+import android.content.Context
 import android.content.IntentFilter
 import android.net.ConnectivityManager
 import android.os.Build
@@ -16,6 +17,7 @@ import com.example.cinema.view.ratings_movie.RatingsFragment
 
 
 const val NAME_MSG: String = "MSG"
+
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
@@ -72,7 +74,6 @@ class MainActivity : AppCompatActivity() {
             start_cinema = intent.getStringExtra(NAME_MSG)!!
         }
     }
-
 
 
 }

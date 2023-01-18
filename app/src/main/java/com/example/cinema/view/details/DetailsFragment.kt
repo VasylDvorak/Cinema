@@ -15,7 +15,10 @@ import com.example.cinema.databinding.FragmentDetailsBinding
 import com.example.cinema.model.model_stuio.Docs
 import com.example.cinema.view.Extensions
 import com.example.cinema.view.PlayMovieFragment
+import com.example.cinema.view.note.NoteFragment
+import com.example.cinema.view.note.NoteFragment.Companion.STRING_EXTRA
 import com.example.cinema.viewmodel.DetailsFragmentViewModel
+import kotlinx.android.synthetic.main.fragment_details.*
 
 
 class DetailsFragment : Fragment() {
@@ -65,9 +68,13 @@ class DetailsFragment : Fragment() {
 
     private fun displayMovie(docs_data: Docs) {
         try {
+
             with(binding) {
+                noteCorrect.setOnClickListener {
+                    callNote(docs_data.note)
+                }
+
                 mainView.visibility = View.VISIBLE
-                loadingLayout.visibility = View.GONE
                 detailsTitleMovie.text = docs_data.name
                 detailsOriginalTitleMovie.text = docs_data.alternativeName
 
@@ -124,6 +131,16 @@ class DetailsFragment : Fragment() {
                 { requireContext().resources.getString(R.string.OK) }
             )
             fragmentManager?.popBackStack()
+        }
+    }
+
+    private fun callNote(note: String) {
+        activity?.supportFragmentManager?.apply {
+            beginTransaction()
+                .replace(R.id.flFragment, NoteFragment.newInstance(Bundle().apply {
+               putString(STRING_EXTRA, note) }))
+                .addToBackStack("")
+                .commitAllowingStateLoss()
         }
     }
 

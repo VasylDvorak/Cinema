@@ -18,12 +18,13 @@ import com.example.cinema.databinding.FragmentMainBinding
 import com.example.cinema.model.model_stuio.Docs
 import com.example.cinema.model.model_stuio.MovieDTO
 import com.example.cinema.view.Extensions
-import com.example.cinema.view.MainActivity.Companion.start_cinema
 import com.example.cinema.view.details.DetailsFragment
 import com.example.cinema.viewmodel.AppState
 import com.example.cinema.viewmodel.DetailsFragmentViewModel
 import com.example.cinema.viewmodel.MainFragmentViewModel
 import kotlinx.android.synthetic.main.fragment_main.*
+
+private const val ADULT_KEY = "ADULT_KEY"
 
 class MainFragment : Fragment() {
 
@@ -40,7 +41,7 @@ class MainFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-       retainInstance = true
+        retainInstance = true
     }
 
     @RequiresApi(Build.VERSION_CODES.N)
@@ -68,9 +69,9 @@ class MainFragment : Fragment() {
         viewModel.getData().observe(viewLifecycleOwner, observer)
 
 
-}
+    }
 
-private lateinit var adapter: MainFragmentAdapter
+    private lateinit var adapter: MainFragmentAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -162,6 +163,12 @@ private lateinit var adapter: MainFragmentAdapter
         inflater.inflate(R.menu.main_menu, menu)
         super.onCreateOptionsMenu(menu, inflater)
 
+        activity?.let {
+            var adultSp = it.getPreferences(Context.MODE_PRIVATE).getBoolean(ADULT_KEY, false)
+            var adultItem = menu.findItem(R.id.adult)
+            adultItem.setChecked(adultSp)
+        }
+
         val manager = requireActivity().getSystemService(Context.SEARCH_SERVICE) as SearchManager
         val searchItem = menu.findItem(R.id.search)
         val searchView = searchItem?.actionView as SearchView
@@ -199,7 +206,8 @@ private lateinit var adapter: MainFragmentAdapter
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        // Handle presses on the action bar menu items
+
+
         when (item.itemId) {
             R.id.about -> {
 
@@ -207,6 +215,11 @@ private lateinit var adapter: MainFragmentAdapter
                     this, R.string.about_program, R.string.message_dialog,
                     android.R.drawable.ic_menu_info_details, R.string.yes
                 )
+                return true
+            }
+            R.id.adult -> {
+                item.isChecked = !item.isChecked
+                saveAdult(item.isChecked)
                 return true
             }
         }
@@ -235,5 +248,13 @@ private lateinit var adapter: MainFragmentAdapter
         }, viewModel)
     }
 
+    private fun saveAdult(isDataSetWorld: Boolean) {
+        activity?.let {
+            with(it.getPreferences(Context.MODE_PRIVATE).edit()) {
+                putBoolean(ADULT_KEY, isDataSetWorld)
+                apply()
+            }
+        }
 
+    }
 }

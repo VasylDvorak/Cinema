@@ -8,6 +8,10 @@
         app:actionViewClass="androidx.appcompat.widget.SearchView"
         app:showAsAction="ifRoom|collapseActionView" />
     <item
+        android:id="@+id/adult"
+        android:title="@string/for_adult"
+        android:checkable="true"/>
+    <item
         android:id="@+id/about"
         android:icon="@android:drawable/ic_menu_info_details"
         android:title="@string/about"
