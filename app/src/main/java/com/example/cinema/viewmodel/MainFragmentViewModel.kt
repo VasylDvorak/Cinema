@@ -113,7 +113,9 @@ class MainFragmentViewModel(
     fun getData() = liveDataToObserve
     fun getDataFromRemoteSource(request_movie: String?) {
         start_cinema=""
-        liveDataToObserve.value = AppState.Loading
+        try {
+            liveDataToObserve.value = AppState.Loading
+        }catch (e: IllegalStateException){}
         detailsRepositoryImpl.getMovieDetailsFromServer(request_movie, callBack)
     }
 

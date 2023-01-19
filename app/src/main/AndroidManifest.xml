@@ -45,32 +45,7 @@
                     android:scheme="cinema" />
             </intent-filter>
         </activity>
-        <receiver
-            android:name=".model.services.MessageReceiver"
-            android:enabled="true"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="for_cinema" />
-            </intent-filter>
 
-
-        </receiver>
-
-
-        <service android:name=".model.services.MainService" />
-        <service android:name=".model.DetailsService" />
-
-        <receiver
-            android:name=".view.MainBroadcastReceiver"
-            android:enabled="true"
-            android:exported="true">
-            <intent-filter>
-                <action
-                    android:name="android.net.conn.CONNECTIVITY_CHANGE"
-                    tools:ignore="BatteryLife" />
-
-            </intent-filter>
-        </receiver>
     </application>
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 </manifest>

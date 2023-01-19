@@ -3,23 +3,16 @@ plugins {
     id 'org.jetbrains.kotlin.android'
     id 'kotlin-android-extensions'
     id 'kotlin-kapt'
-
 }
-
-
 android {
     namespace 'com.example.cinema'
     compileSdk 33
-
-
-
     defaultConfig {
         applicationId "com.example.cinema"
         minSdk 24
         targetSdk 33
         versionCode 1
         versionName "1.0"
-
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
     buildFeatures {
@@ -32,8 +25,6 @@ android {
         def apiKey = properties.getProperty("kinopoisk_api_key", "")
         it.buildConfigField "String", "KINOPOISK_API_KEY", apiKey
     }
-
-
     buildTypes {
         release {
             minifyEnabled false
@@ -47,33 +38,22 @@ android {
     kotlinOptions {
         jvmTarget = '1.8'
         jvmTarget = JavaVersion.VERSION_1_8.toString()
-
     }
 }
 
 dependencies {
-
     implementation 'com.github.bumptech.glide:glide:4.14.2'
     implementation 'jp.wasabeef:glide-transformations:4.3.0'
-    // If you want to use the GPU Filters
     implementation 'jp.co.cyberagent.android:gpuimage:2.1.0'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.11.0'
-
     implementation 'com.squareup.retrofit2:retrofit:2.9.0'
     implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
     implementation 'com.squareup.okhttp3:logging-interceptor:4.5.0'
-
-
-
     def room_version = "2.4.3"
-
     implementation "androidx.room:room-runtime:$room_version"
     annotationProcessor "androidx.room:room-compiler:$room_version"
     kapt "androidx.room:room-compiler:$room_version"
-
-
     implementation 'io.coil-kt:coil:0.11.0'
-
     implementation 'com.squareup.picasso:picasso:2.71828'
     implementation "com.android.volley:volley:1.2.1"
     implementation "org.jetbrains.kotlinx:kotlinx-serialization-runtime:0.20.0"
@@ -98,6 +78,5 @@ dependencies {
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
-
 
 }
