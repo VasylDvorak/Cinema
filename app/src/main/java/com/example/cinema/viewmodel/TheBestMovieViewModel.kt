@@ -104,39 +104,10 @@ class TheBestMovieViewModel(
             return if (serverResponse == null) {
                 AppState.Error(Throwable(CORRUPTED_DATA))
             } else {
-                var converted_response = converter(serverResponse)
+                var converted_response = detailsRepositoryImpl.converter(serverResponse)
                 AppState.Success(converted_response)
             }
         }
-    }
-
-    fun converter(serverResponse: MovieDTOBest): MovieDTO {
-        var movieDTO = MovieDTO()
-        for (docss in serverResponse.docs) {
-            var docs_model_studio = Docs()
-
-            docs_model_studio.apply {
-                id = docss.id ?: 0
-                movieLength = docss.movieLength ?: 0
-                description = docss.description ?: ""
-                enName = docss.enName ?: ""
-                alternativeName = docss.alternativeName  ?: ""
-                name = docss.name  ?: ""
-                try {
-                    poster.url = docss.posterBest.url  ?: ""
-                } catch (e: NullPointerException) {
-                }
-                rating.kp = docss.ratingBest.kp  ?: 0.0
-                rating.filmCritics = docss.ratingBest.filmCritics   ?: 0.0
-                rating.russianFilmCritics = docss.ratingBest.russianFilmCritics   ?: 0
-                year = docss.year   ?: 0
-                type = docss.type   ?: ""
-                rating.await = docss.ratingBest.await.toInt()   ?: 0
-                alternativeName = docss.alternativeName ?: ""
-                movieDTO.docs.add(this)
-            }
-        }
-        return movieDTO
     }
 }
 

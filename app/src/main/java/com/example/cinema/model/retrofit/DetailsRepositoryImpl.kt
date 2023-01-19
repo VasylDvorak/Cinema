@@ -1,6 +1,8 @@
 package com.example.cinema.model.retrofit
 
+import com.example.cinema.model.best_movie_model.MovieDTOBest
 import com.example.cinema.model.serch_name_movie_model.MovieDTO
+import com.example.cinema.model.utils.convertBestToMovieDTO
 import retrofit2.Callback
 
 class DetailsRepositoryImpl(private val remoteDataSource: RemoteDataSource) :
@@ -16,4 +18,8 @@ class DetailsRepositoryImpl(private val remoteDataSource: RemoteDataSource) :
 
     override fun getPlayMovieDetails(idd: String): String {
         return remoteDataSource.getPlayMovie(idd) }
+
+    override fun converter (input : MovieDTOBest) : MovieDTO{
+    return convertBestToMovieDTO(input)
+    }
 }

@@ -1,11 +1,39 @@
 package com.example.cinema.model.utils
 
+import com.example.cinema.model.best_movie_model.MovieDTOBest
 import com.example.cinema.model.serch_name_movie_model.Docs
 import com.example.cinema.model.serch_name_movie_model.MovieDTO
 import com.example.cinema.model.serch_name_movie_model.Poster
 import com.example.cinema.model.serch_name_movie_model.Rating
 import com.example.cinema.model.room_data_base.HistoryEntity
 
+
+fun convertBestToMovieDTO(input: MovieDTOBest): MovieDTO{
+    var movieDTO = MovieDTO()
+    for (docss in input.docs) {
+        var docs_model_studio = Docs()
+
+        docs_model_studio.apply {
+            id = docss.id ?: 0
+            movieLength = docss.movieLength ?: 0
+            description = docss.description ?: ""
+            enName = docss.enName ?: ""
+            alternativeName = docss.alternativeName  ?: ""
+            name = docss.name  ?: ""
+            poster.url = docss.posterBest.url  ?: ""
+            rating.kp = docss.ratingBest.kp  ?: 0.0
+            rating.filmCritics = docss.ratingBest.filmCritics   ?: 0.0
+            rating.russianFilmCritics = docss.ratingBest.russianFilmCritics   ?: 0
+            year = docss.year   ?: 0
+            type = docss.type   ?: ""
+            rating.await = docss.ratingBest.await.toInt()   ?: 0
+            alternativeName = docss.alternativeName ?: ""
+            movieDTO.docs.add(this)
+        }
+    }
+    return movieDTO
+
+}
 
 fun convertHistoryEntityToMovie(entityList: MutableList<HistoryEntity>): MutableList<Docs> {
     return entityList.map {
