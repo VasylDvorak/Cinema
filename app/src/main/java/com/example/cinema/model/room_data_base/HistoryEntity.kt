@@ -11,7 +11,7 @@ data class HistoryEntity(
     var alternativeName: String="",
     var description: String="",
     var id_server: Int=0,
-    var movieLength: Int=0,
+    var movieLength: String="",
     var name: String="",
     var rating_kp: Double=0.0,
     var rating_russianFilmCritics: Int =0,

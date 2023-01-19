@@ -8,13 +8,14 @@ import com.example.cinema.app.App
 import com.example.cinema.app.AppState
 import com.example.cinema.appliction_repository.Repository
 import com.example.cinema.appliction_repository.RepositoryImpl
+import com.example.cinema.model.retrofit.DetailsRepository
+import com.example.cinema.model.retrofit.DetailsRepositoryImpl
 import com.example.cinema.model.serch_name_movie_model.Docs
 
 import com.example.cinema.model.serch_name_movie_model.MovieDTO
 
-import com.example.cinema.model.retrofit.DetailsRepository
-import com.example.cinema.model.retrofit.DetailsRepositoryImpl
 import com.example.cinema.model.retrofit.RemoteDataSource
+import com.example.cinema.model.retrofit.models_for_kinopoisk_unofficial.new_model_movie_information.MovieInformation
 import com.example.cinema.model.room_data_base.LocalRepositoryImpl
 import com.example.cinema.view.MainActivity.Companion.start_cinema
 import retrofit2.Call
@@ -51,7 +52,7 @@ class MainFragmentViewModel(
             Thread{
             var start_condition =historyRepositoryImpl.readCurrentMovieDTO()
             start_condition?.let {
-                if (it.docs.size > 0) {
+                if (it.docs?.size!! > 0) {
                     repositoryImpl.setAboutMovieFromServer(start_condition)
                     liveDataToObserveUpdate()
                 }else{
@@ -120,12 +121,12 @@ class MainFragmentViewModel(
     }
 
     private val callBack = object :
-        Callback<MovieDTO> {
+        Callback<MovieInformation> {
         override fun onResponse(
-            call: Call<MovieDTO>, response:
-            Response<MovieDTO>
+            call: Call<MovieInformation>, response:
+            Response<MovieInformation>
         ) {
-            val serverResponse: MovieDTO? = response.body()
+            val serverResponse: MovieInformation? = response.body()
             liveDataToObserve.postValue(
                 if (response.isSuccessful && serverResponse != null) {
                     checkResponse(serverResponse)
@@ -135,7 +136,7 @@ class MainFragmentViewModel(
             )
         }
 
-        override fun onFailure(call: Call<MovieDTO>, t: Throwable) {
+        override fun onFailure(call: Call<MovieInformation>, t: Throwable) {
             liveDataToObserve.postValue(
                 AppState.Error(
                     Throwable(
@@ -145,14 +146,15 @@ class MainFragmentViewModel(
             )
         }
 
-        private fun checkResponse(serverResponse: MovieDTO): AppState {
+        private fun checkResponse(serverResponse: MovieInformation): AppState {
 
             return if (serverResponse == null) {
                 return  AppState.Error(Throwable(CORRUPTED_DATA))
             } else {
-                historyRepositoryImpl.renewCurrentMovieDTO(serverResponse)
-                repositoryImpl.setAboutMovieFromServer(serverResponse)
-              return  AppState.Success(serverResponse)
+                var converted=detailsRepositoryImpl.fromMovieInformationToMovieDTO(serverResponse)
+                historyRepositoryImpl.renewCurrentMovieDTO(converted)
+                repositoryImpl.setAboutMovieFromServer(converted)
+              return  AppState.Success(converted)
             }
         }
     }

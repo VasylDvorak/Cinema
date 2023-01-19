@@ -1,26 +1,12 @@
 package com.example.cinema.model.retrofit
 
 
-import com.android.volley.Request
-import com.android.volley.toolbox.StringRequest
-import com.android.volley.toolbox.Volley
-import com.example.cinema.BuildConfig
-import com.example.cinema.R
-import com.example.cinema.app.App
-import com.example.cinema.model.best_movie_model.MovieDTOBest
-import com.example.cinema.model.serch_name_movie_model.MovieDTO
-import com.example.cinema.model.utils.Extensions
-
+import com.example.cinema.model.retrofit.models_for_kinopoisk_unofficial.new_model_movie_information.MovieInformation
+import com.example.cinema.model.retrofit.models_for_kinopoisk_unofficial.new_model_the_best.TheBestMovie
 import com.google.gson.GsonBuilder
-import okhttp3.HttpUrl
-import okhttp3.HttpUrl.Companion.toHttpUrlOrNull
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
-
 import okhttp3.logging.HttpLoggingInterceptor
-import org.json.JSONException
-import org.json.JSONObject
-
 import retrofit2.Callback
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -31,56 +17,33 @@ const val url_trailer = "https://www.youtube.com/embed/DlM2CWNTQ84"
 class RemoteDataSource {
 
     private val movieApi = Retrofit.Builder()
-        .baseUrl("https://api.kinopoisk.dev/")
+        .baseUrl("https://kinopoiskapiunofficial.tech/api/")
         .addConverterFactory(
             GsonConverterFactory.create(
                 GsonBuilder().setLenient().create()
             )
         )
         .client(createOkHttpClient(MovieApiInterceptor()))
-        .build().create(MovieAPI::class.java)
+        .build().create(KinopoiskApi::class.java)
 
-    fun getMovieDetails(request_movie: String?, callback: Callback<MovieDTO>) {
-        movieApi.getMovie(request_movie).enqueue(callback)
+
+    fun getMovieDetails(request_movie: String?, callback: Callback<MovieInformation>) {
+        movieApi.getMovie(keyword = request_movie!!).enqueue(callback)
     }
 
     fun getBestMovieDetails(
-        request_type: String, callback: Callback<MovieDTOBest>
+        genres: Int, yearTo: Int, callback: Callback<TheBestMovie>
     ) {
-        movieApi.getBestMovie(request_type).enqueue(callback)
+        movieApi.getBest(genres = genres, yearFrom = yearTo-2, yearTo = yearTo).enqueue(callback)
     }
 
-    fun getPlayMovie(idd: String): String {
-        var trailerUrl = "https://api.kinopoisk.dev/movie?field=id&search=${idd}&token" +
-                "=${BuildConfig.KINOPOISK_API_KEY}"
-        var str = url_trailer
-        val queue = Volley.newRequestQueue(App.appInstance!!.applicationContext)
-        val request = StringRequest(
-            Request.Method.GET,
-            trailerUrl,
-            { result ->
-                run {
-
-                    try {
-                        str = (JSONObject(result).getJSONObject("videos")
-                            .getJSONArray("trailers")[0] as JSONObject)
-                            .getString("url")
-
-                    } catch (e: JSONException) {
-                    }
-                }
-            },
-            { error ->
-                run {
-                Extensions.showToast(App.appInstance!!.applicationContext,
-                    App.appInstance!!.applicationContext.getString(R.string.upcoming))
-                }
-            }
-        )
-        queue.add(request)
-
-        return str
+    fun getPlayMovie(idd: Int): String {
+      var str = movieApi.getVideo(idd).body()?.items?.get(0)?.url
+        if ((str == null)||(str == "")){ str = url_trailer }
+    return str
     }
+
+
 
     private fun createOkHttpClient(interceptor: Interceptor): OkHttpClient {
         val httpClient = OkHttpClient.Builder()

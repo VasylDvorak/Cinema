@@ -1,13 +1,13 @@
-package com.example.cinema.model.retrofit.new_API
+package com.example.cinema.model.retrofit
 
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Headers
 import retrofit2.http.Query
 import com.example.cinema.BuildConfig
-import com.example.cinema.model.retrofit.new_API.new_model_movie_information.MovieInformation
-import com.example.cinema.model.retrofit.new_API.new_model_the_best.TheBestMovie
-import com.example.cinema.model.retrofit.new_API.new_model_video.VideoForMovie
+import com.example.cinema.model.retrofit.models_for_kinopoisk_unofficial.new_model_movie_information.MovieInformation
+import com.example.cinema.model.retrofit.models_for_kinopoisk_unofficial.new_model_the_best.TheBestMovie
+import com.example.cinema.model.retrofit.models_for_kinopoisk_unofficial.new_model_video.VideoForMovie
 import retrofit2.Call
 import retrofit2.http.Path
 

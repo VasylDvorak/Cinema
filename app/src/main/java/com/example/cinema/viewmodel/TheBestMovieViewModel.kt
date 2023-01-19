@@ -7,11 +7,11 @@ import com.example.cinema.app.AppState
 import com.example.cinema.appliction_repository.Repository
 import com.example.cinema.appliction_repository.RepositoryImpl
 import com.example.cinema.model.best_movie_model.MovieDTOBest
-import com.example.cinema.model.serch_name_movie_model.Docs
-import com.example.cinema.model.serch_name_movie_model.MovieDTO
 import com.example.cinema.model.retrofit.DetailsRepository
 import com.example.cinema.model.retrofit.DetailsRepositoryImpl
+import com.example.cinema.model.serch_name_movie_model.Docs
 import com.example.cinema.model.retrofit.RemoteDataSource
+import com.example.cinema.model.retrofit.models_for_kinopoisk_unofficial.new_model_the_best.TheBestMovie
 import com.example.cinema.model.room_data_base.LocalRepositoryImpl
 import retrofit2.Call
 import retrofit2.Callback
@@ -63,17 +63,17 @@ class TheBestMovieViewModel(
     fun getData() = liveDataToObserve
     fun getDataFromRemoteSource(type: Int) {
         liveDataToObserve.value = AppState.Loading
-        detailsRepositoryImpl.getBestMovieDetailsFromServer(type.toString(), callBack)
+        detailsRepositoryImpl.getBestMovieDetailsFromServer(type.toString(),2023, callBack)
     }
 
     private val callBack = object :
-        Callback<MovieDTOBest> {
+        Callback<TheBestMovie> {
         override fun onResponse(
-            call: Call<MovieDTOBest>, response:
-            Response<MovieDTOBest>
+            call: Call<TheBestMovie>, response:
+            Response<TheBestMovie>
         ) {
 
-            val serverResponse: MovieDTOBest? =
+            val serverResponse: TheBestMovie? =
                 response.body()
 
             liveDataToObserve.postValue(
@@ -87,7 +87,7 @@ class TheBestMovieViewModel(
         }
 
         override fun onFailure(
-            call: Call<MovieDTOBest>,
+            call: Call<TheBestMovie>,
             t: Throwable
         ) {
             liveDataToObserve.postValue(
@@ -99,12 +99,12 @@ class TheBestMovieViewModel(
             )
         }
 
-        private fun checkResponse(serverResponse: MovieDTOBest)
+        private fun checkResponse(serverResponse: TheBestMovie)
                 : AppState {
             return if (serverResponse == null) {
                 AppState.Error(Throwable(CORRUPTED_DATA))
             } else {
-                var converted_response = detailsRepositoryImpl.converter(serverResponse)
+                var converted_response = detailsRepositoryImpl.fromTheBestMovieToMovieDTO(serverResponse)
                 AppState.Success(converted_response)
             }
         }

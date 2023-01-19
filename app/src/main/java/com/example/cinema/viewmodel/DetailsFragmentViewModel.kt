@@ -5,9 +5,9 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.cinema.app.App
-import com.example.cinema.model.serch_name_movie_model.Docs
 import com.example.cinema.model.retrofit.DetailsRepository
 import com.example.cinema.model.retrofit.DetailsRepositoryImpl
+import com.example.cinema.model.serch_name_movie_model.Docs
 import com.example.cinema.model.retrofit.RemoteDataSource
 import com.example.cinema.model.room_data_base.LocalRepositoryImpl
 
@@ -22,7 +22,7 @@ class DetailsFragmentViewModel(
     fun select(docs: Docs) {
         val handler = Handler()
         Thread {
-            docs.url_trailer = detailsRepositoryImpl.getPlayMovieDetails(docs.id.toString())
+            docs.url_trailer = detailsRepositoryImpl.getPlayMovieDetails(docs.id)
             handler.post { urlTrailer(docs)}
         }.start()
     }
