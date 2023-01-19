@@ -1,33 +1,43 @@
 package com.example.cinema.viewmodel
 
-import android.content.Context
+import android.os.Handler
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.cinema.model.data_base.DataBase
-import com.example.cinema.model.model_stuio.Docs
-import com.example.cinema.model.retrofit_repository.DetailsRepository
-import com.example.cinema.model.retrofit_repository.DetailsRepositoryImpl
-import com.example.cinema.model.retrofit_repository.RemoteDataSource
+import com.example.cinema.app.App
+import com.example.cinema.model.serch_name_movie_model.Docs
+import com.example.cinema.model.retrofit.DetailsRepository
+import com.example.cinema.model.retrofit.DetailsRepositoryImpl
+import com.example.cinema.model.retrofit.RemoteDataSource
+import com.example.cinema.model.room_data_base.LocalRepositoryImpl
 
-class DetailsFragmentViewModel(    private val detailsRepositoryImpl: DetailsRepository =
-                                       DetailsRepositoryImpl(RemoteDataSource())
+class DetailsFragmentViewModel(
+    private val detailsRepositoryImpl: DetailsRepository =
+        DetailsRepositoryImpl(RemoteDataSource()),
+    private val historyRepositoryImpl: LocalRepositoryImpl
+    = LocalRepositoryImpl(App.getHistoryDao())
 ) : ViewModel() {
-    private val selected : MutableLiveData<Docs> = MutableLiveData<Docs>();
+    private val selected: MutableLiveData<Docs> = MutableLiveData<Docs>()
 
-    fun select(docs: Docs, context: Context) {
-        docs.url_trailer = detailsRepositoryImpl.getPlayMovieDetails(docs.id.toString(), context)
-        selected.setValue(docs)
+    fun select(docs: Docs) {
+        val handler = Handler()
+        Thread {
+            docs.url_trailer = detailsRepositoryImpl.getPlayMovieDetails(docs.id.toString())
+            handler.post { urlTrailer(docs)}
+        }.start()
     }
 
-    fun  getSelected() : LiveData<Docs> {
-        return selected;
+    private fun urlTrailer(docs: Docs) {
+        selected.value = docs
     }
 
-    fun addNowPlaying(docsData: Docs, context: Context?) {
-        var dbHelper = DataBase(context!!, null)
-        dbHelper.addNowPlayingMovieDTO(docsData)
-        dbHelper.close()
+    fun getSelected(): LiveData<Docs> {
+        return selected
+    }
+
+    fun addNowPlaying(docsData: Docs) {
+
+        historyRepositoryImpl.addNowPlayingMovieDTO(docsData)
 
     }
 }

@@ -1,16 +1,18 @@
 package com.example.cinema.viewmodel
 
-import android.content.Context
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.cinema.model.Repository
-import com.example.cinema.model.RepositoryImpl
-import com.example.cinema.model.data_base.DataBase
-import com.example.cinema.model.model_stuio.Docs
-import com.example.cinema.model.model_stuio.MovieDTO
-import com.example.cinema.model.retrofit_repository.DetailsRepository
-import com.example.cinema.model.retrofit_repository.DetailsRepositoryImpl
-import com.example.cinema.model.retrofit_repository.RemoteDataSource
+import com.example.cinema.app.App
+import com.example.cinema.app.AppState
+import com.example.cinema.appliction_repository.Repository
+import com.example.cinema.appliction_repository.RepositoryImpl
+import com.example.cinema.model.best_movie_model.MovieDTOBest
+import com.example.cinema.model.serch_name_movie_model.Docs
+import com.example.cinema.model.serch_name_movie_model.MovieDTO
+import com.example.cinema.model.retrofit.DetailsRepository
+import com.example.cinema.model.retrofit.DetailsRepositoryImpl
+import com.example.cinema.model.retrofit.RemoteDataSource
+import com.example.cinema.model.room_data_base.LocalRepositoryImpl
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -24,59 +26,54 @@ class TheBestMovieViewModel(
     val liveDataToObserve: MutableLiveData<AppState> = MutableLiveData(),
     private val repositoryImpl: Repository = RepositoryImpl(),
     private val detailsRepositoryImpl: DetailsRepository =
-        DetailsRepositoryImpl(RemoteDataSource())
+        DetailsRepositoryImpl(RemoteDataSource()),
+    private val historyRepositoryImpl: LocalRepositoryImpl = LocalRepositoryImpl(App.getHistoryDao())
 ) : ViewModel() {
 
-    private lateinit var context: Context
     fun liveDataToObserveUpdate() {
         Thread {
             liveDataToObserve.postValue(AppState.Success(repositoryImpl.getTheBestMovie()))
         }.start()
     }
 
-    fun changeLikeDataInDB(like: Boolean, aboutMovieItem: Docs, context: Context) {
-        var dbHelper = DataBase(context, null)
+    fun changeLikeDataInDB(like: Boolean, aboutMovieItem: Docs) {
+
         if (like) {
-            dbHelper.addFavoriteMovie(aboutMovieItem)
+            historyRepositoryImpl.addFavoriteMovie(aboutMovieItem)
 
         } else {
-            dbHelper.removeFavoriteMovie(aboutMovieItem)
+            historyRepositoryImpl.removeFavoriteMovie(aboutMovieItem)
         }
-        dbHelper.close()
-
     }
 
-    fun getLike(aboutMovieItem: Docs, context: Context): Boolean {
-        var dbHelper = DataBase(context, null)
-        val like_movie = dbHelper.like(aboutMovieItem)
-        dbHelper.close()
+    fun getLike(aboutMovieItem: Docs): Boolean {
+
+        val like_movie = historyRepositoryImpl.like(aboutMovieItem)
         return like_movie
     }
 
-    fun getWatched(aboutMovieItem: Docs, context: Context): Boolean {
-        var dbHelper = DataBase(context, null)
-        //  var dbHelper = DataBaseRoom(context)
-        val watched = dbHelper.watched(aboutMovieItem)
-        dbHelper.close()
+    fun getWatched(aboutMovieItem: Docs): Boolean {
+
+        val watched = historyRepositoryImpl.watched(aboutMovieItem)
+
         return watched
     }
 
 
     fun getData() = liveDataToObserve
-    fun getDataFromRemoteSource(type: Int, context: Context?) {
-        this.context = context!!
+    fun getDataFromRemoteSource(type: Int) {
         liveDataToObserve.value = AppState.Loading
         detailsRepositoryImpl.getBestMovieDetailsFromServer(type.toString(), callBack)
     }
 
     private val callBack = object :
-        Callback<com.example.cinema.model.best_movie_model.MovieDTO> {
+        Callback<MovieDTOBest> {
         override fun onResponse(
-            call: Call<com.example.cinema.model.best_movie_model.MovieDTO>, response:
-            Response<com.example.cinema.model.best_movie_model.MovieDTO>
+            call: Call<MovieDTOBest>, response:
+            Response<MovieDTOBest>
         ) {
 
-            val serverResponse: com.example.cinema.model.best_movie_model.MovieDTO? =
+            val serverResponse: MovieDTOBest? =
                 response.body()
 
             liveDataToObserve.postValue(
@@ -87,12 +84,10 @@ class TheBestMovieViewModel(
                     AppState.Error(Throwable(SERVER_ERROR))
                 }
             )
-
-
         }
 
         override fun onFailure(
-            call: Call<com.example.cinema.model.best_movie_model.MovieDTO>,
+            call: Call<MovieDTOBest>,
             t: Throwable
         ) {
             liveDataToObserve.postValue(
@@ -104,60 +99,45 @@ class TheBestMovieViewModel(
             )
         }
 
-        private fun checkResponse(serverResponse: com.example.cinema.model.best_movie_model.MovieDTO)
+        private fun checkResponse(serverResponse: MovieDTOBest)
                 : AppState {
             return if (serverResponse == null) {
                 AppState.Error(Throwable(CORRUPTED_DATA))
             } else {
-
-
                 var converted_response = converter(serverResponse)
-
-
                 AppState.Success(converted_response)
             }
         }
-
-
     }
 
-
-    fun converter(serverResponse: com.example.cinema.model.best_movie_model.MovieDTO): MovieDTO {
+    fun converter(serverResponse: MovieDTOBest): MovieDTO {
         var movieDTO = MovieDTO()
-
         for (docss in serverResponse.docs) {
             var docs_model_studio = Docs()
 
-
             docs_model_studio.apply {
-
                 id = docss.id ?: 0
                 movieLength = docss.movieLength ?: 0
                 description = docss.description ?: ""
                 enName = docss.enName ?: ""
-                alternativeName = docss.alternativeName ?: ""
-                name = docss.name ?: ""
+                alternativeName = docss.alternativeName  ?: ""
+                name = docss.name  ?: ""
                 try {
-                    poster.url = docss.poster.url
+                    poster.url = docss.posterBest.url  ?: ""
                 } catch (e: NullPointerException) {
                 }
-                rating.kp = docss.rating.kp ?: 0.0
-                rating.filmCritics = docss.rating.filmCritics  ?: 0.0
-                rating.russianFilmCritics = docss.rating.russianFilmCritics  ?: 0
-                year = docss.year ?: 0
-                type = docss.type ?: ""
-                rating.await = docss.rating.await.toInt() ?: 0
+                rating.kp = docss.ratingBest.kp  ?: 0.0
+                rating.filmCritics = docss.ratingBest.filmCritics   ?: 0.0
+                rating.russianFilmCritics = docss.ratingBest.russianFilmCritics   ?: 0
+                year = docss.year   ?: 0
+                type = docss.type   ?: ""
+                rating.await = docss.ratingBest.await.toInt()   ?: 0
                 alternativeName = docss.alternativeName ?: ""
                 movieDTO.docs.add(this)
             }
-
-
         }
-
         return movieDTO
     }
-
-
 }
 
 

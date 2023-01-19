@@ -1,0 +1,60 @@
+package com.example.cinema.model.utils
+
+import com.example.cinema.model.serch_name_movie_model.Docs
+import com.example.cinema.model.serch_name_movie_model.MovieDTO
+import com.example.cinema.model.serch_name_movie_model.Poster
+import com.example.cinema.model.serch_name_movie_model.Rating
+import com.example.cinema.model.room_data_base.HistoryEntity
+
+
+fun convertHistoryEntityToMovie(entityList: MutableList<HistoryEntity>): MutableList<Docs> {
+    return entityList.map {
+
+        Docs(
+            alternativeName = it.alternativeName,
+            description = it.description,
+            id = it.id_server,
+            movieLength = it.movieLength,
+            name = it.name,
+            rating = Rating(russianFilmCritics = it.rating_russianFilmCritics, kp = it.rating_kp),
+            poster = Poster(url = it.poster_url),
+            shortDescription = it.shortDescription,
+            type = it.type,
+            year = it.year,
+            current=if (it.current_request == 1) true else false,
+            watched = if (it.watched == 1) true else false,
+            isLike =  if (it.isLike == 1) true else false,
+            url_trailer = it.url_trailer,
+            note = it.note
+        )
+    } as MutableList
+
+
+}
+
+fun convertMovieToEntity(
+    docs: Docs,
+    current: Boolean,
+    watched: Boolean,
+    isLike: Boolean
+): HistoryEntity {
+
+    return HistoryEntity(
+        0, docs.alternativeName ?: "",
+        docs.description ?: "",
+        docs.id ?: 0,
+        docs.movieLength  ?: 0,
+        docs.name  ?: "",
+        docs.rating?.kp ?: 0.0,
+        docs.rating?.russianFilmCritics  ?: 0,
+        docs.poster?.url ?: "",
+        docs.shortDescription ?: "",
+        docs.type ?: "",
+        docs.year  ?: 0,
+        if (current) 1 else 0,
+        if (watched) 1 else 0,
+        if (isLike) 1 else 0,
+        docs.url_trailer  ?: "",
+        docs.note   ?: ""
+    )
+}

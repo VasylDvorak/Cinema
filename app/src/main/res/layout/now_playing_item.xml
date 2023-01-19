@@ -19,14 +19,12 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
-
            <ImageView
             android:id="@+id/now_playing_banner"
             android:layout_width="@dimen/image_width"
             android:layout_height="@dimen/image_height"
             app:layout_constraintBaseline_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
-
         <ImageView
             android:id="@+id/is_like_movie"
             android:layout_width="@dimen/heart_size"
@@ -34,7 +32,6 @@
             android:src="@drawable/ic_baseline_favorite_border_24"
             app:layout_constraintRight_toRightOf="@+id/now_playing_banner"
             app:layout_constraintTop_toTopOf="@+id/now_playing_banner" />
-
         <TextView
             android:id="@+id/now_playing_title_movie"
             android:layout_width="@dimen/image_width"
@@ -43,7 +40,6 @@
             android:textSize="@dimen/text_card_size"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/now_playing_banner" />
-
         <TextView
             android:id="@+id/now_playing_year_movie"
             android:layout_width="wrap_content"
@@ -52,7 +48,6 @@
             android:textSize="@dimen/text_card_size"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/now_playing_title_movie" />
-
         <TextView
             android:id="@+id/now_playing_rating_movie"
             android:layout_width="wrap_content"
@@ -61,7 +56,6 @@
             android:textSize="@dimen/text_card_size"
             app:layout_constraintEnd_toEndOf="@+id/now_playing_banner"
             app:layout_constraintTop_toBottomOf="@+id/now_playing_title_movie" />
-
         <ImageView
             android:id="@+id/star"
             android:layout_width="wrap_content"
@@ -69,9 +63,7 @@
             android:src="@drawable/ic_baseline_star_24"
             app:layout_constraintEnd_toStartOf="@+id/now_playing_rating_movie"
             app:layout_constraintTop_toBottomOf="@+id/now_playing_title_movie" />
-
     </androidx.constraintlayout.widget.ConstraintLayout>
-
     <TextView
         android:id="@+id/watched"
         android:layout_width="match_parent"
