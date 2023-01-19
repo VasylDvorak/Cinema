@@ -12,7 +12,7 @@ class DetailsRepositoryImpl(private val remoteDataSource: RemoteDataSource) :
     }
 
     override fun getBestMovieDetailsFromServer(
-        find_type: String, callback: Callback<com.example.cinema.model.best_movie_model.MovieDTOBest>
+        find_type: String, callback: Callback<MovieDTOBest>
     ) {
         remoteDataSource.getBestMovieDetails(find_type, callback) }
 

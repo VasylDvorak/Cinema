@@ -6,8 +6,8 @@ import kotlinx.android.parcel.Parcelize
 @Parcelize
 data class PosterBest(
 
-    val _id: String="",
-    val previewUrl: String="",
-    val url: String=""
+    val _id: String?="",
+    val previewUrl: String?="",
+    val url: String?=""
 
 ) : Parcelable

@@ -104,7 +104,9 @@ class TheBestMovieViewModel(
             return if (serverResponse == null) {
                 AppState.Error(Throwable(CORRUPTED_DATA))
             } else {
+
                 var converted_response = detailsRepositoryImpl.converter(serverResponse)
+
                 AppState.Success(converted_response)
             }
         }

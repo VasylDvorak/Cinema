@@ -9,8 +9,9 @@ import com.example.cinema.model.room_data_base.HistoryEntity
 
 
 fun convertBestToMovieDTO(input: MovieDTOBest): MovieDTO{
+
     var movieDTO = MovieDTO()
-    for (docss in input.docs) {
+    for (docss in input.docs!!) {
         var docs_model_studio = Docs()
 
         docs_model_studio.apply {
@@ -20,13 +21,13 @@ fun convertBestToMovieDTO(input: MovieDTOBest): MovieDTO{
             enName = docss.enName ?: ""
             alternativeName = docss.alternativeName  ?: ""
             name = docss.name  ?: ""
-            poster.url = docss.posterBest.url  ?: ""
-            rating.kp = docss.ratingBest.kp  ?: 0.0
-            rating.filmCritics = docss.ratingBest.filmCritics   ?: 0.0
-            rating.russianFilmCritics = docss.ratingBest.russianFilmCritics   ?: 0
+            poster.url = docss.poster?.url ?: ""
+            rating.kp = docss.rating?.kp  ?: 0.0
+            rating.filmCritics = docss.rating?.filmCritics   ?: 0.0
+            rating.russianFilmCritics = docss.rating?.russianFilmCritics   ?: 0
             year = docss.year   ?: 0
             type = docss.type   ?: ""
-            rating.await = docss.ratingBest.await.toInt()   ?: 0
+            rating.await = docss.rating?.await?.toInt()   ?: 0
             alternativeName = docss.alternativeName ?: ""
             movieDTO.docs.add(this)
         }
