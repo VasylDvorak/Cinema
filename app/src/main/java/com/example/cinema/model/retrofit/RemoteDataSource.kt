@@ -12,6 +12,8 @@ import com.example.cinema.model.serch_name_movie_model.MovieDTO
 import com.example.cinema.model.utils.Extensions
 
 import com.google.gson.GsonBuilder
+import okhttp3.HttpUrl
+import okhttp3.HttpUrl.Companion.toHttpUrlOrNull
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 

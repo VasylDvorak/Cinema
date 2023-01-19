@@ -6,7 +6,7 @@ import kotlinx.android.parcel.Parcelize
 @Parcelize
 data class Name(
 
-    val _id: String="",
-    val name: String=""
+    val _id: String?="",
+    val name: String?=""
 
 ) : Parcelable

@@ -1,37 +1,51 @@
 package com.example.cinema.model.utils
 
-import com.example.cinema.model.best_movie_model.MovieDTOBest
+import com.example.cinema.model.retrofit.new_API.new_model_movie_information.MovieInformation
+import com.example.cinema.model.retrofit.new_API.new_model_the_best.TheBestMovie
 import com.example.cinema.model.serch_name_movie_model.Docs
 import com.example.cinema.model.serch_name_movie_model.MovieDTO
 import com.example.cinema.model.serch_name_movie_model.Poster
 import com.example.cinema.model.serch_name_movie_model.Rating
 import com.example.cinema.model.room_data_base.HistoryEntity
 
+fun converterMovieInformationToMovieDTO(input : MovieInformation?) : MovieDTO{
 
-fun convertBestToMovieDTO(input: MovieDTOBest): MovieDTO{
-    var movieDTO = MovieDTO()
-    for (docss in input.docs) {
-        var docs_model_studio = Docs()
+    var docs = input?.films?.map { Docs(
+        alternativeName = it.nameEn,
+        description = it.description,
+        id = it.filmId,
+        movieLength = it.filmLength?.toInt(),
+        name = it.nameRu,
+        rating = Rating(russianFilmCritics = it.ratingVoteCount, kp = it.rating?.toDouble()),
+        poster = Poster(url = it.posterUrl),
+        shortDescription = it.description,
+        type = it.type,
+        year = it.year?.toInt(),
+        current=true,
+        genre= it.genres?.get(0)?.genre)
+    } as MutableList
 
-        docs_model_studio.apply {
-            id = docss.id ?: 0
-            movieLength = docss.movieLength ?: 0
-            description = docss.description ?: ""
-            enName = docss.enName ?: ""
-            alternativeName = docss.alternativeName  ?: ""
-            name = docss.name  ?: ""
-            poster.url = docss.posterBest.url  ?: ""
-            rating.kp = docss.ratingBest.kp  ?: 0.0
-            rating.filmCritics = docss.ratingBest.filmCritics   ?: 0.0
-            rating.russianFilmCritics = docss.ratingBest.russianFilmCritics   ?: 0
-            year = docss.year   ?: 0
-            type = docss.type   ?: ""
-            rating.await = docss.ratingBest.await.toInt()   ?: 0
-            alternativeName = docss.alternativeName ?: ""
-            movieDTO.docs.add(this)
-        }
-    }
-    return movieDTO
+   return MovieDTO(docs, input.searchFilmsCountResult, 1, input.pagesCount, input.pagesCount)
+
+}
+
+fun convertBestToMovieDTO(input: TheBestMovie?): MovieDTO{
+
+    var docs = input?.items?.map { Docs(
+        alternativeName = it.nameOriginal,
+        description = it.nameRu,
+        id = it.kinopoiskId,
+        movieLength = it.year,
+        name = it.nameRu,
+        rating = Rating(russianFilmCritics = it.ratingKinopoisk?.toInt(), kp = it.ratingImdb),
+        poster = Poster(url = it.posterUrl),
+        shortDescription = it.nameOriginal,
+        type = it.type,
+        year = it.year,
+        current=true,
+        genre= it.genres?.get(0)?.genre)
+    } as MutableList
+    return MovieDTO(docs, input.total, 1, input.totalPages, input.totalPages)
 
 }
 

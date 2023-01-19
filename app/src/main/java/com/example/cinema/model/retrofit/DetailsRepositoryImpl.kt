@@ -22,4 +22,5 @@ class DetailsRepositoryImpl(private val remoteDataSource: RemoteDataSource) :
     override fun converter (input : MovieDTOBest) : MovieDTO{
     return convertBestToMovieDTO(input)
     }
+
 }
