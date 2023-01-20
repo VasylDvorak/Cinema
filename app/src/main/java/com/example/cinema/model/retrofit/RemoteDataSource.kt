@@ -10,6 +10,7 @@ import com.example.cinema.app.App
 import com.example.cinema.model.best_movie_model.MovieDTOBest
 import com.example.cinema.model.serch_name_movie_model.MovieDTO
 import com.example.cinema.model.utils.Extensions
+import com.example.cinema.view.details_fragment.DetailsFragment.Companion.can_show
 
 import com.google.gson.GsonBuilder
 import okhttp3.Interceptor
@@ -21,14 +22,15 @@ import org.json.JSONObject
 
 import retrofit2.Callback
 import retrofit2.Retrofit
-import retrofit2.awaitResponse
 import retrofit2.converter.gson.GsonConverterFactory
-import retrofit2.http.Headers
 import java.io.IOException
 
 const val url_trailer = "https://www.youtube.com/embed/DlM2CWNTQ84"
 
 class RemoteDataSource {
+    companion object {
+        var for_adult_setting = false
+    }
 
     private val movieApi = Retrofit.Builder()
         .baseUrl("https://api.kinopoisk.dev/")
@@ -54,6 +56,7 @@ class RemoteDataSource {
         var trailerUrl = "https://api.kinopoisk.dev/movie?field=id&search=${idd}&token" +
                 "=${BuildConfig.KINOPOISK_API_KEY}"
         var str = url_trailer
+        var ageRating = 18
         val queue = Volley.newRequestQueue(App.appInstance!!.applicationContext)
         val request = StringRequest(
             Request.Method.GET,
@@ -65,6 +68,7 @@ class RemoteDataSource {
                         str = (JSONObject(result).getJSONObject("videos")
                             .getJSONArray("trailers")[0] as JSONObject)
                             .getString("url")
+                        ageRating = JSONObject(result).getInt("ageRating")
 
                     } catch (e: JSONException) {
                     }
@@ -78,9 +82,12 @@ class RemoteDataSource {
             }
         )
         queue.add(request)
-
+        if ((!for_adult_setting)&&(ageRating >= 18)){
+            can_show  = false }
         return str
     }
+
+
 
     private fun createOkHttpClient(interceptor: Interceptor): OkHttpClient {
         val httpClient = OkHttpClient.Builder()

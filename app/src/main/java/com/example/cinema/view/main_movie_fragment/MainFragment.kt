@@ -20,6 +20,7 @@ import com.example.cinema.model.serch_name_movie_model.MovieDTO
 import com.example.cinema.model.utils.Extensions
 import com.example.cinema.view.details_fragment.DetailsFragment
 import com.example.cinema.app.AppState
+import com.example.cinema.model.retrofit.RemoteDataSource.Companion.for_adult_setting
 import com.example.cinema.viewmodel.DetailsFragmentViewModel
 import com.example.cinema.viewmodel.MainFragmentViewModel
 import kotlinx.android.synthetic.main.fragment_main.*
@@ -27,6 +28,7 @@ import kotlinx.android.synthetic.main.fragment_main.*
 private const val ADULT_KEY = "ADULT_KEY"
 
 class MainFragment : Fragment() {
+
 
     private var _binding: FragmentMainBinding? = null
     private val binding
@@ -150,6 +152,7 @@ class MainFragment : Fragment() {
             var adultSp = it.getPreferences(Context.MODE_PRIVATE).getBoolean(ADULT_KEY, false)
             var adultItem = menu.findItem(R.id.adult)
             adultItem.setChecked(adultSp)
+            for_adult_setting = adultSp
         }
 
         val manager = requireActivity().getSystemService(Context.SEARCH_SERVICE) as SearchManager
@@ -196,7 +199,8 @@ class MainFragment : Fragment() {
             }
             R.id.adult -> {
                 item.isChecked = !item.isChecked
-                saveAdult(item.isChecked)
+                for_adult_setting = item.isChecked
+                saveAdult(for_adult_setting)
                 return true
             }
         }

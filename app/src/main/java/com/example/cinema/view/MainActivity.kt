@@ -11,6 +11,7 @@ import com.example.cinema.databinding.ActivityMainBinding
 import com.example.cinema.view.favorite_movie_fragment.FavoriteMovieFragment
 import com.example.cinema.view.main_movie_fragment.MainFragment
 import com.example.cinema.view.best_movie_fragment.RatingsFragment
+import kotlin.properties.Delegates
 
 const val NAME_MSG: String = "MSG"
 

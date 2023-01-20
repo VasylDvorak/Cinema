@@ -16,7 +16,7 @@ interface DetailsRepository {
         callback: retrofit2.Callback<MovieDTOBest>
     )
 
-    fun getPlayMovieDetails(idd: String): String
+    fun getPlayMovieDetails(idd: Int): String
 
     fun converter(input: MovieDTOBest): MovieDTO
 }

@@ -34,6 +34,7 @@ class DetailsFragment : Fragment() {
             fragment.arguments = bundle
             return fragment
         }
+        var can_show = true
     }
 
 
@@ -127,24 +128,26 @@ class DetailsFragment : Fragment() {
         activity?.supportFragmentManager?.apply {
             beginTransaction()
                 .replace(R.id.flFragment, NoteFragment.newInstance(Bundle().apply {
-                    putParcelable(DOCS_EXTRA, docs_data) }))
+                    putParcelable(DOCS_EXTRA, docs_data)
+                }))
                 .addToBackStack("")
                 .commitAllowingStateLoss()
         }
     }
 
     private fun callPlayMovie(docs_data: Docs) {
-        model.addNowPlaying(docs_data)
-        activity?.supportFragmentManager?.apply {
-            beginTransaction()
-                .replace(R.id.flFragment, PlayMovieFragment.newInstance(Bundle().apply {
-                }))
-                .addToBackStack("")
-                .commitAllowingStateLoss()
+        if (can_show) {
+            model.addNowPlaying(docs_data)
+            activity?.supportFragmentManager?.apply {
+                beginTransaction()
+                    .replace(R.id.flFragment, PlayMovieFragment.newInstance(Bundle().apply {
+                    }))
+                    .addToBackStack("")
+                    .commitAllowingStateLoss()
+            }
         }
     }
 }
-
 
 
 
