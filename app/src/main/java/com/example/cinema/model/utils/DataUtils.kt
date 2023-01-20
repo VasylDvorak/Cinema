@@ -18,7 +18,6 @@ fun convertBestToMovieDTO(input: MovieDTOBest): MovieDTO{
             id = docss.id ?: 0
             movieLength = docss.movieLength ?: 0
             description = docss.description ?: ""
-            enName = docss.enName ?: ""
             alternativeName = docss.alternativeName  ?: ""
             name = docss.name  ?: ""
             poster.url = docss.poster?.url ?: ""

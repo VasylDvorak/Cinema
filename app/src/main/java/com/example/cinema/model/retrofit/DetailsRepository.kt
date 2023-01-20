@@ -12,7 +12,7 @@ interface DetailsRepository {
     )
 
     fun getBestMovieDetailsFromServer(
-        find_type: String,
+        find_type: Int,
         callback: retrofit2.Callback<MovieDTOBest>
     )
 

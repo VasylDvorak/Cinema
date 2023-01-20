@@ -21,7 +21,9 @@ import org.json.JSONObject
 
 import retrofit2.Callback
 import retrofit2.Retrofit
+import retrofit2.awaitResponse
 import retrofit2.converter.gson.GsonConverterFactory
+import retrofit2.http.Headers
 import java.io.IOException
 
 const val url_trailer = "https://www.youtube.com/embed/DlM2CWNTQ84"
@@ -43,7 +45,7 @@ class RemoteDataSource {
     }
 
     fun getBestMovieDetails(
-        request_type: String, callback: Callback<MovieDTOBest>
+        request_type: Int, callback: Callback<MovieDTOBest>
     ) {
         movieApi.getBestMovie(request_type).enqueue(callback)
     }

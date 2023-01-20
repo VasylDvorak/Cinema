@@ -11,3 +11,4 @@ data class Poster(
     var url: String=""
 
 ) : Parcelable
+

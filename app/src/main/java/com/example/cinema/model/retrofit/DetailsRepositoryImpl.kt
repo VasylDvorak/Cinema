@@ -12,7 +12,7 @@ class DetailsRepositoryImpl(private val remoteDataSource: RemoteDataSource) :
     }
 
     override fun getBestMovieDetailsFromServer(
-        find_type: String, callback: Callback<MovieDTOBest>
+        find_type: Int, callback: Callback<MovieDTOBest>
     ) {
         remoteDataSource.getBestMovieDetails(find_type, callback) }
 

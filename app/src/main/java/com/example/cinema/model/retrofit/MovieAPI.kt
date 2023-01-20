@@ -20,7 +20,7 @@ interface MovieAPI {
 @GET("movie?limit=10&field=rating.kp&search=1-10&field=typeNumber")
 fun getBestMovie(
 
-    @Query("search") find_type: String,
+    @Query("search") find_type: Int,
     @Query("sortField=rating.kp&sortType") sortType: String = "-1",
     @Query("token") api_key: String = "${ BuildConfig.KINOPOISK_API_KEY}"
 

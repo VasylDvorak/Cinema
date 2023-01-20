@@ -63,7 +63,7 @@ class TheBestMovieViewModel(
     fun getData() = liveDataToObserve
     fun getDataFromRemoteSource(type: Int) {
         liveDataToObserve.value = AppState.Loading
-        detailsRepositoryImpl.getBestMovieDetailsFromServer(type.toString(), callBack)
+        detailsRepositoryImpl.getBestMovieDetailsFromServer(type, callBack)
     }
 
     private val callBack = object :
@@ -75,7 +75,6 @@ class TheBestMovieViewModel(
 
             val serverResponse: MovieDTOBest? =
                 response.body()
-
             liveDataToObserve.postValue(
 
                 if (response.isSuccessful && serverResponse != null) {
@@ -90,6 +89,7 @@ class TheBestMovieViewModel(
             call: Call<MovieDTOBest>,
             t: Throwable
         ) {
+
             liveDataToObserve.postValue(
                 AppState.Error(
                     Throwable(
