@@ -133,6 +133,14 @@
                 android:src="@drawable/ic_baseline_delete_forever_24"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
+            <ImageView
+                android:id="@+id/send_sms"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/heart_margin"
+                android:src="@android:drawable/ic_dialog_email"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/delete"/>
 
             <TextView
                 android:id="@+id/short_description_movie"

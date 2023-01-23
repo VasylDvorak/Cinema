@@ -40,5 +40,9 @@
     <string name="watched">ПРОСМОТРЕННО</string>
     <string name="for_adult">Для взрослых</string>
     <string name="back"><![CDATA[< Назад]]></string>
-
+    <string name="content_provider">Content provider</string>
+    <string name="authorities">com.example.cinema.provider</string>
+    <string name="abonent_name">Имя абонента:</string>
+    <string name="number">номер телефона:</string>
+    <string name="sms">Посмотри фильм:</string>
 </resources>

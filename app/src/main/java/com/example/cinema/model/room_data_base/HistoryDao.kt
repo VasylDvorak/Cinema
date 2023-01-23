@@ -33,9 +33,15 @@ interface HistoryDao {
     @Query("DELETE FROM HistoryEntity WHERE id_server = :id_server")
     fun deleteByIdServer(id_server: Int)
 
-    @Query("SELECT id FROM HistoryEntity WHERE id_server")
-    fun getHistoryCursor(): Cursor
+    @Query("DELETE FROM HistoryEntity WHERE id = :id")
+    fun deleteById(id: Long)
 
-    @Query("SELECT id FROM HistoryEntity WHERE id_server = :id_server")
-    fun getHistoryCursor(id_server: Int): Cursor
+    @Query("SELECT id, name, year, isLike, current_request FROM HistoryEntity " +
+            "WHERE current_request = 1")
+    fun getHistoryCursor() : Cursor
+
+    @Query("SELECT id, name, year, isLike, current_request FROM HistoryEntity WHERE id = :id")
+    fun getHistoryCursor(id: Long): Cursor
+
+
 }

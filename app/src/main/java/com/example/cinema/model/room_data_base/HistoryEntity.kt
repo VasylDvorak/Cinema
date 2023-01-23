@@ -3,6 +3,12 @@ package com.example.cinema.model.room_data_base
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
+
+const val ID = "id"
+const val NAME = "name"
+const val YEAR = "year"
+const val ISLIKE = "isLike"
+
 @Entity
 data class HistoryEntity(
 

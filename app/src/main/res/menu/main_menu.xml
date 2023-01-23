@@ -16,4 +16,9 @@
         android:icon="@android:drawable/ic_menu_info_details"
         android:title="@string/about"
         app:showAsAction="never" />
+    <item
+        android:id="@+id/menu_content_provider"
+        android:icon="@android:drawable/ic_menu_call"
+        android:title="@string/content_provider"
+        app:showAsAction="always" />
 </menu>

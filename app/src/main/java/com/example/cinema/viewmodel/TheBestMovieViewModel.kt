@@ -7,6 +7,7 @@ import com.example.cinema.app.AppState
 import com.example.cinema.appliction_repository.Repository
 import com.example.cinema.appliction_repository.RepositoryImpl
 import com.example.cinema.model.best_movie_model.MovieDTOBest
+
 import com.example.cinema.model.serch_name_movie_model.Docs
 import com.example.cinema.model.serch_name_movie_model.MovieDTO
 import com.example.cinema.model.retrofit.DetailsRepository
