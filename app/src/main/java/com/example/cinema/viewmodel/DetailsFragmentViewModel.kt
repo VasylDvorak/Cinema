@@ -22,7 +22,9 @@ class DetailsFragmentViewModel(
     fun select(docs: Docs) {
         val handler = Handler()
         Thread {
-            docs.url_trailer = detailsRepositoryImpl.getPlayMovieDetails(docs.id)
+            val answer= detailsRepositoryImpl.getPlayMovieDetails(docs.id)
+            docs.url_trailer = answer[0]
+            docs.country = answer[1]
             handler.post { urlTrailer(docs)}
         }.start()
     }

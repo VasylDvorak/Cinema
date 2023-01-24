@@ -52,10 +52,13 @@ class RemoteDataSource {
         movieApi.getBestMovie(request_type).enqueue(callback)
     }
 
-    fun getPlayMovie(idd: String): String {
+    fun getPlayMovie(idd: String): MutableList<String> {
+        var answer: MutableList<String> = mutableListOf()
         var trailerUrl = "https://api.kinopoisk.dev/movie?field=id&search=${idd}&token" +
                 "=${BuildConfig.KINOPOISK_API_KEY}"
+        println(trailerUrl)
         var str = url_trailer
+        var country = ""
         var ageRating = 18
         val queue = Volley.newRequestQueue(App.appInstance!!.applicationContext)
         val request = StringRequest(
@@ -68,7 +71,11 @@ class RemoteDataSource {
                         str = (JSONObject(result).getJSONObject("videos")
                             .getJSONArray("trailers")[0] as JSONObject)
                             .getString("url")
+                        answer.add(str)
                         ageRating = JSONObject(result).getInt("ageRating")
+                       country = (JSONObject(result).
+                       getJSONArray("countries")[0] as JSONObject).getString("name")
+                        answer.add(country)
 
                     } catch (e: JSONException) {
                     }
@@ -84,7 +91,9 @@ class RemoteDataSource {
         queue.add(request)
         if ((!for_adult_setting)&&(ageRating >= 18)){
             can_show  = false }
-        return str
+        can_show = true
+        while(answer.size < 2){}
+        return answer
     }
 
 

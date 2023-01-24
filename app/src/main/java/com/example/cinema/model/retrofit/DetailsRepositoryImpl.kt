@@ -16,7 +16,7 @@ class DetailsRepositoryImpl(private val remoteDataSource: RemoteDataSource) :
     ) {
         remoteDataSource.getBestMovieDetails(find_type, callback) }
 
-    override fun getPlayMovieDetails(idd: Int): String {
+    override fun getPlayMovieDetails(idd: Int): MutableList<String> {
         return remoteDataSource.getPlayMovie(idd.toString()) }
 
     override fun converter (input : MovieDTOBest) : MovieDTO{

@@ -53,7 +53,8 @@ fun convertHistoryEntityToMovie(entityList: MutableList<HistoryEntity>): Mutable
             watched = if (it.watched == 1) true else false,
             isLike =  if (it.isLike == 1) true else false,
             url_trailer = it.url_trailer,
-            note = it.note
+            note = it.note,
+            country = it.country
         )
     } as MutableList
 
@@ -83,6 +84,7 @@ fun convertMovieToEntity(
         if (watched) 1 else 0,
         if (isLike) 1 else 0,
         docs.url_trailer  ?: "",
-        docs.note   ?: ""
+        docs.note   ?: "",
+        docs.country   ?: ""
     )
 }

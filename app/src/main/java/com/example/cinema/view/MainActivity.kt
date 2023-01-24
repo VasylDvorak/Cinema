@@ -11,6 +11,7 @@ import com.example.cinema.databinding.ActivityMainBinding
 import com.example.cinema.view.favorite_movie_fragment.FavoriteMovieFragment
 import com.example.cinema.view.main_movie_fragment.MainFragment
 import com.example.cinema.view.best_movie_fragment.RatingsFragment
+import com.example.cinema.view.geolocation_fragment.MapsFragment
 import kotlin.properties.Delegates
 
 const val NAME_MSG: String = "MSG"
@@ -32,6 +33,8 @@ class MainActivity : AppCompatActivity() {
         val mainFragment = MainFragment()
         val favoriteMovieFragment = FavoriteMovieFragment()
         val ratingsFragment = RatingsFragment()
+        val mapsFragment = MapsFragment()
+
         setCurrentFragment(mainFragment)
 
         binding.bottomNavigationView.setOnNavigationItemSelectedListener {
@@ -39,6 +42,7 @@ class MainActivity : AppCompatActivity() {
                 R.id.home -> setCurrentFragment(mainFragment)
                 R.id.favorites -> setCurrentFragment(favoriteMovieFragment)
                 R.id.ratings -> setCurrentFragment(ratingsFragment)
+                R.id.map -> setCurrentFragment(mapsFragment)
             }
             true
         }

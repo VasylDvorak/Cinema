@@ -8,17 +8,33 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
+<LinearLayout
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="end"
+    android:layout_margin="@dimen/fragment_padding"
+    android:orientation="vertical">
+
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/note_correct"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="end"
-            android:layout_margin="@dimen/fragment_padding"
             android:clickable="true"
             android:focusable="true"
             android:foreground="@drawable/ic_baseline_edit_note_24"
             android:scaleType="fitXY" />
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/map"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:clickable="true"
+        android:focusable="true"
+        android:backgroundTint="@android:color/holo_orange_light"
+        android:foreground="@drawable/ic_baseline_map_24"
+        android:layout_marginTop="@dimen/fragment_padding"
+        android:scaleType="fitXY" />
 
+    </LinearLayout>
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/mainView"
             android:layout_width="match_parent"

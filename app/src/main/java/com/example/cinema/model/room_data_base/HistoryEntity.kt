@@ -29,7 +29,8 @@ data class HistoryEntity(
     var watched: Int = 0,
     var isLike: Int = 0,
     var url_trailer: String = "",
-    var note: String = ""
+    var note: String = "",
+    var country: String =""
 
 )
 

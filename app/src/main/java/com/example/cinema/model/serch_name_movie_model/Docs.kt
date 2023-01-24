@@ -1,5 +1,6 @@
 package com.example.cinema.model.serch_name_movie_model
 
+import android.location.Address
 import android.os.Parcelable
 import kotlinx.android.parcel.Parcelize
 
@@ -20,7 +21,8 @@ data class Docs(
     var watched: Boolean = false,
     var isLike: Boolean = false,
     var url_trailer: String = "",
-    var note: String = ""
+    var note: String = "",
+    var country: String = "",
 
 ) : Parcelable {
 

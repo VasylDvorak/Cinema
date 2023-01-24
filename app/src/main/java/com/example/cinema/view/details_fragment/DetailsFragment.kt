@@ -14,6 +14,8 @@ import com.example.cinema.R
 import com.example.cinema.databinding.FragmentDetailsBinding
 import com.example.cinema.model.serch_name_movie_model.Docs
 import com.example.cinema.model.utils.Extensions
+import com.example.cinema.view.geolocation_fragment.MapsFragment
+import com.example.cinema.view.geolocation_fragment.MapsFragment.Companion.COUNTRY_EXTRA
 import com.example.cinema.view.play_movie_fragment.PlayMovieFragment
 import com.example.cinema.view.note_fragment.NoteFragment
 import com.example.cinema.view.note_fragment.NoteFragment.Companion.DOCS_EXTRA
@@ -66,6 +68,9 @@ class DetailsFragment : Fragment() {
             with(binding) {
                 noteCorrect.setOnClickListener {
                     callNote(docs_data)
+                }
+                map.setOnClickListener {
+                    callMap(docs_data.country)
                 }
 
                 mainView.visibility = View.VISIBLE
@@ -121,6 +126,17 @@ class DetailsFragment : Fragment() {
                 { requireContext().resources.getString(R.string.OK) }
             )
             fragmentManager?.popBackStack()
+        }
+    }
+
+    private fun callMap(country: String) {
+        activity?.supportFragmentManager?.apply {
+            beginTransaction()
+                .replace(R.id.flFragment, MapsFragment.newInstance(Bundle().apply {
+                    putString(COUNTRY_EXTRA, country)
+                }))
+                .addToBackStack("")
+                .commitAllowingStateLoss()
         }
     }
 
