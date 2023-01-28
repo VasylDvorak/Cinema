@@ -2,6 +2,7 @@ package com.example.cinema.model.retrofit
 
 import com.example.cinema.BuildConfig
 import com.example.cinema.model.best_movie_model.MovieDTOBest
+import com.example.cinema.model.details_movie_model.MovieDetails
 import com.example.cinema.model.serch_name_movie_model.MovieDTO
 import retrofit2.Call
 import retrofit2.http.GET
@@ -25,4 +26,12 @@ fun getBestMovie(
     @Query("token") api_key: String = "${ BuildConfig.KINOPOISK_API_KEY}"
 
     ): Call<MovieDTOBest>
+
+
+    @GET("movie?field=id")
+ fun getMovieDetails(
+        @Query("search") idd: Int,
+        @Query("token") api_key: String = "${ BuildConfig.KINOPOISK_API_KEY}"
+
+ ): Call<MovieDetails>
 }

@@ -1,9 +1,8 @@
 package com.example.cinema.model.serch_name_movie_model
 
-import android.location.Address
 import android.os.Parcelable
 import kotlinx.android.parcel.Parcelize
-
+const val url_trailer_default = "https://www.youtube.com/embed/DlM2CWNTQ84"
 @Parcelize
 data class Docs(
 
@@ -20,7 +19,7 @@ data class Docs(
     var current: Boolean = false,
     var watched: Boolean = false,
     var isLike: Boolean = false,
-    var url_trailer: String = "",
+    var url_trailer: String = url_trailer_default,
     var note: String = "",
     var country: String = "",
 
