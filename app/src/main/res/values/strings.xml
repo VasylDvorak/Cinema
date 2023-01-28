@@ -64,4 +64,8 @@
     <string name="button_search_maps">Найти положение</string>
     <string name="map">Карта</string>
     <string name="search_place">Найти место</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="channel_name">Имя канала</string>
+    <string name="chanel_description">Описание канала</string>
 </resources>

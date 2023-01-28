@@ -1,14 +1,15 @@
 package com.example.cinema.view.geolocation_fragment
 
 import android.Manifest
+import android.R.attr.radius
+import android.app.PendingIntent
 import android.content.Context
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Color
 import android.location.Address
 import android.location.Geocoder
 import android.location.LocationManager
-import androidx.fragment.app.Fragment
-
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -16,15 +17,23 @@ import android.view.ViewGroup
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.Fragment
 import com.example.cinema.R
 import com.example.cinema.databinding.FragmentMapsBinding
-
+import com.google.android.gms.common.api.GoogleApiClient
+import com.google.android.gms.location.Geofence
+import com.google.android.gms.location.GeofencingClient
+import com.google.android.gms.location.GeofencingRequest
+import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.*
 import java.io.IOException
+import java.util.*
+import kotlin.collections.ArrayList
+
 
 class MapsFragment : Fragment() {
     private var _binding: FragmentMapsBinding?=null
@@ -261,5 +270,7 @@ binding.apply {
                 .show()
         }
     }
+
+
 
 }
