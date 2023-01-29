@@ -66,6 +66,7 @@ class MainFragmentViewModel(
         }
         }else{
             startSearch(start_cinema)
+            start_cinema = ""
        }
     }
 

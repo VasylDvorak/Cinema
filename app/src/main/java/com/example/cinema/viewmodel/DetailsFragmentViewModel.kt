@@ -1,5 +1,6 @@
 package com.example.cinema.viewmodel
 
+import android.annotation.SuppressLint
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -48,6 +49,7 @@ class DetailsFragmentViewModel(
 
     private val callBack = object :
         Callback<MovieDetails> {
+        @SuppressLint("SuspiciousIndentation")
         override fun onResponse(
             call: Call<MovieDetails>, response:
             Response<MovieDetails>

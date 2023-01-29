@@ -1,12 +1,17 @@
-package com.example.cinema
+package com.example.cinema.model
 
 import android.app.NotificationChannel
 import android.app.NotificationManager
+import android.app.PendingIntent
 import android.content.Context
+import android.content.Intent
 import android.os.Build
+import android.os.Bundle
 import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
+import com.example.cinema.R
+import com.example.cinema.view.geolocation_fragment.MapsFragment
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.messaging.FirebaseMessaging
 import com.google.firebase.messaging.FirebaseMessagingService
@@ -37,6 +42,7 @@ class CinemaFirebaseMessagingService : FirebaseMessagingService() {
         }
     }
 
+
     private fun handleDataMessage(data: Map<String, String>) {
         val title = data[PUSH_KEY_TITLE]
         val message = data[PUSH_KEY_MESSAGE]
@@ -46,13 +52,19 @@ class CinemaFirebaseMessagingService : FirebaseMessagingService() {
     }
 
     private fun showNotification(title: String, message: String) {
+
+        MapsFragment.newInstance(Bundle().apply { putString(MapsFragment.COUNTRY_EXTRA, message) })
+        val notificationIntent = Intent(applicationContext, MapsFragment::class.java)
+        val pendingIntent = PendingIntent.getActivity(applicationContext, 0,
+            notificationIntent, 0)
         val notificationBuilder =
             NotificationCompat.Builder(applicationContext, CHANNEL_ID).apply {
                 setSmallIcon(R.drawable.icon)
                 setContentTitle(title)
                 setContentText(message)
+                setContentIntent(pendingIntent)
                 priority = NotificationCompat.PRIORITY_DEFAULT
-            }
+            }.build()
 
         val notificationManager =
             getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
@@ -60,7 +72,8 @@ class CinemaFirebaseMessagingService : FirebaseMessagingService() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             createNotificationChannel(notificationManager)
         }
-        notificationManager.notify(NOTIFICATION_ID, notificationBuilder.build())
+        notificationManager.notify(NOTIFICATION_ID, notificationBuilder)
+        startForeground(1, notificationBuilder)
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -78,7 +91,4 @@ class CinemaFirebaseMessagingService : FirebaseMessagingService() {
         super.onNewToken(token)
         Log.v("MyFirebaseMessagingService", "onNewToken" + token)
     }
-
-
-
 }

@@ -6,7 +6,7 @@ import android.os.Build
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
-import com.example.cinema.CinemaFirebaseMessagingService.Companion.receiveTokenIfYouWant
+import com.example.cinema.model.CinemaFirebaseMessagingService.Companion.receiveTokenIfYouWant
 import com.example.cinema.R
 import com.example.cinema.databinding.ActivityMainBinding
 import com.example.cinema.view.favorite_movie_fragment.FavoriteMovieFragment
