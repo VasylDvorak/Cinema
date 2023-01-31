@@ -24,15 +24,6 @@ class CinemaFirebaseMessagingService : FirebaseMessagingService() {
         private const val CHANNEL_ID = "channel_id"
         private const val NOTIFICATION_ID = 37
 
-        fun receiveTokenIfYouWant(){
-            FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener { task ->
-                if(!task.isSuccessful){
-                    return@OnCompleteListener
-                }
-                val token = task.result
-                println("Token our notification app: "+token)
-            })
-        }
     }
 
     override fun onMessageReceived(remoteMessage: RemoteMessage) {
@@ -90,5 +81,15 @@ class CinemaFirebaseMessagingService : FirebaseMessagingService() {
     override fun onNewToken(token: String) {
         super.onNewToken(token)
         Log.v("MyFirebaseMessagingService", "onNewToken" + token)
+    }
+
+    fun readTokenIfYouWant(){
+        FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener { task ->
+            if(!task.isSuccessful){
+                return@OnCompleteListener
+            }
+            val token = task.result
+            println("Token our notification app: "+token)
+        })
     }
 }

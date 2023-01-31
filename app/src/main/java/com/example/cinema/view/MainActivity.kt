@@ -6,13 +6,14 @@ import android.os.Build
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
-import com.example.cinema.model.CinemaFirebaseMessagingService.Companion.receiveTokenIfYouWant
 import com.example.cinema.R
 import com.example.cinema.databinding.ActivityMainBinding
 import com.example.cinema.view.favorite_movie_fragment.FavoriteMovieFragment
 import com.example.cinema.view.main_movie_fragment.MainFragment
 import com.example.cinema.view.best_movie_fragment.RatingsFragment
 import com.example.cinema.view.geolocation_fragment.MapsFragment
+import com.google.android.gms.tasks.OnCompleteListener
+import com.google.firebase.messaging.FirebaseMessaging
 
 const val NAME_MSG: String = "MSG"
 
@@ -36,8 +37,6 @@ class MainActivity : AppCompatActivity() {
         val mapsFragment = MapsFragment()
 
         setCurrentFragment(mainFragment)
-
-        receiveTokenIfYouWant()
 
         binding.bottomNavigationView.setOnNavigationItemSelectedListener {
             when (it.itemId) {
@@ -71,4 +70,5 @@ class MainActivity : AppCompatActivity() {
             start_cinema = intent.getStringExtra(NAME_MSG)!!
         }
     }
+
 }

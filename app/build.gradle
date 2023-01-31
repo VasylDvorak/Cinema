@@ -18,20 +18,43 @@ android {
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
+
+
     buildFeatures {
         viewBinding = true
     }
 
     buildTypes.each {
+
         Properties properties = new Properties()
         properties.load(project.rootProject.file("apikey.properties").newDataInputStream())
         def apiKey = properties.getProperty("kinopoisk_api_key", "")
         it.buildConfigField "String", "KINOPOISK_API_KEY", apiKey
     }
+
+    signingConfigs{
+        release{
+            storeFile file("properties_key_VasylDvorak")
+            storePassword 'oksana1981'
+            keyAlias 'Cinema'
+            keyPassword 'oksana1981'
+        }
+
+    }
+
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            versionNameSuffix '-relese'
+            signingConfig signingConfigs.debug
+        }
+        debug {
+            versionNameSuffix '-first'
+        }
+        beta{
+            initWith debug
+            versionNameSuffix '-beta'
         }
     }
     compileOptions {
@@ -41,6 +64,17 @@ android {
     kotlinOptions {
         jvmTarget = '1.8'
         jvmTarget = JavaVersion.VERSION_1_8.toString()
+    }
+    flavorDimensions 'version'
+    productFlavors {
+        russian {
+            dimension 'version'
+            versionNameSuffix '-russian'
+        }
+        english {
+            dimension 'version'
+            versionNameSuffix '-english'
+        }
     }
 }
 

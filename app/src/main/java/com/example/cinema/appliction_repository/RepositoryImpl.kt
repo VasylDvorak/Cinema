@@ -14,7 +14,6 @@ class RepositoryImpl : Repository {
         newest_movie_DTO = new_movie_DTO
     }
 
-
     override fun getAboutMovieLocalStorageUpcoming(): MovieDTO = newest_movie_DTO
     override fun setFavoriteMovie(new_favorite_movie_DTO: MovieDTO) {
         new_favorite_movie_DTO_changed = new_favorite_movie_DTO
