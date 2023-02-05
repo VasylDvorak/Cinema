@@ -23,11 +23,15 @@ android {
     }
 
     buildTypes.each {
+
         Properties properties = new Properties()
-        properties.load(project.rootProject.file("apikey.properties").newDataInputStream())
+        properties.load(project.rootProject.file("apikey.PROPERTIES").newDataInputStream())
         def apiKey = properties.getProperty("kinopoisk_api_key", "")
         it.buildConfigField "String", "KINOPOISK_API_KEY", apiKey
+        def apiKeyMap = properties.getProperty("maps_api_key", "")
+        it.buildConfigField "String", "MAPS_API_KEY", apiKeyMap
     }
+
     buildTypes {
         release {
             minifyEnabled false
