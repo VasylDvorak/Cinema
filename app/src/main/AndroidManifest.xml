@@ -39,7 +39,7 @@
         </service>
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyB87KQX6kRYVawcgpmvLSyvkBpd2s2ZpvU" />
+            android:value="AIzaSyBrwJSpg2wZHvPBjisSk8LU4xYoQ-ywylw" />
 
         <provider
             android:name="com.example.cinema.model.content_provider.CinemaContentProvider"
