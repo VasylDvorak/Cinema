@@ -20,7 +20,7 @@ import com.example.cinema.view.play_movie_fragment.PlayMovieFragment
 import com.example.cinema.view.note_fragment.NoteFragment
 import com.example.cinema.view.note_fragment.NoteFragment.Companion.DOCS_EXTRA
 import com.example.cinema.viewmodel.DetailsFragmentViewModel
-import kotlinx.android.synthetic.main.fragment_details.*
+
 
 class DetailsFragment : Fragment() {
 

@@ -11,8 +11,7 @@ import com.example.cinema.R
 import com.example.cinema.model.serch_name_movie_model.Docs
 import com.example.cinema.viewmodel.FavoriteMovieFragmentViewModel
 import com.squareup.picasso.Picasso
-import kotlinx.android.synthetic.main.favorite_item.view.*
-import kotlinx.android.synthetic.main.fragment_main.view.*
+
 
 class FavoriteMovieFragmentAdapter(
     private var onItemViewClickListener: OnItemViewClickListener?,

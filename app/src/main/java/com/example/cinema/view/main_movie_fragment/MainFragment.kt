@@ -23,7 +23,6 @@ import com.example.cinema.app.AppState
 import com.example.cinema.model.retrofit.RemoteDataSource.Companion.for_adult_setting
 import com.example.cinema.viewmodel.DetailsFragmentViewModel
 import com.example.cinema.viewmodel.MainFragmentViewModel
-import kotlinx.android.synthetic.main.fragment_main.*
 
 private const val ADULT_KEY = "ADULT_KEY"
 

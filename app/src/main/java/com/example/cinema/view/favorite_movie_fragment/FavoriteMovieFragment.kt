@@ -17,7 +17,6 @@ import com.example.cinema.model.serch_name_movie_model.MovieDTO
 import com.example.cinema.view.details_fragment.DetailsFragment
 import com.example.cinema.viewmodel.DetailsFragmentViewModel
 import com.example.cinema.viewmodel.FavoriteMovieFragmentViewModel
-import kotlinx.android.synthetic.main.fragment_main.*
 
 class FavoriteMovieFragment : Fragment() {
 

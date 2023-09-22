@@ -12,8 +12,6 @@ import com.example.cinema.view.favorite_movie_fragment.FavoriteMovieFragment
 import com.example.cinema.view.main_movie_fragment.MainFragment
 import com.example.cinema.view.best_movie_fragment.RatingsFragment
 import com.example.cinema.view.geolocation_fragment.MapsFragment
-import com.google.android.gms.tasks.OnCompleteListener
-import com.google.firebase.messaging.FirebaseMessaging
 
 const val NAME_MSG: String = "MSG"
 
@@ -70,5 +68,4 @@ class MainActivity : AppCompatActivity() {
             start_cinema = intent.getStringExtra(NAME_MSG)!!
         }
     }
-
 }
