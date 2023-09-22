@@ -1,53 +1,71 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/card_view"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
+    android:clickable="true"
+    android:foreground="?android:attr/selectableItemBackground"
     android:padding="@dimen/padding_card"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    app:cardBackgroundColor="@color/card_color"
+    app:cardCornerRadius="10dp"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="parent">
 
-    <ImageView
-        android:id="@+id/now_playing_banner"
-        android:layout_width="@dimen/image_width"
-        android:layout_height="@dimen/image_height"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintBaseline_toTopOf="parent" />
-    <ImageView
-        android:id="@+id/is_like_movie"
-        android:layout_width="@dimen/heart_size"
-        android:layout_height="@dimen/heart_size"
-        android:src="@drawable/ic_baseline_favorite_border_24"
-        app:layout_constraintRight_toRightOf="@+id/now_playing_banner"
-        app:layout_constraintTop_toTopOf="@+id/now_playing_banner" />
-    <TextView
-        android:id="@+id/now_playing_title_movie"
-        android:layout_width="@dimen/title_width"
-        android:layout_height="@dimen/title_height"
-        android:textSize="@dimen/text_card_size"
-         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/now_playing_banner" />
-    <TextView
-        android:id="@+id/now_playing_year_movie"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="@dimen/text_card_size"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/now_playing_title_movie" />
+        android:layout_height="wrap_content">
 
-    <TextView
-        android:id="@+id/now_playing_rating_movie"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="@dimen/text_card_size"
-        app:layout_constraintEnd_toEndOf="@+id/now_playing_banner"
-        app:layout_constraintTop_toBottomOf="@+id/now_playing_title_movie" />
+        <ImageView
+            android:id="@+id/now_playing_banner"
+            android:layout_width="@dimen/image_width"
+            android:layout_height="@dimen/image_height"
+            app:layout_constraintBaseline_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
 
-    <ImageView
-        android:id="@+id/star"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/ic_baseline_star_24"
-        app:layout_constraintEnd_toStartOf="@+id/now_playing_rating_movie"
-        app:layout_constraintTop_toBottomOf="@+id/now_playing_title_movie"/>
+        <ImageView
+            android:id="@+id/is_like_movie"
+            android:layout_width="@dimen/heart_size"
+            android:layout_height="@dimen/heart_size"
+            android:src="@drawable/ic_baseline_favorite_border_24"
+            app:layout_constraintRight_toRightOf="@+id/now_playing_banner"
+            app:layout_constraintTop_toTopOf="@+id/now_playing_banner" />
 
+        <TextView
+            android:id="@+id/now_playing_title_movie"
+            android:layout_width="@dimen/image_width"
+            android:layout_height="@dimen/title_height"
+            android:textColor="@color/black"
+            android:textSize="@dimen/text_card_size"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/now_playing_banner" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <TextView
+            android:id="@+id/now_playing_year_movie"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black"
+            android:textSize="@dimen/text_card_size"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/now_playing_title_movie" />
+
+        <TextView
+            android:id="@+id/now_playing_rating_movie"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black"
+            android:textSize="@dimen/text_card_size"
+            app:layout_constraintEnd_toEndOf="@+id/now_playing_banner"
+            app:layout_constraintTop_toBottomOf="@+id/now_playing_title_movie" />
+
+        <ImageView
+            android:id="@+id/star"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_baseline_star_24"
+            app:layout_constraintEnd_toStartOf="@+id/now_playing_rating_movie"
+            app:layout_constraintTop_toBottomOf="@+id/now_playing_title_movie" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</android.support.v7.widget.CardView>
