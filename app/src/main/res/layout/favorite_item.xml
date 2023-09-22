@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/card_view"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="@dimen/card_margin"
+    android:clickable="true"
+    android:foreground="?android:attr/selectableItemBackground"
+    android:padding="@dimen/padding_card"
+    app:cardBackgroundColor="@color/card_color"
+    app:cardCornerRadius="@dimen/favorite_card_corner_radius"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="parent">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/details_title_movie"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingRight="@dimen/title_padding"
+                android:textColor="@color/black"
+                android:textSize="@dimen/title_size_details"
+                app:layout_constraintBottom_toTopOf="@+id/details_original_title_movie"
+                app:layout_constraintLeft_toLeftOf="parent" />
+
+            <TextView
+                android:id="@+id/details_original_title_movie"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/title_height"
+                android:paddingRight="@dimen/title_padding"
+                android:textColor="@color/black"
+                android:textSize="@dimen/original_title"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/details_title_movie" />
+
+            <FrameLayout
+                android:id="@+id/fragment_banner_movie"
+                android:layout_width="@dimen/image_width"
+                android:layout_height="@dimen/image_height"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/details_original_title_movie">
+
+                <ImageView
+                    android:id="@+id/details_banner_movie"
+                    android:layout_width="@dimen/image_width"
+                    android:layout_height="@dimen/image_height" />
+
+
+            </FrameLayout>
+
+            <TextView
+                android:id="@+id/details_genre_movie"
+                android:layout_width="@dimen/width_genre"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/fragment_padding"
+                android:textColor="@color/black"
+                android:textSize="@dimen/description_text_size"
+                app:layout_constraintLeft_toRightOf="@+id/fragment_banner_movie"
+                app:layout_constraintTop_toTopOf="@+id/fragment_banner_movie" />
+
+            <TextView
+                android:id="@+id/details_duration_movie"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/fragment_padding"
+                android:textColor="@color/black"
+                android:textSize="@dimen/description_text_size"
+                app:layout_constraintLeft_toRightOf="@+id/fragment_banner_movie"
+                app:layout_constraintTop_toBottomOf="@+id/details_genre_movie" />
+
+            <TextView
+                android:id="@+id/details_rating_movie"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/fragment_padding"
+                android:textColor="@color/black"
+                android:textSize="@dimen/description_text_size"
+                app:layout_constraintLeft_toRightOf="@+id/fragment_banner_movie"
+                app:layout_constraintTop_toBottomOf="@+id/details_duration_movie" />
+
+            <ImageView
+                android:id="@+id/details_star"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_baseline_star_24"
+                app:layout_constraintLeft_toRightOf="@+id/details_rating_movie"
+                app:layout_constraintTop_toTopOf="@+id/details_rating_movie" />
+
+            <TextView
+                android:id="@+id/details_year_movie"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/fragment_padding"
+                android:textColor="@color/black"
+                android:textSize="@dimen/description_text_size"
+                app:layout_constraintLeft_toRightOf="@+id/fragment_banner_movie"
+                app:layout_constraintTop_toBottomOf="@+id/details_rating_movie" />
+
+            <TextView
+                android:id="@+id/details_budget_movie"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/fragment_padding"
+                android:textColor="@color/black"
+                android:textSize="@dimen/description_text_size"
+                app:layout_constraintLeft_toRightOf="@+id/fragment_banner_movie"
+                app:layout_constraintTop_toBottomOf="@+id/details_year_movie" />
+
+            <TextView
+                android:id="@+id/details_revenue_movie"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/fragment_padding"
+                android:textColor="@color/black"
+                android:textSize="@dimen/description_text_size"
+                app:layout_constraintLeft_toRightOf="@+id/fragment_banner_movie"
+                app:layout_constraintTop_toBottomOf="@+id/details_budget_movie" />
+
+            <ImageView
+                android:id="@+id/delete"
+                android:layout_width="@dimen/heart_width"
+                android:layout_height="@dimen/heart_width"
+                android:layout_margin="@dimen/heart_margin"
+                android:src="@drawable/ic_baseline_delete_forever_24"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/short_description_movie"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@android:color/holo_orange_dark"
+                android:textSize="@dimen/description_text_size"
+                android:visibility="gone"
+                app:layout_constraintLeft_toLeftOf="@+id/fragment_banner_movie"
+                app:layout_constraintTop_toBottomOf="@+id/fragment_banner_movie" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <TextView
+            android:id="@+id/watched"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:rotation="-30"
+            android:text="@string/watched"
+            android:textColor="@color/watched_color"
+            android:textSize="@dimen/heart_width"
+            android:textStyle="bold"
+            android:visibility="gone" />
+    </FrameLayout>
+</androidx.cardview.widget.CardView>
