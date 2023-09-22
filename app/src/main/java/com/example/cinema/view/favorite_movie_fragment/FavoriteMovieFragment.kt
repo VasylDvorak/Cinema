@@ -14,12 +14,9 @@ import com.example.cinema.R
 import com.example.cinema.databinding.FragmentFavoriteBinding
 import com.example.cinema.model.serch_name_movie_model.Docs
 import com.example.cinema.model.serch_name_movie_model.MovieDTO
-import com.example.cinema.view.contentprovider.ContentProviderFragment
 import com.example.cinema.view.details_fragment.DetailsFragment
-import com.example.cinema.view.note_fragment.NoteFragment
 import com.example.cinema.viewmodel.DetailsFragmentViewModel
 import com.example.cinema.viewmodel.FavoriteMovieFragmentViewModel
-import kotlinx.android.synthetic.main.fragment_main.*
 
 class FavoriteMovieFragment : Fragment() {
 
@@ -110,19 +107,6 @@ class FavoriteMovieFragment : Fragment() {
                 AboutMovieData.removeAt(position)
                 adapter_main.notifyItemRemoved(position)
             }
-        }, object : FavoriteMovieFragmentAdapter.sendSMSListener {
-              override fun sendSMSClick(aboutMovieItem: Docs) {
-                      activity?.supportFragmentManager?.apply {
-                          beginTransaction()
-                              .add(R.id.flFragment, ContentProviderFragment.newInstance(Bundle().apply {
-                                  putString(ContentProviderFragment.MESSAGE, aboutMovieItem.name)
-                                  putBoolean(ContentProviderFragment.ACT, true)
-                              }))
-                              .addToBackStack("")
-                              .commitAllowingStateLoss()
-                      }
-
-                  }
         }, viewModel)
 }
 }

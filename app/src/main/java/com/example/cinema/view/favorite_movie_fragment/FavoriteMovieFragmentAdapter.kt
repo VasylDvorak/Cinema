@@ -11,13 +11,11 @@ import com.example.cinema.R
 import com.example.cinema.model.serch_name_movie_model.Docs
 import com.example.cinema.viewmodel.FavoriteMovieFragmentViewModel
 import com.squareup.picasso.Picasso
-import kotlinx.android.synthetic.main.favorite_item.view.*
-import kotlinx.android.synthetic.main.fragment_main.view.*
+
 
 class FavoriteMovieFragmentAdapter(
     private var onItemViewClickListener: OnItemViewClickListener?,
     private var removeMovie: removeMovieListener?,
-    private var sendSMS: sendSMSListener?,
     private var viewModel: FavoriteMovieFragmentViewModel
 ) :
     RecyclerView.Adapter<FavoriteMovieFragmentAdapter.MainViewHolder>() {
@@ -28,9 +26,6 @@ class FavoriteMovieFragmentAdapter(
         fun removeMovieClick(like: Boolean, aboutMovieItem: Docs, position: Int)
     }
 
-    interface sendSMSListener {
-        fun sendSMSClick(aboutMovieItem: Docs)
-    }
 
     interface OnItemViewClickListener {
         fun onItemClick(aboutMovie: Docs)
@@ -109,10 +104,6 @@ class FavoriteMovieFragmentAdapter(
                                 )
 
                             }
-                        }
-
-                        send_sms.setOnClickListener {
-                            sendSMS?.sendSMSClick(aboutMovieItem)
                         }
 
                         setOnClickListener {

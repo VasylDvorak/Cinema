@@ -37,10 +37,9 @@ class CinemaContentProvider : ContentProvider() {
 
         uriMatcher = UriMatcher(UriMatcher.NO_MATCH)
 
-        //"content:com.geekbrains.androidkotlinapp.provider/HistoryEntity"
         uriMatcher.addURI(authorities, ENTITY_PATH, URI_ALL)
 
-        //"content:com.geekbrains.androidkotlinapp.provider/HistoryEntity/#"
+
         uriMatcher.addURI(authorities, "$ENTITY_PATH/#", URI_ID)
 
         entityContentType = "vnd.android.cursor.dir/vnd.$authorities.$ENTITY_PATH"

@@ -21,10 +21,8 @@ import com.example.cinema.model.utils.Extensions
 import com.example.cinema.view.details_fragment.DetailsFragment
 import com.example.cinema.app.AppState
 import com.example.cinema.model.retrofit.RemoteDataSource.Companion.for_adult_setting
-import com.example.cinema.view.contentprovider.ContentProviderFragment
 import com.example.cinema.viewmodel.DetailsFragmentViewModel
 import com.example.cinema.viewmodel.MainFragmentViewModel
-import kotlinx.android.synthetic.main.fragment_main.*
 
 private const val ADULT_KEY = "ADULT_KEY"
 
@@ -203,18 +201,6 @@ class MainFragment : Fragment() {
                 for_adult_setting = item.isChecked
                 saveAdult(for_adult_setting)
                 return true
-            }
-            R.id.menu_content_provider -> {
-                activity?.supportFragmentManager?.apply {
-                    beginTransaction()
-                        .replace(R.id.flFragment, ContentProviderFragment.newInstance(Bundle().apply {
-                            putString(ContentProviderFragment.MESSAGE, "")
-                            putBoolean(ContentProviderFragment.ACT, false)
-                        }))
-                        .addToBackStack("")
-                        .commitAllowingStateLoss()
-                }
-                true
             }
         }
         return super.onOptionsItemSelected(item)
